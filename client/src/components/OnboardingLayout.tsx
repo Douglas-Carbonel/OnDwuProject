@@ -15,7 +15,7 @@ interface OnboardingLayoutProps {
 }
 
 export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayoutProps) {
-  const { progress, updateProgress, loading } = useProgress();
+  const { progress, updateProgress, loading, userId } = useProgress();
   const [currentDay, setCurrentDay] = useState(1);
   const [completedDays, setCompletedDays] = useState<number[]>([]);
   const [showEvaluation, setShowEvaluation] = useState(false);
@@ -26,18 +26,19 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
   // Update local state when progress changes
   useEffect(() => {
     if (progress && Object.keys(progress).length > 0) {
-      setCompletedDays(progress.completedModules || []);
-
-      // Use currentModule from database as the source of truth
+      const newCompletedDays = progress.completedModules || [];
       const targetModule = progress.currentModule || 1;
 
-      console.log(`🎯 Módulos desbloqueados: 1 até ${targetModule}`);
+      console.log(`🎯 Progress sincronizado - Módulos completados: [${newCompletedDays.join(', ')}], Módulo atual: ${targetModule}`);
 
-      if (currentDay !== targetModule) {
-        setCurrentDay(targetModule);
-      }
+      // Update completed days
+      setCompletedDays(newCompletedDays);
+
+      // Update current day to match current module from database
+      console.log(`🎯 Mudando currentDay de ${currentDay} para ${targetModule}`);
+      setCurrentDay(targetModule);
     }
-  }, [progress, currentDay]);
+  }, [progress]);
   const { logout, isAdmin } = useAuth();
   const [location, setLocation] = useLocation();
 
@@ -54,6 +55,7 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
   const moduleProgress = progress?.moduleProgress || progress?.dayProgress || {};
 
   console.log("📊 Estado atual do progresso no banco:", {
+    userId: userId,
     completedModules: progress?.completedModules || [],
     moduleProgress: progress?.moduleProgress || {},
     currentModule: progress?.currentModule || 1,

@@ -16,7 +16,15 @@ export interface OnboardingProgress {
 }
 
 export function useProgress() {
-  const [userId] = useState(() => {
+  // Get userId from auth context or localStorage
+  const [userId, setUserId] = useState(() => {
+    // First check if there's an authenticated user
+    const authUser = JSON.parse(localStorage.getItem("auth-user") || "null");
+    if (authUser?.userId) {
+      return authUser.userId;
+    }
+    
+    // Fallback to guest user ID
     let id = localStorage.getItem("dwu-user-id");
     if (!id) {
       id = `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -25,7 +33,25 @@ export function useProgress() {
     return id;
   });
 
+  // Update userId when auth state changes
+  useEffect(() => {
+    const authUser = JSON.parse(localStorage.getItem("auth-user") || "null");
+    if (authUser?.userId && authUser.userId !== userId) {
+      console.log("🔄 Updating userId from", userId, "to", authUser.userId);
+      setUserId(authUser.userId);
+    }
+  }, [userId]);
+
   const queryClient = useQueryClient();
+
+  // Invalidate cache when userId changes (e.g., after login)
+  useEffect(() => {
+    if (userId) {
+      queryClient.invalidateQueries({ 
+        queryKey: [`/api/progress/${userId}`] 
+      });
+    }
+  }, [userId, queryClient]);
 
   const { data: progress, isLoading: loading, refetch } = useQuery({
     queryKey: [`/api/progress/${userId}`],
@@ -60,7 +86,7 @@ export function useProgress() {
   const updateProgressMutation = useMutation({
     mutationFn: async (updates: Partial<OnboardingProgress>) => {
       try {
-        console.log("🔄 Updating progress in database:", updates);
+        console.log("🔄 Updating progress in database for userId:", userId, "updates:", updates);
         const response = await apiRequest("PUT", `/api/progress/${userId}`, updates);
         const result = await response.json();
         console.log("✅ Progress updated successfully:", result);
