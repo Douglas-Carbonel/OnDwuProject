@@ -4,12 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { UserPlus, Users, Shield, CheckCircle, XCircle, LogOut, User, Mail, UserCheck, Plus, Minus, BarChart3, Clock, Target, Eye } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { 
+  Users, 
+  UserPlus, 
+  CheckCircle, 
+  XCircle, 
+  Eye,
+  Calendar,
+  Trophy,
+  Clock,
+  User
+} from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
 
@@ -53,6 +59,7 @@ interface UserEvaluationData {
 
 export default function AdminPanel() {
   const { createUser, logout } = useAuth();
+  const { toast } = useToast();
   const [location, setLocation] = useLocation();
   const [formData, setFormData] = useState({
     username: "",
@@ -152,15 +159,14 @@ export default function AdminPanel() {
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setMessage(null);
 
     try {
       const result = await createUser(formData);
 
       if (result.success) {
-        setMessage({
-          type: "success",
-          text: `Usuário ${formData.username} criado com sucesso!`,
+        toast({
+          title: "Sucesso!",
+          description: `Usuário ${formData.username} criado com sucesso!`,
         });
         setFormData({
           username: "",
@@ -171,15 +177,17 @@ export default function AdminPanel() {
         // Refresh users list after creating a new user
         fetchUsers();
       } else {
-        setMessage({
-          type: "error",
-          text: result.message || "Erro ao criar usuário",
+        toast({
+          title: "Erro",
+          description: result.message || "Erro ao criar usuário",
+          variant: "destructive",
         });
       }
     } catch (error) {
-      setMessage({
-        type: "error",
-        text: "Erro de conexão com o servidor",
+      toast({
+        title: "Erro",
+        description: "Erro de conexão com o servidor",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -381,7 +389,7 @@ export default function AdminPanel() {
                                   </div>
                                   <div className="text-xs text-slate-400">Módulo Atual</div>
                                 </div>
-                                
+
                                 <Dialog open={isModalOpen && selectedUserForModal?.id === user.id} onOpenChange={(open) => {
                                   setIsModalOpen(open);
                                   if (!open) setSelectedUserForModal(null);
@@ -399,7 +407,7 @@ export default function AdminPanel() {
                                       <div className="text-xs text-slate-400">Tentativas</div>
                                     </div>
                                   </DialogTrigger>
-                                  
+
                                   <DialogContent className="max-w-7xl max-h-[85vh] overflow-y-auto bg-slate-800 border-slate-700">
                                     <DialogHeader className="border-b border-slate-700 pb-4 mb-6">
                                       <div className="flex items-center justify-between">
@@ -420,7 +428,7 @@ export default function AdminPanel() {
                                         </div>
                                       </div>
                                     </DialogHeader>
-                                    
+
                                     {userEvaluations[user.id] && userEvaluations[user.id].evaluations.length > 0 ? (
                                       <div className="space-y-8">
                                         {/* KPI Cards - Top Section */}
@@ -488,7 +496,7 @@ export default function AdminPanel() {
                                                 const lastEval = moduleEvals[0];
                                                 const attempts = moduleEvals.length;
                                                 const avgScore = moduleEvals.length > 0 ? Math.round(moduleEvals.reduce((acc, e) => acc + e.score, 0) / moduleEvals.length) : 0;
-                                                
+
                                                 return (
                                                   <div key={moduleNum} className="bg-slate-800/50 rounded-lg p-4">
                                                     <div className="flex items-center justify-between mb-3">
@@ -636,7 +644,7 @@ export default function AdminPanel() {
                                                     <XCircle size={24} className="text-red-400" />
                                                   )}
                                                 </div>
-                                                
+
                                                 <div className="grid grid-cols-4 gap-4">
                                                   <div className="text-center p-2 bg-slate-700/50 rounded">
                                                     <div className="text-green-400 font-bold">{evaluation.correctAnswers}</div>
@@ -693,8 +701,7 @@ export default function AdminPanel() {
               </div>
             ) : (
               <div className="text-center py-8">
-                <div className="text-slate-400">Nenhum usuário encontrado</div>
-              </div>
+                <div className="text-slate-400">Nenhum usuário encontrado</div>              </div>
             )}
           </CardContent>
         </Card>
