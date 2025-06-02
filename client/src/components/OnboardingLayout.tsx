@@ -157,6 +157,7 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
   const switchDay = (day: number) => {
     console.log(`🎯 Tentando acessar módulo ${day}. Módulos completados:`, completedDays);
     console.log("🔍 Módulo atual no progresso:", progress?.currentModule);
+    console.log("🔍 Progress completo:", progress);
 
     // Check if day is accessible based on progress from backend
     const isCompleted = completedDays.includes(day);
@@ -166,6 +167,7 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
     console.log("   - É módulo 1:", day === 1);
     console.log("   - Já foi completado:", isCompleted);
     console.log("   - Módulo atual do progresso:", currentModuleFromProgress);
+    console.log("   - Comparação day <= currentModule:", day, "<=", currentModuleFromProgress, "=", day <= currentModuleFromProgress);
 
     // User can access:
     // 1. Module 1 (always)
@@ -179,8 +181,7 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
       console.log(`✅ Acesso permitido ao módulo ${day}`);
       setCurrentDay(day);
     } else {
-      console.log(`❌ Acesso negado ao módulo ${day}`);
-      // Could show a toast or modal explaining why access is denied
+      console.log(`❌ Acesso negado ao módulo ${day}. Tente completar os módulos anteriores primeiro.`);
     }
   };
 
@@ -206,17 +207,22 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
     return icons[day as keyof typeof icons];
   };
 
-  const getDayStatus = (day: number): "completed" | "current" | "locked" => {
-    if (completedDays.includes(day)) return "completed";
-
+  const getDayStatus = (day: number) => {
+    if (completedDays.includes(day)) {
+      return { icon: "check", color: "bg-green-500" };
+    }
+    
     // Check if this day should be unlocked based on backend progress
     const currentModuleFromProgress = progress?.currentModule || 1;
-
-    if (day === 1 || day <= currentModuleFromProgress) {
-      return day === currentDay ? "current" : "locked";
+    
+    // Module is accessible if it's module 1 OR if it's within the current module range
+    const isAccessible = day === 1 || day <= currentModuleFromProgress;
+    
+    if (isAccessible) {
+      return { icon: "clock", color: day === currentDay ? "bg-dwu-blue" : "bg-blue-500" };
     }
-
-    return "locked";
+    
+    return { icon: "clock", color: "bg-slate-600" };
   };
 
   return (
@@ -295,10 +301,9 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
                 const isActive = currentDay === day.day;
                 const isCompleted = completedDays.includes(day.day);
 
-                // Usar a mesma lógica de desbloqueio da função switchDay
+                // Use the same unlocking logic as switchDay function
                 const currentModuleFromProgress = progress?.currentModule || 1;
-                const maxUnlockedModule = Math.max(currentModuleFromProgress, Math.max(0, ...completedDays) + 1);
-                const isUnlocked = day.day === 1 || isCompleted || day.day <= maxUnlockedModule;
+                const isUnlocked = day.day === 1 || isCompleted || day.day <= currentModuleFromProgress;
 
                 console.log(`📋 Módulo ${day.day} - Ativo: ${isActive}, Completado: ${isCompleted}, Desbloqueado: ${isUnlocked}`);
 
