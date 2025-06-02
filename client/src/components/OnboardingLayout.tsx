@@ -27,12 +27,12 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
   useEffect(() => {
     if (progress && Object.keys(progress).length > 0) {
       setCompletedDays(progress.completedModules || []);
-      
+
       // Use currentModule from database as the source of truth
       const targetModule = progress.currentModule || 1;
-      
+
       console.log(`🎯 Módulos desbloqueados: 1 até ${targetModule}`);
-      
+
       if (currentDay !== targetModule) {
         setCurrentDay(targetModule);
       }
@@ -132,7 +132,7 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
   const switchDay = (day: number) => {
     const currentModuleFromDB = progress?.currentModule || 1;
     const canAccess = day <= currentModuleFromDB;
-    
+
     console.log(`🎯 Acesso ao módulo ${day}: currentModule=${currentModuleFromDB}, canAccess=${canAccess}`);
 
     if (canAccess) {
@@ -166,13 +166,13 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
     if (completedDays.includes(day)) {
       return { icon: "check", color: "bg-green-500" };
     }
-    
+
     const currentModuleFromDB = progress?.currentModule || 1;
-    
+
     if (day <= currentModuleFromDB) {
       return { icon: "clock", color: day === currentDay ? "bg-dwu-blue" : "bg-blue-500" };
     }
-    
+
     return { icon: "clock", color: "bg-slate-600" };
   };
 
@@ -294,8 +294,7 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
                         </p>
                       </div>
 
-                      {/* Status indicator */}
-                      <div className="absolute top-4 right-4">
+                      {/* Status indicator */}                      <div className="absolute top-4 right-4">
                         {completedDays.includes(day.day) ? (
                           <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center animate-pulse">
                             <span className="text-white text-sm">✓</span>
@@ -413,7 +412,7 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
                       ? 'bg-slate-600 cursor-not-allowed opacity-50'
                       : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
                   } 
-                    text-white font-semibold rounded-xl px-6 py-3 transition-all duration-300`
+                    text-white font-semibold rounded-xl px-6 py-3 transition-all duration-300`}
                 >
                   {currentDay === 4 ? (
                     <>
