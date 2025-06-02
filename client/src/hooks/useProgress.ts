@@ -28,7 +28,7 @@ export function useProgress() {
   const queryClient = useQueryClient();
 
   const { data: progress, isLoading: loading, refetch } = useQuery({
-    queryKey: ["progress", userId],
+    queryKey: [`/api/progress/${userId}`],
     queryFn: async () => {
       try {
         // First try to sync progress with evaluations
@@ -40,16 +40,18 @@ export function useProgress() {
         }
 
         // Then get the updated progress
-        return await apiRequest("GET", `/api/progress/${userId}`);
+        const response = await apiRequest("GET", `/api/progress/${userId}`);
+        return await response.json();
       } catch (error) {
         console.log("⚠️ Progress not found, creating initial progress");
-        return await apiRequest("POST", "/api/progress", {
+        const response = await apiRequest("POST", "/api/progress", {
           userId,
           currentModule: 1,
           completedModules: [],
           moduleProgress: {},
           moduleEvaluations: {},
         });
+        return await response.json();
       }
     },
     enabled: !!userId,
@@ -71,12 +73,12 @@ export function useProgress() {
     onSuccess: (data) => {
       // Update the cache directly and ensure it's persisted
       console.log("🔄 Updating cache with new data:", data);
-      queryClient.setQueryData(["/api/progress", userId], data);
+      queryClient.setQueryData([`/api/progress/${userId}`], data);
 
       // Force a re-render by invalidating after setting data
       setTimeout(() => {
         queryClient.invalidateQueries({ 
-          queryKey: ["/api/progress", userId],
+          queryKey: [`/api/progress/${userId}`],
           refetchType: 'active'
         });
       }, 100);
@@ -84,7 +86,7 @@ export function useProgress() {
     onError: (error) => {
       console.error("❌ Failed to update progress:", error);
       // Invalidate and refetch on error
-      queryClient.invalidateQueries({ queryKey: ["/api/progress", userId] });
+      queryClient.invalidateQueries({ queryKey: [`/api/progress/${userId}`] });
     },
   });
 
