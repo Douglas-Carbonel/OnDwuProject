@@ -33,29 +33,22 @@ export function useProgress() {
       try {
         // First try to sync progress with evaluations
         try {
-          await apiRequest(`/api/sync-progress/${userId}`, {
-            method: "POST",
-          });
+          await apiRequest("POST", `/api/sync-progress/${userId}`);
           console.log("✅ Progresso sincronizado automaticamente");
         } catch (syncError) {
           console.log("⚠️ Erro na sincronização automática, continuando...", syncError);
         }
 
         // Then get the updated progress
-        return await apiRequest<OnboardingProgress>(`/api/progress/${userId}`, {
-          method: "GET",
-        });
+        return await apiRequest("GET", `/api/progress/${userId}`);
       } catch (error) {
         console.log("⚠️ Progress not found, creating initial progress");
-        return await apiRequest<OnboardingProgress>("/api/progress", {
-          method: "POST",
-          body: {
-            userId,
-            currentModule: 1,
-            completedModules: [],
-            moduleProgress: {},
-            moduleEvaluations: {},
-          },
+        return await apiRequest("POST", "/api/progress", {
+          userId,
+          currentModule: 1,
+          completedModules: [],
+          moduleProgress: {},
+          moduleEvaluations: {},
         });
       }
     },
