@@ -23,7 +23,8 @@ export interface IStorage {
   getAttemptCount(userId: string, moduleNumber?: number): Promise<number>;
   getTotalUserAttempts(userId: string): Promise<number>;
   saveEvaluationAttempt(data: any): Promise<any>;
-    getUserEvaluationData(userId: string): Promise<any>;
+  getUserEvaluationData(userId: string): Promise<any>;
+  syncProgressWithEvaluations(userId: string): Promise<OnboardingProgress | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -504,6 +505,124 @@ export class DatabaseStorage implements IStorage {
       };
     }
   }
+
+  async syncProgressWithEvaluations(userId: string): Promise<OnboardingProgress | undefined> {
+    console.log("🔄 Sincronizando progresso com avaliações para userId:", userId);
+    try {
+      // Extract numeric ID from userId for module_evaluations table
+      const numericUserId = userId.replace('user-', '');
+      
+      // Get current progress
+      const progressResult = await this.db
+        .select()
+        .from(onboardingProgress)
+        .where(eq(onboardingProgress.user_id, userId.toString()));
+
+      let currentProgress = progressResult[0];
+      
+      // If no progress exists, create initial progress
+      if (!currentProgress) {
+        console.log("📝 Criando progresso inicial para usuário:", userId);
+        currentProgress = await this.createProgress({
+          userId,
+          currentModule: 1,
+          completedModules: [],
+          moduleProgress: {},
+          moduleEvaluations: {}
+        });
+      }
+
+      // Get all evaluations for this user ordered by module and date
+      const evaluations = await this.db
+        .select()
+        .from(moduleEvaluations)
+        .where(eq(moduleEvaluations.user_id, numericUserId))
+        .orderBy(moduleEvaluations.module_id, desc(moduleEvaluations.completed_at));
+
+      console.log(`📊 Encontradas ${evaluations.length} avaliações para o usuário`);
+
+      if (evaluations.length === 0) {
+        console.log("📝 Nenhuma avaliação encontrada, mantendo progresso atual");
+        return currentProgress;
+      }
+
+      // Group evaluations by module to get the latest for each module
+      const latestEvaluationByModule = evaluations.reduce((acc, evaluation) => {
+        if (!acc[evaluation.module_id] || evaluation.completed_at > acc[evaluation.module_id].completed_at) {
+          acc[evaluation.module_id] = evaluation;
+        }
+        return acc;
+      }, {} as Record<number, any>);
+
+      console.log("📊 Última avaliação por módulo:", latestEvaluationByModule);
+
+      // Calculate new progress based on evaluations
+      let newCurrentModule = 1;
+      const newCompletedModules: number[] = [];
+      const newModuleEvaluations: Record<string, any> = {};
+
+      // Check each module from 1 to 4
+      for (let moduleId = 1; moduleId <= 4; moduleId++) {
+        const latestEval = latestEvaluationByModule[moduleId];
+        
+        if (latestEval) {
+          // Store the evaluation result
+          newModuleEvaluations[moduleId.toString()] = {
+            score: latestEval.score,
+            passed: latestEval.passed,
+            completedAt: latestEval.completed_at.toISOString()
+          };
+
+          // If passed with score >= 90%, mark module as completed
+          if (latestEval.passed && latestEval.score >= 90) {
+            newCompletedModules.push(moduleId);
+            console.log(`✅ Módulo ${moduleId} completado - Score: ${latestEval.score}%, Passou: ${latestEval.passed}`);
+            
+            // Set current module to next available module
+            if (moduleId < 4) {
+              newCurrentModule = moduleId + 1;
+            } else {
+              newCurrentModule = 4; // Stay at module 4 if it's the last one
+            }
+          } else {
+            console.log(`❌ Módulo ${moduleId} não completado - Score: ${latestEval.score}%, Passou: ${latestEval.passed}`);
+            // If this module was not passed, stop here
+            break;
+          }
+        } else {
+          // No evaluation for this module, stop here
+          break;
+        }
+      }
+
+      console.log(`🎯 Novo progresso calculado - Módulo atual: ${newCurrentModule}, Módulos completados: [${newCompletedModules.join(', ')}]`);
+
+      // Update progress if there are changes
+      const hasChanges = 
+        currentProgress.current_module !== newCurrentModule ||
+        JSON.stringify(currentProgress.completed_modules || []) !== JSON.stringify(newCompletedModules) ||
+        JSON.stringify(currentProgress.module_evaluations || {}) !== JSON.stringify(newModuleEvaluations);
+
+      if (hasChanges) {
+        console.log("🔄 Atualizando progresso no banco...");
+        const updatedProgress = await this.updateProgress(userId, {
+          currentModule: newCurrentModule,
+          completedModules: newCompletedModules,
+          moduleEvaluations: newModuleEvaluations
+        });
+
+        console.log("✅ Progresso atualizado:", updatedProgress);
+        return updatedProgress;
+      } else {
+        console.log("📝 Nenhuma mudança no progresso necessária");
+        return currentProgress;
+      }
+
+    } catch (error) {
+      console.error("❌ Erro ao sincronizar progresso:", error);
+      return undefined;
+    }
+  }
 }
 
 export class MemStorage implements IStorage {
@@ -666,6 +785,11 @@ export class MemStorage implements IStorage {
         attemptsByModule: {},
         userProgress: null
       };
+  }
+
+  async syncProgressWithEvaluations(userId: string): Promise<OnboardingProgress | undefined> {
+    // Simplified implementation for memory storage
+    return this.progress.get(userId);
   }
 }
 

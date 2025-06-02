@@ -31,6 +31,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Credenciais inválidas" });
       }
 
+      // Sync progress with evaluations after successful login
+      console.log("🔄 Sincronizando progresso após login para usuário:", user.id);
+      try {
+        await storage.syncProgressWithEvaluations(user.id.toString());
+        console.log("✅ Progresso sincronizado com sucesso");
+      } catch (syncError) {
+        console.error("❌ Erro ao sincronizar progresso:", syncError);
+        // Don't fail login if sync fails, just log the error
+      }
+
       res.json({
         success: true,
         user: {
@@ -665,6 +675,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching module stats:", error);
       res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Manual sync progress endpoint for testing
+  app.post("/api/sync-progress/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      console.log("🔄 Sincronização manual de progresso para userId:", userId);
+
+      const updatedProgress = await storage.syncProgressWithEvaluations(userId);
+
+      if (updatedProgress) {
+        res.json({
+          success: true,
+          message: "Progresso sincronizado com sucesso",
+          progress: updatedProgress
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: "Não foi possível sincronizar o progresso"
+        });
+      }
+    } catch (error) {
+      console.error("❌ Erro na sincronização manual:", error);
+      res.status(500).json({
+        success: false,
+        message: "Erro interno do servidor",
+        error: error.message
+      });
     }
   });
 

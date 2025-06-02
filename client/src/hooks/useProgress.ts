@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -28,49 +27,39 @@ export function useProgress() {
 
   const queryClient = useQueryClient();
 
-  const { data: progress, isLoading: loading } = useQuery({
-    queryKey: ["/api/progress", userId],
+  const { data: progress, isLoading: loading, refetch } = useQuery({
+    queryKey: ["progress", userId],
     queryFn: async () => {
       try {
-        console.log("🔍 Fetching progress for user:", userId);
-        const response = await fetch(`/api/progress/${userId}`, {
-          credentials: "include",
+        // First try to sync progress with evaluations
+        try {
+          await apiRequest(`/api/sync-progress/${userId}`, {
+            method: "POST",
+          });
+          console.log("✅ Progresso sincronizado automaticamente");
+        } catch (syncError) {
+          console.log("⚠️ Erro na sincronização automática, continuando...", syncError);
+        }
+
+        // Then get the updated progress
+        return await apiRequest<OnboardingProgress>(`/api/progress/${userId}`, {
+          method: "GET",
         });
-        
-        if (response.status === 404) {
-          // Create initial progress if not found
-          console.log("📝 Creating initial progress for user:", userId);
-          const initResponse = await apiRequest("POST", "/api/progress", {
+      } catch (error) {
+        console.log("⚠️ Progress not found, creating initial progress");
+        return await apiRequest<OnboardingProgress>("/api/progress", {
+          method: "POST",
+          body: {
             userId,
             currentModule: 1,
             completedModules: [],
             moduleProgress: {},
             moduleEvaluations: {},
-            completedAt: null
-          });
-          const result = await initResponse.json();
-          console.log("✅ Initial progress created:", result);
-          return result;
-        }
-        
-        if (!response.ok) {
-          throw new Error(`${response.status}: ${response.statusText}`);
-        }
-        
-        const result = await response.json();
-        console.log("✅ Progress fetched successfully:", result);
-        return result;
-      } catch (error) {
-        console.error("❌ Error fetching progress:", error);
-        throw error;
+          },
+        });
       }
     },
-    retry: 2,
-    retryDelay: 500,
-    staleTime: 0, // Sempre buscar dados frescos
-    gcTime: 5 * 60 * 1000, // 5 minutes
-    refetchOnWindowFocus: false,
-    refetchOnMount: true,
+    enabled: !!userId,
   });
 
   const updateProgressMutation = useMutation({
@@ -90,7 +79,7 @@ export function useProgress() {
       // Update the cache directly and ensure it's persisted
       console.log("🔄 Updating cache with new data:", data);
       queryClient.setQueryData(["/api/progress", userId], data);
-      
+
       // Force a re-render by invalidating after setting data
       setTimeout(() => {
         queryClient.invalidateQueries({ 
@@ -116,7 +105,7 @@ export function useProgress() {
     if (updates.currentDay && !updates.currentModule) {
       updates.currentModule = updates.currentDay;
     }
-    
+
     // Merge com dados existentes para garantir que não perdemos informações
     const safeUpdates = {
       completedModules: updates.completedModules || updates.completedDays || progress?.completedModules || [],
@@ -125,13 +114,13 @@ export function useProgress() {
       currentModule: updates.currentModule || progress?.currentModule || 1,
       ...updates, // Sobrescrever com atualizações explícitas
     };
-    
+
     console.log("🔄 Merging progress update:", {
       existing: progress,
       updates: updates,
       final: safeUpdates
     });
-    
+
     updateProgressMutation.mutate(safeUpdates);
   };
 
@@ -140,35 +129,35 @@ export function useProgress() {
       console.log("⚠️ Progress not loaded yet, skipping update");
       return;
     }
-    
+
     // Only update if the value actually changed
     if (progress.moduleProgress?.[day] === dayProgressValue) {
       console.log(`📊 Day ${day} progress unchanged at ${dayProgressValue}%`);
       return;
     }
-    
+
     console.log(`📊 Updating day ${day} progress to ${dayProgressValue}%`);
-    
+
     const newModuleProgress = { ...progress.moduleProgress, [day]: dayProgressValue };
-    
+
     let newCompletedModules = [...(progress.completedModules || [])];
-    
+
     // Mark module as completed if progress is 100% and not already completed
     if (dayProgressValue === 100 && !newCompletedModules.includes(day)) {
       newCompletedModules.push(day);
       console.log(`✅ Module ${day} marked as completed`);
     }
-    
+
     // Calculate next available module
     const nextModule = dayProgressValue === 100 ? Math.min(day + 1, 4) : Math.max(progress.currentModule || 1, day);
-    
+
     const updates = {
       currentModule: nextModule,
       moduleProgress: newModuleProgress,
       completedModules: newCompletedModules,
       ...(newCompletedModules.length === 4 ? { completedAt: new Date().toISOString() } : {})
     };
-    
+
     updateProgress(updates);
   }, [progress, updateProgress]);
 
@@ -177,9 +166,9 @@ export function useProgress() {
       console.log("⚠️ Progress not loaded yet, skipping quiz result save");
       return;
     }
-    
+
     console.log(`📝 Saving quiz result for module ${moduleNumber}: ${score}% (${passed ? 'PASSED' : 'FAILED'})`);
-    
+
     const newModuleEvaluations = {
       ...progress.moduleEvaluations,
       [moduleNumber]: { 
@@ -199,7 +188,7 @@ export function useProgress() {
       if (!newCompletedModules.includes(moduleNumber)) {
         newCompletedModules.push(moduleNumber);
       }
-      
+
       const newModuleProgress = { ...progress.moduleProgress, [moduleNumber]: 100 };
       const nextModule = Math.min(moduleNumber + 1, 4);
 
@@ -213,7 +202,7 @@ export function useProgress() {
 
       console.log(`✅ Module ${moduleNumber} completed! Next module: ${nextModule}`);
     }
-    
+
     updateProgress(updates);
   }, [progress, updateProgress]);
 
@@ -224,7 +213,7 @@ export function useProgress() {
     if (!newCompletedModules.includes(moduleNumber)) {
       newCompletedModules.push(moduleNumber);
     }
-    
+
     const newModuleProgress = { ...progress.moduleProgress, [moduleNumber]: 100 };
     const nextModule = Math.min(moduleNumber + 1, 4);
 
@@ -237,7 +226,7 @@ export function useProgress() {
 
     console.log(`🎯 Completing module ${moduleNumber}, next: ${nextModule}`);
     updateProgress(updates);
-    
+
     return nextModule;
   }, [progress, updateProgress]);
 
