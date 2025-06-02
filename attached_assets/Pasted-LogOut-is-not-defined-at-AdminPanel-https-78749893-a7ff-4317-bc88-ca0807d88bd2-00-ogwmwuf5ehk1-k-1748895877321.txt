@@ -1,0 +1,23 @@
+LogOut is not defined
+at AdminPanel (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/src/components/AdminPanel.tsx:169:36)
+at renderWithHooks (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-WERSD76P.js?v=513e0893:11548:26)
+at mountIndeterminateComponent (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-WERSD76P.js?v=513e0893:14926:21)
+at beginWork (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-WERSD76P.js?v=513e0893:15914:22)
+at HTMLUnknownElement.callCallback2 (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-WERSD76P.js?v=513e0893:3674:22)
+at Object.invokeGuardedCallbackDev (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-WERSD76P.js?v=513e0893:3699:24)
+at invokeGuardedCallback (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-WERSD76P.js?v=513e0893:3733:39)
+at beginWork$1 (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-WERSD76P.js?v=513e0893:19765:15)
+at performUnitOfWork (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-WERSD76P.js?v=513e0893:19198:20)
+at workLoopSync (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-WERSD76P.js?v=513e0893:19137:13)
+LogOut is not defined
+The above error occurred in the <AdminPanel> component:
+
+    at AdminPanel (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/src/components/AdminPanel.tsx:37:34)
+    at Route (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=513e0893:323:16)
+    at Switch (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=513e0893:379:17)
+    at div
+    at QueryClientProvider (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=513e0893:2805:3)
+    at App (https://78749893-a7ff-4317-bc88-ca0807d88bd2-00-ogwmwuf5ehk1.kirk.replit.dev/src/App.tsx?v=gwh-SVXhA7jL4Lky0Vh4s:33:35)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
