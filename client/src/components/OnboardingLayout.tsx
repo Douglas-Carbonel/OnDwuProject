@@ -156,37 +156,31 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
 
   const switchDay = (day: number) => {
     console.log(`🎯 Tentando acessar módulo ${day}. Módulos completados:`, completedDays);
-    console.log(`🔍 Módulo atual no progresso:`, progress?.currentModule);
+    console.log("🔍 Módulo atual no progresso:", progress?.currentModule);
 
-    // Determinar o módulo máximo acessível
-    const currentModuleFromProgress = progress?.currentModule || 1;
-    const lastCompletedModule = completedDays.length > 0 ? Math.max(...completedDays) : 0;
-    const maxAccessibleModule = Math.max(currentModuleFromProgress, lastCompletedModule + 1);
-
-    // Permitir acesso se:
-    // 1. É o módulo 1 (sempre acessível)
-    // 2. O módulo foi completado anteriormente
-    // 3. O módulo está dentro do range acessível baseado no progresso atual
-    const isModule1 = day === 1;
+    // Check if day is accessible based on progress from backend
     const isCompleted = completedDays.includes(day);
-    const isAccessible = day <= maxAccessibleModule;
+    const currentModuleFromProgress = progress?.currentModule || 1;
 
-    const canAccess = isModule1 || isCompleted || isAccessible;
+    console.log("🔍 Verificação de acesso ao módulo", day + ":");
+    console.log("   - É módulo 1:", day === 1);
+    console.log("   - Já foi completado:", isCompleted);
+    console.log("   - Módulo atual do progresso:", currentModuleFromProgress);
 
-    console.log(`🔍 Verificação de acesso ao módulo ${day}:`);
-    console.log(`   - É módulo 1:`, isModule1);
-    console.log(`   - Já foi completado:`, isCompleted);
-    console.log(`   - Módulo atual do progresso:`, currentModuleFromProgress);
-    console.log(`   - Último módulo completado:`, lastCompletedModule);
-    console.log(`   - Máximo módulo acessível:`, maxAccessibleModule);
-    console.log(`   - É acessível:`, isAccessible);
-    console.log(`   - Pode acessar:`, canAccess);
+    // User can access:
+    // 1. Module 1 (always)
+    // 2. Any completed module
+    // 3. Any module up to currentModule from progress
+    const canAccess = day === 1 || isCompleted || day <= currentModuleFromProgress;
+
+    console.log("   - Pode acessar:", canAccess);
 
     if (canAccess) {
-      setCurrentDay(day);
       console.log(`✅ Acesso permitido ao módulo ${day}`);
+      setCurrentDay(day);
     } else {
-      console.log(`❌ Acesso negado ao módulo ${day}. Complete os módulos anteriores primeiro.`);
+      console.log(`❌ Acesso negado ao módulo ${day}`);
+      // Could show a toast or modal explaining why access is denied
     }
   };
 
@@ -212,14 +206,17 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
     return icons[day as keyof typeof icons];
   };
 
-  const getDayStatus = (day: number) => {
-    if (completedDays.includes(day)) {
-      return { icon: "check", color: "bg-green-500" };
+  const getDayStatus = (day: number): "completed" | "current" | "locked" => {
+    if (completedDays.includes(day)) return "completed";
+
+    // Check if this day should be unlocked based on backend progress
+    const currentModuleFromProgress = progress?.currentModule || 1;
+
+    if (day === 1 || day <= currentModuleFromProgress) {
+      return day === currentDay ? "current" : "locked";
     }
-    if (day <= currentDay) {
-      return { icon: "clock", color: "bg-dwu-blue" };
-    }
-    return { icon: "clock", color: "bg-slate-600" };
+
+    return "locked";
   };
 
   return (
