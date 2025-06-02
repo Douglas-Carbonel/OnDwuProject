@@ -159,8 +159,11 @@ export function useProgress() {
       console.log(`✅ Module ${day} marked as completed`);
     }
     
+    // Calculate next available module
+    const nextModule = dayProgressValue === 100 ? Math.min(day + 1, 4) : Math.max(progress.currentModule || 1, day);
+    
     const updates = {
-      currentModule: Math.max(progress.currentModule || 1, day),
+      currentModule: nextModule,
       moduleProgress: newModuleProgress,
       completedModules: newCompletedModules,
       ...(newCompletedModules.length === 4 ? { completedAt: new Date().toISOString() } : {})
@@ -185,10 +188,57 @@ export function useProgress() {
         completedAt: new Date().toISOString() 
       }
     };
-    
-    updateProgress({
+
+    // Se passou na avaliação, marcar módulo como completo e liberar próximo
+    let updates: any = {
       moduleEvaluations: newModuleEvaluations
-    });
+    };
+
+    if (passed) {
+      const newCompletedModules = [...(progress.completedModules || [])];
+      if (!newCompletedModules.includes(moduleNumber)) {
+        newCompletedModules.push(moduleNumber);
+      }
+      
+      const newModuleProgress = { ...progress.moduleProgress, [moduleNumber]: 100 };
+      const nextModule = Math.min(moduleNumber + 1, 4);
+
+      updates = {
+        ...updates,
+        completedModules: newCompletedModules,
+        moduleProgress: newModuleProgress,
+        currentModule: nextModule,
+        ...(newCompletedModules.length === 4 ? { completedAt: new Date().toISOString() } : {})
+      };
+
+      console.log(`✅ Module ${moduleNumber} completed! Next module: ${nextModule}`);
+    }
+    
+    updateProgress(updates);
+  }, [progress, updateProgress]);
+
+  const completeModule = useCallback((moduleNumber: number) => {
+    if (!progress) return;
+
+    const newCompletedModules = [...(progress.completedModules || [])];
+    if (!newCompletedModules.includes(moduleNumber)) {
+      newCompletedModules.push(moduleNumber);
+    }
+    
+    const newModuleProgress = { ...progress.moduleProgress, [moduleNumber]: 100 };
+    const nextModule = Math.min(moduleNumber + 1, 4);
+
+    const updates = {
+      completedModules: newCompletedModules,
+      moduleProgress: newModuleProgress,
+      currentModule: nextModule,
+      ...(newCompletedModules.length === 4 ? { completedAt: new Date().toISOString() } : {})
+    };
+
+    console.log(`🎯 Completing module ${moduleNumber}, next: ${nextModule}`);
+    updateProgress(updates);
+    
+    return nextModule;
   }, [progress, updateProgress]);
 
   // Não inicializar automaticamente - deixar o queryFn handle isso apenas quando necessário
@@ -199,6 +249,7 @@ export function useProgress() {
     updateProgress,
     updateDayProgress,
     saveQuizResult,
+    completeModule,
     userId,
     isUpdating: updateProgressMutation.isPending,
     error: updateProgressMutation.error

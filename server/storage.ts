@@ -116,6 +116,23 @@ export class DatabaseStorage implements IStorage {
         .returning();
 
       console.log("Update result:", result);
+      
+      // Map database fields back to frontend interface
+      const dbProgress = result[0];
+      if (dbProgress) {
+        return {
+          ...dbProgress,
+          currentModule: dbProgress.current_module || 1,
+          completedModules: dbProgress.completed_modules || [],
+          moduleProgress: dbProgress.module_progress || {},
+          moduleEvaluations: dbProgress.module_evaluations || {},
+          // Also map to the alternative names used by frontend
+          completedDays: dbProgress.completed_modules || [],
+          dayProgress: dbProgress.module_progress || {},
+          quizResults: dbProgress.module_evaluations || {}
+        };
+      }
+      
       return result[0];
     } catch (error) {
       console.error("Error in updateProgress:", error);
