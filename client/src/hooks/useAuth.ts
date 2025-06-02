@@ -46,7 +46,28 @@ export const useAuth = create<AuthState>()(
               isAuthenticated: true,
               isAdmin,
             });
-            return true;
+            
+            if (data.success && data.user) {
+              const userData = {
+                userId: data.user.userId,
+                name: data.user.name,
+                email: data.user.email,
+                profile: data.user.profile
+              };
+
+              // Clear any guest user data before setting authenticated user
+              localStorage.removeItem("dwu-user-id");
+
+              set({ user: userData });
+              localStorage.setItem("auth-user", JSON.stringify(userData));
+
+              console.log("✅ Login bem-sucedido - userId:", userData.userId);
+              return true;
+            } else {
+              const errorData = await response.json();
+              console.error("Login failed:", errorData.message);
+              return false;
+            }
           } else {
             const errorData = await response.json();
             console.error("Login failed:", errorData.message);

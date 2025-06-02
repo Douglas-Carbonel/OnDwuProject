@@ -15,7 +15,7 @@ interface OnboardingLayoutProps {
 }
 
 export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayoutProps) {
-  const { progress, updateProgress, loading, userId } = useProgress();
+  const { progress, updateProgress, loading, userId, refetch } = useProgress();
   const [currentDay, setCurrentDay] = useState(1);
   const [completedDays, setCompletedDays] = useState<number[]>([]);
   const [showEvaluation, setShowEvaluation] = useState(false);
@@ -41,6 +41,14 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
   }, [progress]);
   const { logout, isAdmin } = useAuth();
   const [location, setLocation] = useLocation();
+
+  // Force refresh when userId changes (e.g., after login)
+  useEffect(() => {
+    if (userId && !userId.startsWith('user-')) {
+      console.log("🔄 Usuário autenticado detectado, atualizando progresso...", userId);
+      refetch();
+    }
+  }, [userId, refetch]);
 
   // Enhanced progress calculation that respects completed status
   const calculateOverallProgress = () => {

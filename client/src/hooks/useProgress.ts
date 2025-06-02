@@ -33,13 +33,37 @@ export function useProgress() {
     return id;
   });
 
-  // Update userId when auth state changes
+  // Monitor auth state changes
   useEffect(() => {
-    const authUser = JSON.parse(localStorage.getItem("auth-user") || "null");
-    if (authUser?.userId && authUser.userId !== userId) {
-      console.log("🔄 Updating userId from", userId, "to", authUser.userId);
-      setUserId(authUser.userId);
-    }
+    const checkAuthState = () => {
+      const authUser = JSON.parse(localStorage.getItem("auth-user") || "null");
+      if (authUser?.userId && authUser.userId !== userId) {
+        console.log("🔄 Updating userId from", userId, "to", authUser.userId);
+        setUserId(authUser.userId);
+        // Clear any guest user data
+        localStorage.removeItem("dwu-user-id");
+      }
+    };
+
+    // Check immediately
+    checkAuthState();
+
+    // Listen for localStorage changes (login/logout events)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "auth-user") {
+        checkAuthState();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    
+    // Also check periodically for changes in the same tab
+    const interval = setInterval(checkAuthState, 1000);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      clearInterval(interval);
+    };
   }, [userId]);
 
   const queryClient = useQueryClient();
@@ -262,6 +286,7 @@ export function useProgress() {
     completeModule,
     userId,
     isUpdating: updateProgressMutation.isPending,
-    error: updateProgressMutation.error
+    error: updateProgressMutation.error,
+    refetch
   };
 }
