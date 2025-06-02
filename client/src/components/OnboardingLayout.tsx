@@ -38,6 +38,8 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
         fullProgress: progress
       });
 
+      console.log(`🔑 MÓDULOS DESBLOQUEADOS: 1 até ${progress.currentModule || 1}`);
+
       // Determinar o módulo atual baseado no progresso salvo
       let targetModule = progress.currentModule || progress.currentDay || 1;
 
@@ -157,31 +159,19 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
   const switchDay = (day: number) => {
     console.log(`🎯 Tentando acessar módulo ${day}. Módulos completados:`, completedDays);
     console.log("🔍 Módulo atual no progresso:", progress?.currentModule);
-    console.log("🔍 Progress completo:", progress);
-
-    // Check if day is accessible based on progress from backend
-    const isCompleted = completedDays.includes(day);
+    
     const currentModuleFromProgress = progress?.currentModule || 1;
+    
+    // Simplified logic: user can access any module up to their current module
+    const canAccess = day <= currentModuleFromProgress;
 
-    console.log("🔍 Verificação de acesso ao módulo", day + ":");
-    console.log("   - É módulo 1:", day === 1);
-    console.log("   - Já foi completado:", isCompleted);
-    console.log("   - Módulo atual do progresso:", currentModuleFromProgress);
-    console.log("   - Comparação day <= currentModule:", day, "<=", currentModuleFromProgress, "=", day <= currentModuleFromProgress);
-
-    // User can access:
-    // 1. Module 1 (always)
-    // 2. Any completed module
-    // 3. Any module up to currentModule from progress
-    const canAccess = day === 1 || isCompleted || day <= currentModuleFromProgress;
-
-    console.log("   - Pode acessar:", canAccess);
+    console.log(`🔍 Verificação simples: módulo ${day} <= currentModule ${currentModuleFromProgress} = ${canAccess}`);
 
     if (canAccess) {
       console.log(`✅ Acesso permitido ao módulo ${day}`);
       setCurrentDay(day);
     } else {
-      console.log(`❌ Acesso negado ao módulo ${day}. Tente completar os módulos anteriores primeiro.`);
+      console.log(`❌ Acesso negado ao módulo ${day}. Complete os módulos anteriores primeiro.`);
     }
   };
 
@@ -208,20 +198,19 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
   };
 
   const getDayStatus = (day: number) => {
+    // If module is completed, show green check
     if (completedDays.includes(day)) {
       return { icon: "check", color: "bg-green-500" };
     }
     
-    // Check if this day should be unlocked based on backend progress
     const currentModuleFromProgress = progress?.currentModule || 1;
     
-    // Module is accessible if it's module 1 OR if it's within the current module range
-    const isAccessible = day === 1 || day <= currentModuleFromProgress;
-    
-    if (isAccessible) {
+    // Module is accessible if it's within the current module range
+    if (day <= currentModuleFromProgress) {
       return { icon: "clock", color: day === currentDay ? "bg-dwu-blue" : "bg-blue-500" };
     }
     
+    // Module is locked
     return { icon: "clock", color: "bg-slate-600" };
   };
 
@@ -301,11 +290,11 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
                 const isActive = currentDay === day.day;
                 const isCompleted = completedDays.includes(day.day);
 
-                // Use the same unlocking logic as switchDay function
+                // Simplified: module is unlocked if it's within current module range
                 const currentModuleFromProgress = progress?.currentModule || 1;
-                const isUnlocked = day.day === 1 || isCompleted || day.day <= currentModuleFromProgress;
+                const isUnlocked = day.day <= currentModuleFromProgress;
 
-                console.log(`📋 Módulo ${day.day} - Ativo: ${isActive}, Completado: ${isCompleted}, Desbloqueado: ${isUnlocked}`);
+                console.log(`📋 Módulo ${day.day} - Ativo: ${isActive}, Completado: ${isCompleted}, Desbloqueado: ${isUnlocked}, CurrentModule: ${currentModuleFromProgress}`);
 
                 const dayColors = [
                   'from-blue-500 to-blue-600',
@@ -455,16 +444,16 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
 
                 <Button
                   onClick={nextDay}
-                  disabled={currentDay === 4 || !completedDays.includes(currentDay)}
+                  disabled={currentDay === 4 || currentDay >= (progress?.currentModule || 1)}
                   className={`${
                     currentDay === 4 
                       ? 'bg-purple-600 hover:bg-purple-700' 
-                      : !completedDays.includes(currentDay)
+                      : currentDay >= (progress?.currentModule || 1)
                       ? 'bg-slate-600 cursor-not-allowed opacity-50'
                       : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
                   } 
                     text-white font-semibold rounded-xl px-6 py-3 transition-all duration-300 
-                    ${completedDays.includes(currentDay) && currentDay < 4 ? 'transform hover:scale-105 shadow-lg hover:shadow-xl' : ''}`}
+                    ${currentDay < (progress?.currentModule || 1) && currentDay < 4 ? 'transform hover:scale-105 shadow-lg hover:shadow-xl' : ''}`}
                 >
                   {currentDay === 4 ? (
                     <>
