@@ -61,12 +61,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { username, email, password, profile = "colaborador" } = req.body;
 
+      console.log("🚀 Tentativa de registro:", { username, email, profile });
+
       if (!username || !email || !password) {
         return res.status(400).json({ message: "Todos os campos são obrigatórios" });
       }
 
       if (!["colaborador", "admin"].includes(profile)) {
         return res.status(400).json({ message: "Perfil inválido" });
+      }
+
+      // Verificar se já existe um usuário com este email
+      const existingUser = await authService.debugFindUser(email);
+      if (existingUser) {
+        console.log("❌ Email já cadastrado:", email);
+        return res.status(400).json({ message: "Este email já está cadastrado no sistema" });
       }
 
       const user = await authService.createUser({
@@ -77,8 +86,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       if (!user) {
-        return res.status(400).json({ message: "Erro ao criar usuário. Email pode já estar em uso." });
+        console.log("❌ Falha na criação do usuário");
+        return res.status(400).json({ message: "Erro ao criar usuário. Tente novamente." });
       }
+
+      console.log("✅ Usuário criado com sucesso:", user.username);
 
       res.json({
         success: true,
@@ -90,7 +102,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       });
     } catch (error) {
-      console.error("Error during registration:", error);
+      console.error("❌ Erro durante registro:", error);
       res.status(500).json({ message: "Erro interno do servidor" });
     }
   });

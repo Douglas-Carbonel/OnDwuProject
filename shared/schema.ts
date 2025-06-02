@@ -8,7 +8,6 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
   user_mail: text("user_mail").notNull().unique(),
   user_profile: text("user_profile").notNull().default("colaborador"),
-  created_at: timestamp("created_at").defaultNow(),
 });
 
 export const onboardingProgress = pgTable("onboarding_progress", {

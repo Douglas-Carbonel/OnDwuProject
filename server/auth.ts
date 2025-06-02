@@ -68,6 +68,20 @@ export class AuthService {
     user_profile: string;
   }): Promise<AuthUser | null> {
     try {
+      console.log("🔧 Tentando criar usuário:", userData.username, userData.user_mail);
+      
+      // Verificar se o email já existe
+      const existingUser = await this.getDb()
+        .select()
+        .from(users)
+        .where(eq(users.user_mail, userData.user_mail))
+        .limit(1);
+
+      if (existingUser.length > 0) {
+        console.log("❌ Email já existe no banco:", userData.user_mail);
+        return null;
+      }
+
       // Hash da senha
       const hashedPassword = await bcrypt.hash(userData.password, 10);
 
@@ -86,9 +100,10 @@ export class AuthService {
           user_profile: users.user_profile,
         });
 
+      console.log("✅ Usuário criado com sucesso:", newUser[0]);
       return newUser[0];
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.error("❌ Erro ao criar usuário:", error);
       return null;
     }
   }
