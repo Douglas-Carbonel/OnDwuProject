@@ -1,0 +1,664 @@
+import { users, onboardingProgress, moduleEvaluations, avaliacao_user, type User, type InsertUser } from "@shared/schema";
+import { getDatabase } from "./database";
+import type { OnboardingProgress, InsertOnboardingProgress } from "@/hooks/useProgress";
+import { eq, and, desc, sql } from "drizzle-orm";
+
+export interface IStorage {
+  getUser(id: number): Promise<User | undefined>;
+  getUserByUsername(username: string): Promise<User | undefined>;
+  createUser(user: InsertUser): Promise<User>;
+  getProgress(userId: string): Promise<OnboardingProgress | undefined>;
+  createProgress(progress: InsertOnboardingProgress): Promise<OnboardingProgress>;
+  updateProgress(userId: string, updates: Partial<OnboardingProgress>): Promise<OnboardingProgress | undefined>;
+  saveModuleEvaluation(data: { userId: string; moduleId: number; score: number; passed: boolean; answers: Record<string, number>; completedAt: string }): Promise<any>;
+  getModuleEvaluations(userId: string): Promise<any[]>;
+  saveAvaliacaoUser(data: { userId: number; passed: boolean }): Promise<any>;
+  getAvaliacaoHistory(userId: string): Promise<any>;
+  // Missing methods that routes.ts expects
+  saveEvaluation(data: any): Promise<any>;
+  getEvaluationHistory(userId: string, moduleNumber?: number): Promise<any[]>;
+  getAllEvaluations(): Promise<any[]>;
+  getUserAllAttempts(userId: string): Promise<any[]>;
+  getModuleStats(moduleNumber: number): Promise<any>;
+  getAttemptCount(userId: string, moduleNumber?: number): Promise<number>;
+  getTotalUserAttempts(userId: string): Promise<number>;
+  saveEvaluationAttempt(data: any): Promise<any>;
+    getUserEvaluationData(userId: string): Promise<any>;
+}
+
+export class DatabaseStorage implements IStorage {
+  private db = getDatabase();
+
+  async getUser(id: number): Promise<User | undefined> {
+    const result = await this.db.select().from(users).where(eq(users.id, id));
+    return result[0];
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const result = await this.db.select().from(users).where(eq(users.username, username));
+    return result[0];
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const result = await this.db.insert(users).values(insertUser).returning();
+    return result[0];
+  }
+
+  async getProgress(userId: string): Promise<OnboardingProgress | undefined> {
+    const result = await this.db.select().from(onboardingProgress).where(eq(onboardingProgress.user_id, userId));
+    if (!result[0]) return undefined;
+
+    // Map database fields to frontend interface
+    const dbProgress = result[0];
+    return {
+      ...dbProgress,
+      currentModule: dbProgress.current_module || 1,
+      completedModules: dbProgress.completed_modules || [],
+      moduleProgress: dbProgress.module_progress || {},
+      moduleEvaluations: dbProgress.module_evaluations || {},
+      // Also map to the alternative names used by frontend
+      completedDays: dbProgress.completed_modules || [],
+      dayProgress: dbProgress.module_progress || {},
+      quizResults: dbProgress.module_evaluations || {}
+    };
+  }
+
+  async createProgress(insertProgress: InsertOnboardingProgress): Promise<OnboardingProgress> {
+    const progressData = {
+      user_id: insertProgress.userId,
+      current_module: insertProgress.currentModule || 1,
+      completed_modules: insertProgress.completedModules || [],
+      module_progress: insertProgress.moduleProgress || {},
+      module_evaluations: insertProgress.moduleEvaluations || {},
+      completed_at: insertProgress.completedAt || null,
+      created_at: new Date(),
+      updated_at: new Date()
+    };
+
+    console.log("Creating progress with data:", progressData);
+    const result = await this.db.insert(onboardingProgress).values(progressData).returning();
+    return result[0];
+  }
+
+  async updateProgress(userId: string, updates: Partial<OnboardingProgress>): Promise<OnboardingProgress | undefined> {
+    try {
+      console.log("Updating progress for userId:", userId, "with updates:", updates);
+
+      // Map the updates to the correct database field names
+      const dbUpdates: any = {};
+      if (updates.currentModule !== undefined) dbUpdates.current_module = updates.currentModule;
+      if (updates.completedModules !== undefined) dbUpdates.completed_modules = updates.completedModules;
+      if (updates.moduleProgress !== undefined) dbUpdates.module_progress = updates.moduleProgress;
+      if (updates.moduleEvaluations !== undefined) dbUpdates.module_evaluations = updates.moduleEvaluations;
+      if (updates.completedAt !== undefined) dbUpdates.completed_at = updates.completedAt;
+
+      // Map completedDays to completed_modules (these are the same concept)
+      if (updates.completedDays !== undefined) dbUpdates.completed_modules = updates.completedDays;
+      
+      // Map dayProgress to module_progress (these are the same concept)
+      if (updates.dayProgress !== undefined) dbUpdates.module_progress = updates.dayProgress;
+      
+      // Map quizResults to module_evaluations (these are the same concept)
+      if (updates.quizResults !== undefined) dbUpdates.module_evaluations = updates.quizResults;
+      
+      // Map currentDay to current_module (frontend uses currentDay sometimes)
+      if (updates.currentDay !== undefined) dbUpdates.current_module = updates.currentDay;
+
+      // Always update the updated_at timestamp
+      dbUpdates.updated_at = new Date();
+
+      console.log("Mapped updates for database:", dbUpdates);
+
+      const result = await this.db
+        .update(onboardingProgress)
+        .set(dbUpdates)
+        .where(eq(onboardingProgress.user_id, userId))
+        .returning();
+
+      console.log("Update result:", result);
+      return result[0];
+    } catch (error) {
+      console.error("Error in updateProgress:", error);
+
+      // If update fails, try to create the record
+      try {
+        console.log("Attempting to create new progress record...");
+        const newProgress = await this.createProgress({
+          userId,
+          currentModule: updates.currentModule || 1,
+          completedModules: updates.completedModules || [],
+          moduleProgress: updates.moduleProgress || {},
+          moduleEvaluations: updates.moduleEvaluations || {},
+          completedAt: updates.completedAt
+        });
+        return newProgress;
+      } catch (createError) {
+        console.error("Error creating progress:", createError);
+        throw createError;
+      }
+    }
+  }
+
+  async saveModuleEvaluation(data: { userId: string; moduleId: number; score: number; passed: boolean; answers: Record<string, number>; completedAt: string; totalQuestions?: number; correctAnswers?: number; timeSpent?: number }): Promise<any> {
+    console.log("Saving module evaluation:", data);
+    try {
+      // Calcular número da tentativa para este módulo
+      const attemptCount = await this.getAttemptCount(data.userId, data.moduleId);
+      const attemptNumber = attemptCount + 1;
+
+      // Calcular respostas corretas se não fornecido
+      const correctAnswers = data.correctAnswers || Math.floor((data.score / 100) * (data.totalQuestions || 20));
+
+      // Inserir usando o schema Drizzle - garantir que userId seja string numérica
+      const numericUserId = data.userId.toString().replace('user-', '');
+      
+      const result = await this.db.insert(moduleEvaluations).values({
+        user_id: numericUserId,
+        module_id: data.moduleId,
+        attempt_number: attemptNumber,
+        score: data.score,
+        total_questions: data.totalQuestions || 20,
+        correct_answers: correctAnswers,
+        passed: data.passed,
+        answers: data.answers,
+        time_spent: data.timeSpent || null,
+        completed_at: new Date(data.completedAt)
+      }).returning();
+
+      console.log("AVALIAÇÃO SALVA NO BANCO - Usuário:", data.userId, "Módulo:", data.moduleId, "Tentativa:", attemptNumber, "Score:", data.score, "Passou:", data.passed);
+      return result[0];
+    } catch (error) {
+      console.error("Error saving to database:", error);
+      console.log("REGISTRO DE AVALIAÇÃO (LOG) - USUÁRIO:", data.userId, "MÓDULO:", data.moduleId, "NOTA:", data.score, "PASSOU:", data.passed ? "SIM" : "NÃO", "DATA:", data.completedAt);
+      return { success: true, logged: true };
+    }
+  }
+
+  async getModuleEvaluations(userId: string): Promise<any[]> {
+    try {
+      const result = await this.db.execute(sql`
+        SELECT * FROM module_evaluations WHERE userId = ${userId}
+      `);
+      return result.rows || [];
+    } catch (error) {
+      console.error("Error getting module evaluations:", error);
+      return [];
+    }
+  }
+
+  async saveAvaliacaoUser(data: { userId: number; passed: boolean }) {
+    console.log("DatabaseStorage.saveAvaliacaoUser called with:", JSON.stringify(data, null, 2));
+    try {
+      // Primeiro, garantir que a tabela existe
+      await this.db.execute(sql`
+        CREATE TABLE IF NOT EXISTS avaliacao_user (
+          id SERIAL PRIMARY KEY,
+          "userId" TEXT NOT NULL,
+          passed BOOLEAN NOT NULL,
+          "createdAt" TIMESTAMP DEFAULT NOW()
+        )
+      `);
+
+      // Inserir o registro
+      const result = await this.db.execute(sql`
+        INSERT INTO avaliacao_user ("userId", passed, "createdAt")
+        VALUES (${data.userId.toString()}, ${data.passed}, NOW())
+        RETURNING *
+      `);
+
+      console.log("REGISTRO SALVO NA TABELA avaliacao_user - Usuário:", data.userId, "Passou:", data.passed);
+      return { id: Date.now(), userId: data.userId, passed: data.passed, createdAt: new Date() };
+    } catch (error) {
+      console.error("Erro ao salvar na avaliacao_user:", error);
+      throw error;
+    }
+  }
+
+  async getAvaliacaoHistory(userId: string) {
+    try {
+      // Handle both string and numeric user IDs
+      const userIdInt = parseInt(userId.replace('user-', ''));
+      if (isNaN(userIdInt)) {
+        console.log("Invalid userId format:", userId);
+        return [];
+      }
+
+      const result = await this.db.select().from(avaliacao_user)
+        .where(eq(avaliacao_user.userId, userIdInt))
+        .orderBy(desc(avaliacao_user.createdAt));
+      return result || [];
+    } catch (error) {
+      console.error("Error getting avaliacao history:", error);
+      return [];
+    }
+  }
+
+  // Missing methods implementation (simplified for now)
+  async saveEvaluation(data: any) {
+    console.log("DatabaseStorage.saveEvaluation called with:", data);
+    try {
+      // Save to module_evaluations table using the existing schema
+      const result = await this.db.insert(moduleEvaluations).values({
+        user_id: data.userId.toString(),
+        module_id: data.moduleNumber,
+        score: data.score,
+        passed: data.passed,
+        answers: data.answers || {},
+        completed_at: new Date(data.completedAt || new Date())
+      }).returning();
+
+      console.log("Evaluation saved to module_evaluations table:", result[0]);
+      return result[0];
+    } catch (error) {
+      console.error("Error saving evaluation:", error);
+      return { id: Date.now(), ...data, createdAt: new Date().toISOString() };
+    }
+  }
+
+  async getEvaluationHistory(userId: string, moduleNumber?: number) {
+    console.log("DatabaseStorage.getEvaluationHistory called for userId:", userId);
+    try {
+      // Extract numeric ID from userId
+      const numericUserId = userId.toString().replace('user-', '');
+      
+      // Use Drizzle ORM to get from module_evaluations table
+      let whereCondition = eq(moduleEvaluations.user_id, numericUserId);
+
+      if (moduleNumber) {
+        whereCondition = and(
+          eq(moduleEvaluations.user_id, numericUserId),
+          eq(moduleEvaluations.module_id, moduleNumber)
+        );
+      }
+
+      const result = await this.db
+        .select()
+        .from(moduleEvaluations)
+        .where(whereCondition)
+        .orderBy(desc(moduleEvaluations.completed_at));
+
+      return result.map((evaluation) => ({
+        id: evaluation.id,
+        userId: evaluation.user_id,
+        moduleNumber: evaluation.module_id,
+        attemptNumber: evaluation.attempt_number,
+        score: evaluation.score,
+        passed: evaluation.passed,
+        correctAnswers: evaluation.correct_answers,
+        totalQuestions: evaluation.total_questions,
+        timeSpent: evaluation.time_spent,
+        answers: evaluation.answers || {},
+        createdAt: evaluation.completed_at
+      }));
+    } catch (error) {
+      console.error("Error getting evaluation history:", error);
+      return [];
+    }
+  }
+
+  async getAllEvaluations() {
+    console.log("DatabaseStorage.getAllEvaluations called");
+    try {
+      const result = await this.db
+        .select()
+        .from(moduleEvaluations)
+        .orderBy(desc(moduleEvaluations.completed_at));
+
+      return result.map((evaluation) => ({
+        id: evaluation.id,
+        userId: evaluation.user_id,
+        moduleNumber: evaluation.module_id,
+        attemptNumber: evaluation.attempt_number,
+        score: evaluation.score,
+        passed: evaluation.passed,
+        correctAnswers: evaluation.correct_answers,
+        totalQuestions: evaluation.total_questions,
+        timeSpent: evaluation.time_spent,
+        createdAt: evaluation.completed_at
+      }));
+    } catch (error) {
+      console.error("Error getting all evaluations:", error);
+      return [];
+    }
+  }
+
+  async getUserAllAttempts(userId: string) {
+    console.log("DatabaseStorage.getUserAllAttempts called for userId:", userId);
+    try {
+      const result = await this.db
+        .select()
+        .from(moduleEvaluations)
+        .where(eq(moduleEvaluations.user_id, userId.toString()))
+        .orderBy(desc(moduleEvaluations.completed_at));
+
+      return result.map((evaluation) => ({
+        id: evaluation.id,
+        userId: evaluation.user_id,
+        moduleNumber: evaluation.module_id,
+        attemptNumber: evaluation.attempt_number,
+        score: evaluation.score,
+        passed: evaluation.passed,
+        correctAnswers: evaluation.correct_answers,
+        totalQuestions: evaluation.total_questions,
+        timeSpent: evaluation.time_spent,
+        createdAt: evaluation.completed_at
+      }));
+    } catch (error) {
+      console.error("Error getting user attempts:", error);
+      return [];
+    }
+  }
+
+  async getModuleStats(moduleNumber: number) {
+    console.log("DatabaseStorage.getModuleStats called - returning basic stats");
+    return { moduleNumber, totalAttempts: 0, avgScore: 0, passRate: 0 };
+  }
+
+  async getAttemptCount(userId: string, moduleNumber?: number) {
+    console.log("DatabaseStorage.getAttemptCount called for userId:", userId, "moduleNumber:", moduleNumber);
+    try {
+      // Extract numeric ID from userId
+      const numericUserId = userId.toString().replace('user-', '');
+      
+      let whereCondition = eq(moduleEvaluations.user_id, numericUserId);
+
+      if (moduleNumber) {
+        whereCondition = and(
+          eq(moduleEvaluations.user_id, numericUserId),
+          eq(moduleEvaluations.module_id, moduleNumber)
+        );
+      }
+
+      const result = await this.db
+        .select({ count: sql<number>`count(*)` })
+        .from(moduleEvaluations)
+        .where(whereCondition);
+
+      return parseInt(result[0]?.count?.toString() || '0');
+    } catch (error) {
+      console.error("Error getting attempt count:", error);
+      return 0;
+    }
+  }
+
+  async getTotalUserAttempts(userId: string) {
+    console.log("DatabaseStorage.getTotalUserAttempts called for userId:", userId);
+    try {
+      // Extract numeric ID from userId
+      const numericUserId = userId.toString().replace('user-', '');
+      
+      const result = await this.db
+        .select({ count: sql<number>`count(*)` })
+        .from(moduleEvaluations)
+        .where(eq(moduleEvaluations.user_id, numericUserId));
+
+      return parseInt(result[0]?.count?.toString() || '0');
+    } catch (error) {
+      console.error("Error getting total user attempts:", error);
+      return 0;
+    }
+  }
+
+  async saveEvaluationAttempt(data: any) {
+    console.log("DatabaseStorage.saveEvaluationAttempt called - not implemented");
+    return { id: Date.now(), ...data, createdAt: new Date().toISOString() };
+  }
+
+  async getUserEvaluationData(userId: string): Promise<any> {
+    console.log("DatabaseStorage.getUserEvaluationData called for userId:", userId);
+    try {
+      // Extract numeric ID from userId (remove 'user-' prefix if present)
+      const numericUserId = userId.replace('user-', '');
+      
+      console.log("Searching for evaluations with userId:", numericUserId);
+
+      // Get current module from onboarding progress
+      const progressResult = await this.db
+        .select()
+        .from(onboardingProgress)
+        .where(eq(onboardingProgress.user_id, userId.toString()));
+
+      const currentModule = progressResult[0]?.current_module || 1;
+
+      // Get all evaluations from module_evaluations table using numeric ID
+      const evaluations = await this.db
+        .select()
+        .from(moduleEvaluations)
+        .where(eq(moduleEvaluations.user_id, numericUserId))
+        .orderBy(desc(moduleEvaluations.completed_at));
+
+      console.log("Found evaluations:", evaluations.length);
+
+      // Get total attempts count
+      const totalAttempts = evaluations.length;
+
+      // Format evaluations data
+      const formattedEvaluations = evaluations.map((evaluation) => ({
+        id: evaluation.id,
+        userId: evaluation.user_id,
+        moduleNumber: evaluation.module_id,
+        attemptNumber: evaluation.attempt_number,
+        score: evaluation.score,
+        passed: evaluation.passed,
+        correctAnswers: evaluation.correct_answers,
+        totalQuestions: evaluation.total_questions,
+        timeSpent: evaluation.time_spent,
+        answers: evaluation.answers || {},
+        createdAt: evaluation.completed_at
+      }));
+
+      // Group attempts by module for better visualization
+      const attemptsByModule = evaluations.reduce((acc, evaluation) => {
+        const moduleKey = `module_${evaluation.module_id}`;
+        if (!acc[moduleKey]) {
+          acc[moduleKey] = [];
+        }
+        acc[moduleKey].push({
+          attemptNumber: evaluation.attempt_number,
+          score: evaluation.score,
+          correctAnswers: evaluation.correct_answers,
+          totalQuestions: evaluation.total_questions,
+          passed: evaluation.passed,
+          timeSpent: evaluation.time_spent,
+          createdAt: evaluation.completed_at
+        });
+        return acc;
+      }, {});
+
+      return {
+        evaluations: formattedEvaluations,
+        attempts: formattedEvaluations,
+        totalEvaluations: totalAttempts,
+        totalAttempts: totalAttempts,
+        currentModule: currentModule,
+        attemptsByModule: attemptsByModule,
+        userProgress: progressResult[0] || null
+      };
+    } catch (error) {
+      console.error("Error getting user evaluation data:", error);
+      return {
+        evaluations: [],
+        attempts: [],
+        totalEvaluations: 0,
+        totalAttempts: 0,
+        currentModule: 1,
+        attemptsByModule: {},
+        userProgress: null
+      };
+    }
+  }
+}
+
+export class MemStorage implements IStorage {
+  private users: Map<number, User>;
+  private progress: Map<string, OnboardingProgress>;
+  private avaliacoes: Map<string, any[]>; // Simplified for memory storage
+  private currentUserId: number;
+  private currentProgressId: number;
+
+  constructor() {
+    this.users = new Map();
+    this.progress = new Map();
+    this.avaliacoes = new Map();
+    this.currentUserId = 1;
+    this.currentProgressId = 1;
+  }
+
+  async getUser(id: number): Promise<User | undefined> {
+    return this.users.get(id);
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(
+      (user) => user.username === username,
+    );
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const id = this.currentUserId++;
+    const user: User = { ...insertUser, id };
+    this.users.set(id, user);
+    return user;
+  }
+
+  async getProgress(userId: string): Promise<OnboardingProgress | undefined> {
+    return this.progress.get(userId);
+  }
+
+  async createProgress(insertProgress: InsertOnboardingProgress): Promise<OnboardingProgress> {
+    const id = this.currentProgressId++;
+    const progressData: OnboardingProgress = {
+      id,
+      ...insertProgress,
+    };
+    this.progress.set(insertProgress.userId, progressData);
+    return progressData;
+  }
+
+  async updateProgress(userId: string, updates: Partial<OnboardingProgress>): Promise<OnboardingProgress | undefined> {
+    const existing = this.progress.get(userId);
+    if (!existing) {
+      return undefined;
+    }
+
+    const updated: OnboardingProgress = {
+      ...existing,
+      ...updates,
+    };
+
+    this.progress.set(userId, updated);
+    return updated;
+  }
+
+  async saveModuleEvaluation(data: { userId: string; moduleId: number; score: number; passed: boolean; answers: Record<string, number>; completedAt: string }): Promise<any> {
+    console.log("MemStorage - Saving module evaluation:", data);
+    const evaluationRecord = {
+      id: Date.now(),
+      userId: data.userId,
+      moduleId: data.moduleId,
+      score: data.score,
+      passed: data.passed,
+      answers: data.answers,
+      completedAt: data.completedAt,
+      createdAt: new Date().toISOString()
+    };
+
+    const existing = this.avaliacoes.get(data.userId) || [];
+    existing.push(evaluationRecord);
+    this.avaliacoes.set(data.userId, existing);
+
+    console.log("AVALIAÇÃO REGISTRADA (MEMÓRIA) - Usuário:", data.userId, "Módulo:", data.moduleId, "Score:", data.score, "Passou:", data.passed);
+    return evaluationRecord;
+  }
+
+  async getModuleEvaluations(userId: string): Promise<any[]> {
+    return this.avaliacoes.get(userId) || [];
+  }
+
+  async saveAvaliacaoUser(data: { userId: number; passed: boolean }) {
+    const dataWithTimestamp = {
+      ...data,
+      id: Date.now(),
+      createdAt: new Date().toISOString()
+    };
+    const existing = this.avaliacoes.get(data.userId.toString()) || [];
+    existing.push(dataWithTimestamp);
+    this.avaliacoes.set(data.userId.toString(), existing);
+    return dataWithTimestamp;
+  }
+
+  async getAvaliacaoHistory(userId: string) {
+    return this.avaliacoes.get(userId) || [];
+  }
+
+  // Missing methods implementation for MemStorage
+  async saveEvaluation(data: any) {
+    const dataWithTimestamp = {
+      ...data,
+      id: Date.now(),
+      createdAt: new Date().toISOString()
+    };
+    return dataWithTimestamp;
+  }
+
+  async getEvaluationHistory(userId: string, moduleNumber?: number) {
+    return this.getAvaliacaoHistory(userId);
+  }
+
+  async getAllEvaluations() {
+    const allEvals = [];
+    for (const userEvals of this.avaliacoes.values()) {
+      allEvals.push(...userEvals);
+    }
+    return allEvals;
+  }
+
+  async getUserAllAttempts(userId: string) {
+    return [];
+  }
+
+  async getModuleStats(moduleNumber: number) {
+    return { moduleNumber, totalAttempts: 0, avgScore: 0, passRate: 0 };
+  }
+
+  async getAttemptCount(userId: string, moduleNumber?: number) {
+    return 0;
+  }
+
+  async getTotalUserAttempts(userId: string) {
+    const userEvaluations = this.avaliacoes.get(userId) || [];
+    return userEvaluations.length;
+  }
+
+  async saveEvaluationAttempt(data: any) {
+    const dataWithTimestamp = {
+      ...data,
+      id: Date.now(),
+      createdAt: new Date().toISOString()
+    };
+    return dataWithTimestamp;
+  }
+
+  async getUserEvaluationData(userId: string): Promise<any> {
+      return {
+        evaluations: [],
+        attempts: [],
+        totalEvaluations: 0,
+        totalAttempts: 0,
+        currentModule: 1,
+        attemptsByModule: {},
+        userProgress: null
+      };
+  }
+}
+
+// Use DatabaseStorage with Supabase
+const DATABASE_URL = "postgresql://postgres.brjwbznxsfbtoktpdssw:oBfiPmNzLW81Hz1b@aws-0-sa-east-1.pooler.supabase.com:6543/postgres";
+process.env.DATABASE_URL = DATABASE_URL;
+
+console.log("🚀 Initializing DatabaseStorage with Supabase...");
+let selectedStorage: IStorage = new DatabaseStorage();
+
+export const storage: IStorage = selectedStorage;
+
+console.log("📦 Final storage type:", storage.constructor.name);

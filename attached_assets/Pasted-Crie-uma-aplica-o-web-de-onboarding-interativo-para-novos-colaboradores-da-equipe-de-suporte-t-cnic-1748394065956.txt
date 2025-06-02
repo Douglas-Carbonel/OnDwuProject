@@ -1,0 +1,68 @@
+Crie uma aplicação web de onboarding interativo para novos colaboradores da equipe de suporte técnico da empresa DWU, com foco no sistema CRM One e na integração com SAP Business One.
+
+🎯 Objetivo:
+Desenvolver uma aplicação moderna e profissional que:
+- Apresente a empresa DWU e sua atuação nacional e internacional.
+- Treine tecnicamente os novos colaboradores, com ênfase em CRM One, SAP B1, APIs, logs e fluxo de atendimento.
+- Simule cenários reais de suporte.
+- Guie o colaborador por um fluxo dividido por dias/etapas.
+
+📦 Funcionalidades obrigatórias:
+
+### 📅 Navegação por Etapas (Dias 1 a 5):
+- Use abas, menu lateral ou um wizard de progresso com status visual.
+- Cada dia terá conteúdos textuais, listas, imagens, vídeos, simulados e checklists.
+
+### 📚 Conteúdo por Etapa:
+
+**Dia 1 – Apresentação Institucional**
+- Slide de boas-vindas.
+- Vídeo institucional DWU (YouTube): https://www.youtube.com/watch?v=vzt76rd65sQ
+- Cultura e estrutura da empresa.
+- Ferramentas utilizadas no suporte.
+
+**Dia 2 – Treinamento Técnico**
+- Conceitos do CRM One e integração com SAP B1.
+- Explicação visual (diagrama) da arquitetura:
+  - Front-end web (navegador)
+  - Aplicativo hospedado no IIS
+  - API (Service Layer ou DI-API)
+  - Banco de dados (SQL Server)
+- Fluxo de requisição até o SAP.
+- Visão dos módulos do CRM One (Oportunidade, Atendimento, Cotação, etc.).
+
+**Dia 3 – Suporte Técnico e Fluxo de Atendimento**
+- Modelo de suporte N1, N2, N3.
+- SLA por criticidade.
+- Fluxo de atendimento do chamado (mapa visual com escalonamento).
+- Canais de comunicação: Jira, Help Desk, Teams, Acesso remoto.
+
+**Dia 4 – Diagnóstico e Logs**
+- Acesso e leitura de logs.
+- Problemas comuns e soluções.
+- Simulações de atendimento (cards clicáveis com perguntas e feedback).
+
+**Dia 5 – Avaliação Final**
+- Questionário de múltipla escolha.
+- Checklist de competências adquiridas.
+- Download de materiais de apoio (PDFs, fluxogramas, FAQs).
+
+🧩 Componentes a implementar:
+- Slide de boas-vindas com botão “Começar treinamento”.
+- Áreas de conteúdo com cards e ícones.
+- Simulados interativos (perguntas de múltipla escolha com feedback).
+- Checklists com validação visual (✓).
+- Player de vídeo embutido (iframe YouTube).
+- Download de arquivos PDF.
+- Barra de progresso no topo ou lateral.
+
+🎨 Design / UI:
+- Visual corporativo e moderno com TailwindCSS.
+- Layout responsivo.
+- Tema escuro com detalhes em azul ou verde (cores DWU).
+- Ícone da DWU disponível em: https://www.dwu.com.br/
+
+💡 Extras (opcionais):
+- Simulação de login para salvar progresso (localStorage ou Firebase).
+- Alternância entre tema escuro/claro.
+- Log de progresso com porcentagem por etapa.
