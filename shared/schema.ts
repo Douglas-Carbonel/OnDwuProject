@@ -8,6 +8,9 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
   user_mail: text("user_mail").notNull().unique(),
   user_profile: text("user_profile").notNull().default("colaborador"),
+  address: text("address"),
+  phone: text("phone"),
+  created_at: timestamp("created_at").defaultNow(),
 });
 
 export const onboardingProgress = pgTable("onboarding_progress", {
@@ -20,6 +23,8 @@ export const onboardingProgress = pgTable("onboarding_progress", {
   completed_at: timestamp("completed_at"),
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
+  deadline: timestamp("deadline"),
+  is_expired: boolean("is_expired").default(false),
 });
 
 export const moduleEvaluations = pgTable("module_evaluations", {
@@ -44,12 +49,33 @@ export const avaliacao_user = pgTable("avaliacao_user", {
   createdAt: timestamp("createdAt").defaultNow(),
 });
 
+export const dailyAttempts = pgTable("daily_attempts", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  user_id: text("user_id").notNull(),
+  module_id: integer("module_id").notNull(),
+  attempt_date: timestamp("attempt_date").defaultNow(),
+  attempt_count: integer("attempt_count").default(1),
+});
+
+export const certificates = pgTable("certificates", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  user_id: text("user_id").notNull(),
+  certificate_id: text("certificate_id").notNull().unique(),
+  user_name: text("user_name").notNull(),
+  course_name: text("course_name").notNull().default("Programa de Onboarding DWU IT Solutions"),
+  completion_date: timestamp("completion_date").notNull(),
+  certificate_url: text("certificate_url"),
+  created_at: timestamp("created_at").defaultNow(),
+});
+
 // Export schemas for validation
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
   user_mail: true,
   user_profile: true,
+  address: true,
+  phone: true,
 });
 
 export const insertProgressSchema = z.object({
@@ -65,6 +91,18 @@ export const insertProgressSchema = z.object({
   completedAt: z.string().nullable().optional().default(null)
 });
 
+export const insertModuleEvaluationSchema = z.object({
+  user_id: z.string(),
+  module_id: z.number(),
+  attempt_number: z.number().default(1),
+  score: z.number(),
+  total_questions: z.number().default(20),
+  correct_answers: z.number(),
+  passed: z.boolean(),
+  answers: z.record(z.number()).default({}),
+  time_spent: z.number().optional(),
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type OnboardingProgress = typeof onboardingProgress.$inferSelect & {
@@ -76,3 +114,5 @@ export type OnboardingProgress = typeof onboardingProgress.$inferSelect & {
 export type InsertOnboardingProgress = z.infer<typeof insertProgressSchema>;
 export type ModuleEvaluation = typeof moduleEvaluations.$inferSelect;
 export type InsertModuleEvaluation = z.infer<typeof insertModuleEvaluationSchema>;
+export type DailyAttempt = typeof dailyAttempts.$inferSelect;
+export type Certificate = typeof certificates.$inferSelect;

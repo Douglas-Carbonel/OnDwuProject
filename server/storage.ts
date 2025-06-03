@@ -1,7 +1,7 @@
-import { users, onboardingProgress, moduleEvaluations, avaliacao_user, type User, type InsertUser } from "@shared/schema";
+import { users, onboardingProgress, moduleEvaluations, avaliacao_user, dailyAttempts, certificates, type User, type InsertUser, type Certificate } from "@shared/schema";
 import { getDatabase } from "./database";
 import type { OnboardingProgress, InsertOnboardingProgress } from "@/hooks/useProgress";
-import { eq, and, desc, sql } from "drizzle-orm";
+import { eq, and, desc, sql, gte } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -10,7 +10,7 @@ export interface IStorage {
   getProgress(userId: string): Promise<OnboardingProgress | undefined>;
   createProgress(progress: InsertOnboardingProgress): Promise<OnboardingProgress>;
   updateProgress(userId: string, updates: Partial<OnboardingProgress>): Promise<OnboardingProgress | undefined>;
-  saveModuleEvaluation(data: { userId: string; moduleId: number; score: number; passed: boolean; answers: Record<string, number>; completedAt: string }): Promise<any>;
+  saveModuleEvaluation(data: { userId: string; moduleId: number; score: number; passed: boolean; answers: Record<string, number>; completedAt: string; totalQuestions?: number; correctAnswers?: number; timeSpent?: number }): Promise<any>;
   getModuleEvaluations(userId: string): Promise<any[]>;
   saveAvaliacaoUser(data: { userId: number; passed: boolean }): Promise<any>;
   getAvaliacaoHistory(userId: string): Promise<any>;
@@ -25,6 +25,11 @@ export interface IStorage {
   saveEvaluationAttempt(data: any): Promise<any>;
   getUserEvaluationData(userId: string): Promise<any>;
   syncProgressWithEvaluations(userId: string): Promise<OnboardingProgress | undefined>;
+  checkDailyAttempts(userId: string, moduleId: number): Promise<{ canAttempt: boolean; remainingTime?: number }>;
+  recordAttempt(userId: string, moduleId: number): Promise<void>;
+  checkAndUpdateDeadline(userId: string): Promise<{ isExpired: boolean; deadline: Date }>;
+  generateCertificate(userId: string, userName: string): Promise<Certificate | null>;
+  getCertificate(certificateId: string): Promise<Certificate | null>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -95,13 +100,13 @@ export class DatabaseStorage implements IStorage {
 
       // Map completedDays to completed_modules (these are the same concept)
       if (updates.completedDays !== undefined) dbUpdates.completed_modules = updates.completedDays;
-      
+
       // Map dayProgress to module_progress (these are the same concept)
       if (updates.dayProgress !== undefined) dbUpdates.module_progress = updates.dayProgress;
-      
+
       // Map quizResults to module_evaluations (these are the same concept)
-      if (updates.quizResults !== undefined) dbUpdates.module_evaluations = updates.quizResults;
-      
+      if (updates.quizResults !== undefined) dbUpdates.module_evaluations = updates.moduleEvaluations;
+
       // Map currentDay to current_module (frontend uses currentDay sometimes)
       if (updates.currentDay !== undefined) dbUpdates.current_module = updates.currentDay;
 
@@ -117,7 +122,7 @@ export class DatabaseStorage implements IStorage {
         .returning();
 
       console.log("Update result:", result);
-      
+
       // Map database fields back to frontend interface
       const dbProgress = result[0];
       if (dbProgress) {
@@ -133,7 +138,7 @@ export class DatabaseStorage implements IStorage {
           quizResults: dbProgress.module_evaluations || {}
         };
       }
-      
+
       return result[0];
     } catch (error) {
       console.error("Error in updateProgress:", error);
@@ -169,7 +174,7 @@ export class DatabaseStorage implements IStorage {
 
       // Inserir usando o schema Drizzle - garantir que userId seja string numérica
       const numericUserId = data.userId.toString().replace('user-', '');
-      
+
       const result = await this.db.insert(moduleEvaluations).values({
         user_id: numericUserId,
         module_id: data.moduleId,
@@ -278,7 +283,7 @@ export class DatabaseStorage implements IStorage {
     try {
       // Extract numeric ID from userId
       const numericUserId = userId.toString().replace('user-', '');
-      
+
       // Use Drizzle ORM to get from module_evaluations table
       let whereCondition = eq(moduleEvaluations.user_id, numericUserId);
 
@@ -377,7 +382,7 @@ export class DatabaseStorage implements IStorage {
     try {
       // Extract numeric ID from userId
       const numericUserId = userId.toString().replace('user-', '');
-      
+
       let whereCondition = eq(moduleEvaluations.user_id, numericUserId);
 
       if (moduleNumber) {
@@ -404,7 +409,7 @@ export class DatabaseStorage implements IStorage {
     try {
       // Extract numeric ID from userId
       const numericUserId = userId.toString().replace('user-', '');
-      
+
       const result = await this.db
         .select({ count: sql<number>`count(*)` })
         .from(moduleEvaluations)
@@ -427,7 +432,7 @@ export class DatabaseStorage implements IStorage {
     try {
       // Extract numeric ID from userId (remove 'user-' prefix if present)
       const numericUserId = userId.replace('user-', '');
-      
+
       console.log("Searching for evaluations with userId:", numericUserId);
 
       // Get current module from onboarding progress
@@ -506,12 +511,170 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
+  async checkDailyAttempts(userId: string, moduleId: number): Promise<{ canAttempt: boolean; remainingTime?: number }> {
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const result = await this.db
+        .select()
+        .from(dailyAttempts)
+        .where(
+          and(
+            eq(dailyAttempts.user_id, userId),
+            eq(dailyAttempts.module_id, moduleId),
+            gte(dailyAttempts.attempt_date, today)
+          )
+        );
+
+      const todayAttempts = result.reduce((sum, attempt) => sum + attempt.attempt_count, 0);
+
+      if (todayAttempts >= 2) {
+        const lastAttempt = result[result.length - 1];
+        const nextAttemptTime = new Date(lastAttempt.attempt_date);
+        nextAttemptTime.setDate(nextAttemptTime.getDate() + 1);
+        const remainingTime = nextAttemptTime.getTime() - Date.now();
+
+        return { canAttempt: false, remainingTime: Math.max(0, remainingTime) };
+      }
+
+      return { canAttempt: true };
+    } catch (error) {
+      console.error("Error checking daily attempts:", error);
+      return { canAttempt: true };
+    }
+  }
+
+  async recordAttempt(userId: string, moduleId: number): Promise<void> {
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const existingAttempt = await this.db
+        .select()
+        .from(dailyAttempts)
+        .where(
+          and(
+            eq(dailyAttempts.user_id, userId),
+            eq(dailyAttempts.module_id, moduleId),
+            gte(dailyAttempts.attempt_date, today)
+          )
+        )
+        .limit(1);
+
+      if (existingAttempt.length > 0) {
+        await this.db
+          .update(dailyAttempts)
+          .set({ 
+            attempt_count: existingAttempt[0].attempt_count + 1,
+            attempt_date: new Date()
+          })
+          .where(eq(dailyAttempts.id, existingAttempt[0].id));
+      } else {
+        await this.db
+          .insert(dailyAttempts)
+          .values({
+            user_id: userId,
+            module_id: moduleId,
+            attempt_count: 1,
+            attempt_date: new Date()
+          });
+      }
+    } catch (error) {
+      console.error("Error recording attempt:", error);
+    }
+  }
+
+  async checkAndUpdateDeadline(userId: string): Promise<{ isExpired: boolean; deadline: Date }> {
+    try {
+      const progress = await this.getProgress(userId);
+
+      if (!progress) {
+        // Create initial progress with 15-day deadline
+        const deadline = new Date();
+        deadline.setDate(deadline.getDate() + 15);
+
+        await this.createProgress({
+          userId,
+          currentModule: 1,
+          completedModules: [],
+          moduleProgress: {},
+          moduleEvaluations: {},
+          deadline: deadline.toISOString()
+        });
+
+        return { isExpired: false, deadline };
+      }
+
+      const deadline = new Date(progress.deadline || progress.created_at);
+      deadline.setDate(deadline.getDate() + 15);
+      const isExpired = Date.now() > deadline.getTime();
+
+      if (isExpired && !progress.is_expired) {
+        // Reset progress if expired
+        await this.updateProgress(userId, {
+          currentModule: 1,
+          completedModules: [],
+          moduleProgress: {},
+          moduleEvaluations: {},
+          is_expired: true,
+          deadline: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString()
+        });
+      }
+
+      return { isExpired, deadline };
+    } catch (error) {
+      console.error("Error checking deadline:", error);
+      const deadline = new Date();
+      deadline.setDate(deadline.getDate() + 15);
+      return { isExpired: false, deadline };
+    }
+  }
+
+  async generateCertificate(userId: string, userName: string): Promise<Certificate | null> {
+    try {
+      const certificateId = `DWU-${Date.now()}-${userId}`;
+      const completionDate = new Date();
+
+      const certificate = await this.db
+        .insert(certificates)
+        .values({
+          user_id: userId,
+          certificate_id: certificateId,
+          user_name: userName,
+          completion_date: completionDate,
+          certificate_url: `/api/certificates/${certificateId}`
+        })
+        .returning();
+
+      return certificate[0];
+    } catch (error) {
+      console.error("Error generating certificate:", error);
+      return null;
+    }
+  }
+
+  async getCertificate(certificateId: string): Promise<Certificate | null> {
+    try {
+      const result = await this.db
+        .select()
+        .from(certificates)
+        .where(eq(certificates.certificate_id, certificateId))
+        .limit(1);
+
+      return result[0] || null;
+    } catch (error) {
+      console.error("Error getting certificate:", error);
+      return null;
+    }
+  }
+
   async syncProgressWithEvaluations(userId: string): Promise<OnboardingProgress | undefined> {
     console.log("🔄 Sincronizando progresso com avaliações para userId:", userId);
     try {
       // Extract numeric ID from userId for module_evaluations table
       const numericUserId = userId.replace('user-', '');
-      
+
       // Get current progress
       const progressResult = await this.db
         .select()
@@ -519,7 +682,7 @@ export class DatabaseStorage implements IStorage {
         .where(eq(onboardingProgress.user_id, userId.toString()));
 
       let currentProgress = progressResult[0];
-      
+
       // If no progress exists, create initial progress
       if (!currentProgress) {
         console.log("📝 Criando progresso inicial para usuário:", userId);
@@ -564,7 +727,7 @@ export class DatabaseStorage implements IStorage {
       // Check each module from 1 to 4
       for (let moduleId = 1; moduleId <= 4; moduleId++) {
         const latestEval = latestEvaluationByModule[moduleId];
-        
+
         if (latestEval) {
           // Store the evaluation result
           newModuleEvaluations[moduleId.toString()] = {
@@ -577,7 +740,7 @@ export class DatabaseStorage implements IStorage {
           if (latestEval.passed && latestEval.score >= 90) {
             newCompletedModules.push(moduleId);
             console.log(`✅ Módulo ${moduleId} completado - Score: ${latestEval.score}%, Passou: ${latestEval.passed}`);
-            
+
             // Set current module to next available module
             if (moduleId < 4) {
               newCurrentModule = moduleId + 1;
@@ -785,6 +948,28 @@ export class MemStorage implements IStorage {
         attemptsByModule: {},
         userProgress: null
       };
+  }
+
+    async checkDailyAttempts(userId: string, moduleId: number): Promise<{ canAttempt: boolean; remainingTime?: number }> {
+    return { canAttempt: true };
+  }
+
+  async recordAttempt(userId: string, moduleId: number): Promise<void> {
+    // Do nothing in memory storage
+  }
+
+  async checkAndUpdateDeadline(userId: string): Promise<{ isExpired: boolean; deadline: Date }> {
+     const deadline = new Date();
+      deadline.setDate(deadline.getDate() + 15);
+      return { isExpired: false, deadline };
+  }
+
+  async generateCertificate(userId: string, userName: string): Promise<Certificate | null> {
+      return null;
+  }
+
+  async getCertificate(certificateId: string): Promise<Certificate | null> {
+    return null;
   }
 
   async syncProgressWithEvaluations(userId: string): Promise<OnboardingProgress | undefined> {

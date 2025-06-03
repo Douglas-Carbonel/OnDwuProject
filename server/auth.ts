@@ -66,6 +66,8 @@ export class AuthService {
     password: string;
     user_mail: string;
     user_profile: string;
+    address?: string;
+    phone?: string;
   }): Promise<AuthUser | null> {
     try {
       console.log("🔧 Tentando criar usuário:", userData.username, userData.user_mail);
@@ -92,6 +94,8 @@ export class AuthService {
           password: hashedPassword,
           user_mail: userData.user_mail,
           user_profile: userData.user_profile,
+          address: userData.address,
+          phone: userData.phone,
         })
         .returning({
           id: users.id,

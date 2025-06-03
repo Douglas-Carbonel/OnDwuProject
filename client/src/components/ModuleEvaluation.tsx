@@ -11,6 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Home,
+  Clock,
 } from "lucide-react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
@@ -27,6 +28,11 @@ interface ModuleEvaluationProps {
   moduleNumber: number;
   onEvaluationComplete?: (passed: boolean, score: number) => void;
   onCancel?: () => void;
+}
+
+interface AttemptStatus {
+  canAttempt: boolean;
+  remainingTime?: number;
 }
 
 // Questions for each module
@@ -660,6 +666,8 @@ export default function ModuleEvaluation({
   const [startTime, setStartTime] = useState<number>(Date.now());
   const [loading, setLoading] = useState(false);
   const [location, setLocation] = useLocation();
+  const [attemptStatus, setAttemptStatus] = useState<AttemptStatus>({ canAttempt: true });
+  const [isCheckingAttempts, setIsCheckingAttempts] = useState(true);
   const { user } = useAuth();
   const { progress: userProgress, updateProgress } = useProgress();
 
@@ -680,6 +688,31 @@ export default function ModuleEvaluation({
       setSelectedAnswer("");
     }
   }, [currentQuestionIndex, answers, currentQuestion?.id]);
+
+    useEffect(() => {
+    const checkAttempts = async () => {
+      setIsCheckingAttempts(true);
+      try {
+        if (user?.userId) {
+          const response = await fetch(`/api/evaluations/attempts?moduleId=${moduleNumber}&userId=${user.userId}`);
+          if (response.ok) {
+            const data = await response.json();
+            setAttemptStatus(data);
+          } else {
+            console.error("Failed to fetch attempt status");
+            setAttemptStatus({ canAttempt: false });
+          }
+        }
+      } catch (error) {
+        console.error("Error checking attempts:", error);
+        setAttemptStatus({ canAttempt: false });
+      } finally {
+        setIsCheckingAttempts(false);
+      }
+    };
+
+    checkAttempts();
+  }, [user?.userId, moduleNumber]);
 
   const handleNext = async () => {
     if (selectedAnswer !== "") {
@@ -746,10 +779,10 @@ export default function ModuleEvaluation({
               if (!completedModules.includes(moduleNumber)) {
                 const newCompletedModules = [...completedModules, moduleNumber];
                 const nextModule = moduleNumber < 4 ? moduleNumber + 1 : moduleNumber;
-                
+
                 console.log(`✅ Módulo ${moduleNumber} completado! Próximo módulo: ${nextModule}`);
                 console.log(`📊 Novos módulos completados:`, newCompletedModules);
-                
+
                 await updateProgress({
                   completedModules: newCompletedModules,
                   currentModule: nextModule, // Atualizar para o próximo módulo
@@ -798,6 +831,46 @@ export default function ModuleEvaluation({
       setLocation("/onboarding");
     }
   };
+
+  if (!user?.userId) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-slate-400">Usuário não autenticado</p>
+      </div>
+    );
+  }
+
+  if (isCheckingAttempts) {
+    return (
+      <div className="text-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+        <p className="text-slate-400">Verificando tentativas disponíveis...</p>
+      </div>
+    );
+  }
+
+  if (!attemptStatus.canAttempt) {
+    const hoursRemaining = Math.ceil((attemptStatus.remainingTime || 0) / (1000 * 60 * 60));
+    return (
+      <Card className="glass-effect tech-border max-w-2xl mx-auto">
+        <CardContent className="p-8 text-center">
+          <div className="mb-6">
+            <Clock size={64} className="mx-auto mb-4 text-yellow-500" />
+            <h3 className="text-2xl font-bold text-white mb-2">Limite de Tentativas Atingido</h3>
+            <p className="text-slate-300 mb-4">
+              Você já realizou 2 tentativas hoje para este módulo.
+            </p>
+            <p className="text-yellow-400 font-medium">
+              Próxima tentativa disponível em: {hoursRemaining} hora(s)
+            </p>
+          </div>
+          <Button onClick={onCancel} variant="outline" className="bg-slate-700 border-slate-600">
+            Voltar ao Módulo
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (showResults) {
     const passed = score >= 90;
@@ -873,7 +946,8 @@ export default function ModuleEvaluation({
                 Questão {currentQuestionIndex + 1}
               </h3>
               <span className="text-sm text-slate-400">
-                {currentQuestionIndex + 1} de {questions.length}
+                {currentQuestion_final_file>
+Index + 1} de {questions.length}
               </span>
             </div>
             <Progress value={progressPercentage} />

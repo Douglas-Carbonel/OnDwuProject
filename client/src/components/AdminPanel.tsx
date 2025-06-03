@@ -79,6 +79,8 @@ export default function AdminPanel() {
     email: "",
     password: "",
     profile: "colaborador",
+    address: "",
+    phone: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
@@ -264,7 +266,7 @@ export default function AdminPanel() {
 
   const handleLogout = () => {
     logout();
-    setLocation("/welcome");
+    setLocation("/");
   };
 
   const handleCreateUser = async (e: React.FormEvent) => {
@@ -284,6 +286,8 @@ export default function AdminPanel() {
           email: "",
           password: "",
           profile: "colaborador",
+          address: "",
+          phone: "",
         });
         // Refresh users list after creating a new user
         fetchUsers();
@@ -419,6 +423,34 @@ export default function AdminPanel() {
                       </SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="address" className="text-slate-300 font-medium">
+                    Endereço Completo
+                  </Label>
+                  <Input
+                    id="address"
+                    type="text"
+                    placeholder="Rua, número, bairro, cidade, CEP"
+                    value={formData.address}
+                    onChange={(e) => handleInputChange("address", e.target.value)}
+                    className="bg-slate-900/50 border-slate-700 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-blue-500/20"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-slate-300 font-medium">
+                    Telefone/WhatsApp
+                  </Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="(11) 99999-9999"
+                    value={formData.phone}
+                    onChange={(e) => handleInputChange("phone", e.target.value)}
+                    className="bg-slate-900/50 border-slate-700 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-blue-500/20"
+                  />
                 </div>
               </div>
 

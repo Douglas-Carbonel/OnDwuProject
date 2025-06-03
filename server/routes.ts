@@ -59,7 +59,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Register route
   app.post("/api/auth/register", async (req, res) => {
     try {
-      const { username, email, password, profile = "colaborador" } = req.body;
+      const { username, email, password, profile = "colaborador", address, phone } = req.body;
 
       console.log("🚀 Tentativa de registro:", { username, email, profile });
 
@@ -83,6 +83,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         password,
         user_mail: email,
         user_profile: profile,
+        address,
+        phone,
       });
 
       if (!user) {
@@ -289,6 +291,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Check daily attempts before evaluation
+  app.get("/api/check-attempts/:userId/:moduleId", async (req, res) => {
+    try {
+      const { userId, moduleId } = req.params;
+      const result = await storage.checkDailyAttempts(userId, parseInt(moduleId));
+      res.json(result);
+    } catch (error) {
+      console.error("Error checking attempts:", error);
+      res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  });
+
+  // Check deadline
+  app.get("/api/check-deadline/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const result = await storage.checkAndUpdateDeadline(userId);
+      res.json(result);
+    } catch (error) {
+      console.error("Error checking deadline:", error);
+      res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  });
+
   // Save module evaluation result
   app.post("/api/evaluations", async (req, res) => {
     try {
@@ -297,6 +323,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!userId || !moduleId || score === undefined || passed === undefined) {
         return res.status(400).json({ message: "userId, moduleId, score e passed são obrigatórios" });
       }
+
+      // Check daily attempts
+      const attemptCheck = await storage.checkDailyAttempts(userId.toString(), moduleId);
+      if (!attemptCheck.canAttempt) {
+        return res.status(429).json({ 
+          message: "Limite de tentativas diárias excedido. Tente novamente em 24 horas.",
+          remainingTime: attemptCheck.remainingTime
+        });
+      }
+
+      // Record attempt
+      await storage.recordAttempt(userId.toString(), moduleId);
 
       // Salvar na tabela de avaliações detalhadas
       const evaluation = await storage.saveModuleEvaluation({
@@ -331,6 +369,99 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "Erro interno do servidor", 
         error: error.message 
       });
+    }
+  });
+
+  // Generate certificate
+  app.post("/api/generate-certificate", async (req, res) => {
+    try {
+      const { userId, userName } = req.body;
+
+      if (!userId || !userName) {
+        return res.status(400).json({ message: "userId e userName são obrigatórios" });
+      }
+
+      const certificate = await storage.generateCertificate(userId, userName);
+
+      if (certificate) {
+        res.json({
+          success: true,
+          certificate
+        });
+      } else {
+        res.status(500).json({ message: "Erro ao gerar certificado" });
+      }
+    } catch (error) {
+      console.error("Error generating certificate:", error);
+      res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  });
+
+  // Get certificate
+  app.get("/api/certificates/:certificateId", async (req, res) => {
+    try {
+      const { certificateId } = req.params;
+      const certificate = await storage.getCertificate(certificateId);
+
+      if (!certificate) {
+        return res.status(404).json({ message: "Certificado não encontrado" });
+      }
+
+      // Generate certificate HTML
+      const certificateHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Certificado de Conclusão - DWU IT Solutions</title>
+          <style>
+            body { font-family: 'Arial', sans-serif; margin: 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+            .certificate { max-width: 800px; margin: 0 auto; background: white; padding: 60px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+            .header { text-align: center; margin-bottom: 40px; }
+            .logo { font-size: 32px; font-weight: bold; color: #667eea; margin-bottom: 10px; }
+            .title { font-size: 28px; color: #333; margin-bottom: 30px; }
+            .content { text-align: center; line-height: 2; }
+            .name { font-size: 32px; font-weight: bold; color: #667eea; margin: 20px 0; }
+            .course { font-size: 20px; color: #555; margin: 20px 0; }
+            .date { font-size: 16px; color: #777; margin-top: 40px; }
+            .certificate-id { font-size: 12px; color: #999; margin-top: 20px; }
+            .signature { margin-top: 60px; display: flex; justify-content: space-around; }
+            .signature-line { width: 200px; border-top: 2px solid #333; padding-top: 10px; text-align: center; }
+          </style>
+        </head>
+        <body>
+          <div class="certificate">
+            <div class="header">
+              <div class="logo">DWU IT Solutions</div>
+              <div class="title">CERTIFICADO DE CONCLUSÃO</div>
+            </div>
+            <div class="content">
+              <p>Certificamos que</p>
+              <div class="name">${certificate.user_name}</div>
+              <p>concluiu com êxito o</p>
+              <div class="course">${certificate.course_name}</div>
+              <p>demonstrando conhecimento e dedicação no programa de capacitação da equipe de suporte técnico.</p>
+              <div class="date">Concluído em: ${new Date(certificate.completion_date).toLocaleDateString('pt-BR')}</div>
+              <div class="certificate-id">Certificado ID: ${certificate.certificate_id}</div>
+            </div>
+            <div class="signature">
+              <div class="signature-line">
+                <div>Diretor de Treinamento</div>
+                <div>DWU IT Solutions</div>
+              </div>
+              <div class="signature-line">
+                <div>Coordenador Técnico</div>
+                <div>DWU IT Solutions</div>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+
+      res.send(certificateHTML);
+    } catch (error) {
+      console.error("Error getting certificate:", error);
+      res.status(500).json({ message: "Erro interno do servidor" });
     }
   });
 
