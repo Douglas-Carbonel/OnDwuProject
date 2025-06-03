@@ -677,14 +677,8 @@ export default function ModuleEvaluation({
     ((currentQuestionIndex + 1) / questions.length) * 100;
 
   const handleCancel = () => {
-    console.log("🔙 Botão Voltar clicado");
-    if (onCancel) {
-      console.log("🔙 Chamando onCancel callback");
-      onCancel();
-    } else {
-      console.log("🔙 Redirecionando para /onboarding");
-      setLocation("/onboarding");
-    }
+    console.log("🔙 Botão Voltar clicado - redirecionando para /onboarding");
+    setLocation("/onboarding");
   };
 
   useEffect(() => {
