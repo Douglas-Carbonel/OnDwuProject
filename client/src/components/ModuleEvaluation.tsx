@@ -866,7 +866,7 @@ export default function ModuleEvaluation({
               Próxima tentativa disponível em: {hoursRemaining} hora(s)
             </p>
           </div>
-          <Button onClick={onCancel} variant="outline" className="bg-slate-700 border-slate-600">
+          <Button onClick={handleCancel} variant="outline" className="bg-slate-700 border-slate-600">
             Voltar ao Módulo
           </Button>
         </CardContent>
