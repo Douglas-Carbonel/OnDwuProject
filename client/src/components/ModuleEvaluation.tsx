@@ -677,8 +677,25 @@ export default function ModuleEvaluation({
     ((currentQuestionIndex + 1) / questions.length) * 100;
 
   const handleCancel = () => {
-    console.log("🔙 Botão Voltar clicado - redirecionando para /onboarding");
-    setLocation("/onboarding");
+    console.log("🔙 Botão Voltar clicado - iniciando redirecionamento");
+    
+    // Estratégia múltipla de redirecionamento
+    try {
+      // Primeira tentativa: usar setLocation
+      console.log("🔙 Tentativa 1: setLocation");
+      setLocation("/onboarding");
+      
+      // Segunda tentativa: usar window.location como fallback
+      setTimeout(() => {
+        console.log("🔙 Tentativa 2: window.location fallback");
+        window.location.href = "/onboarding";
+      }, 100);
+      
+    } catch (error) {
+      console.error("🔙 Erro no redirecionamento:", error);
+      // Terceira tentativa: forçar reload na página principal
+      window.location.href = "/";
+    }
   };
 
   useEffect(() => {
@@ -851,23 +868,51 @@ export default function ModuleEvaluation({
   if (!attemptStatus.canAttempt) {
     const hoursRemaining = Math.ceil((attemptStatus.remainingTime || 0) / (1000 * 60 * 60));
     return (
-      <Card className="glass-effect tech-border max-w-2xl mx-auto">
-        <CardContent className="p-8 text-center">
-          <div className="mb-6">
-            <Clock size={64} className="mx-auto mb-4 text-yellow-500" />
-            <h3 className="text-2xl font-bold text-white mb-2">Limite de Tentativas Atingido</h3>
-            <p className="text-slate-300 mb-4">
-              Você já realizou 2 tentativas hoje para este módulo.
-            </p>
-            <p className="text-yellow-400 font-medium">
-              Próxima tentativa disponível em: {hoursRemaining} hora(s)
-            </p>
-          </div>
-          <Button onClick={handleCancel} variant="outline" className="bg-slate-700 border-slate-600">
-            Voltar ao Módulo
-          </Button>
-        </CardContent>
-      </Card>
+      <div className="max-w-2xl mx-auto">
+        <Card className="glass-effect tech-border">
+          <CardContent className="p-8 text-center">
+            <div className="mb-6">
+              <Clock size={64} className="mx-auto mb-4 text-yellow-500" />
+              <h3 className="text-2xl font-bold text-white mb-2">Limite de Tentativas Atingido</h3>
+              <p className="text-slate-300 mb-4">
+                Você já realizou 2 tentativas hoje para este módulo.
+              </p>
+              <p className="text-yellow-400 font-medium">
+                Próxima tentativa disponível em: {hoursRemaining} hora(s)
+              </p>
+            </div>
+            <div className="flex justify-center gap-4">
+              <Button 
+                onClick={(e) => {
+                  console.log("🔙 Click event triggered", e);
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleCancel();
+                }}
+                onMouseDown={(e) => {
+                  console.log("🔙 MouseDown event triggered");
+                }}
+                variant="outline" 
+                className="bg-slate-700 border-slate-600 hover:bg-slate-600 cursor-pointer"
+                type="button"
+              >
+                Voltar ao Módulo
+              </Button>
+              <Button 
+                onClick={(e) => {
+                  console.log("🔙 Redirecionamento alternativo");
+                  e.preventDefault();
+                  window.location.href = "/onboarding";
+                }}
+                className="bg-blue-600 hover:bg-blue-700"
+                type="button"
+              >
+                Ir para Dashboard
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
