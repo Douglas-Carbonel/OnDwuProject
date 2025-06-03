@@ -19,13 +19,6 @@ interface DayContentProps {
   onProgressUpdate: (progress: number) => void;
 }
 
-// Slide Presentation Component (Mock)
-const slides = [
-  { id: 1, title: "Bem-vindo à DWU", content: "Uma jornada de transformação digital." },
-  { id: 2, title: "Nossa Missão", content: "Inovação e excelência em cada solução." },
-  { id: 3, title: "Nossos Valores", content: "Paixão, colaboração, e impacto." },
-];
-
 interface SlidePresentationProps {
   onComplete: () => void;
 }
@@ -33,7 +26,51 @@ interface SlidePresentationProps {
 function SlidePresentation({ onComplete }: SlidePresentationProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  const slides = [
+    {
+      id: 1,
+      title: "Cultura da DWU IT Solutions",
+      content: "Bem-vindos à nossa jornada de transformação digital e inovação tecnológica."
+    },
+    {
+      id: 2,
+      title: "Quem Somos?",
+      content: "Somos uma empresa especializada em soluções para empresas que utilizam SAP Business One, com foco na área comercial e equipe de vendas. Com 9 anos de experiência, nos destacamos no mercado pelo desenvolvimento do CRM One, uma solução certificada pela SAP."
+    },
+    {
+      id: 3,
+      title: "Nosso Modelo de Negócio",
+      content: "Baseamos nossa atuação em 5 pilares fundamentais que garantem excelência e satisfação dos nossos clientes."
+    },
+    {
+      id: 4,
+      title: "1. Cultura e Treinamento",
+      content: "Manter a cultura da empresa voltada em cuidar das pessoas."
+    },
+    {
+      id: 5,
+      title: "2. Perfilamento",
+      content: "Buscar o cliente e perfilar ele na demonstração do sistema."
+    },
+    {
+      id: 6,
+      title: "3. Produto Único",
+      content: "Cuidado do desenvolvimento dos sistemas e linha de produção do produto."
+    },
+    {
+      id: 7,
+      title: "4. Cuidado Personalizado com o Cliente",
+      content: "Entender sobre o contexto do cliente antes de implantar o sistema."
+    },
+    {
+      id: 8,
+      title: "5. Atendimento Humanizado",
+      content: "Cada cliente tem sua história e nós conectamos o nosso produto ao universo dele para gerar satisfação."
+    }
+  ];
+
   const nextSlide = () => {
+    console.log('Next slide clicked, current:', currentSlide, 'total:', slides.length);
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
@@ -41,20 +78,89 @@ function SlidePresentation({ onComplete }: SlidePresentationProps) {
     }
   };
 
+  const prevSlide = () => {
+    if (currentSlide > 0) {
+      setCurrentSlide(currentSlide - 1);
+    }
+  };
+
+  const progressPercentage = ((currentSlide + 1) / slides.length) * 100;
+
   return (
-    <Card className="glass-effect tech-border">
-      <CardContent className="p-8">
-        <h4 className="text-2xl font-bold mb-6 gradient-text text-center">{slides[currentSlide].title}</h4>
-        <p className="text-center text-slate-300 mb-8">{slides[currentSlide].content}</p>
-        <div className="text-center">
-          {currentSlide < slides.length - 1 ? (
-            <Button onClick={nextSlide}>Próximo Slide</Button>
-          ) : (
-            <Button onClick={nextSlide}>Concluir Apresentação</Button>
-          )}
+    <div className="space-y-6">
+      {/* Progress Bar */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-slate-400">
+            Slide {currentSlide + 1} de {slides.length}
+          </span>
+          <span className="text-sm text-slate-400">
+            {Math.round(progressPercentage)}%
+          </span>
         </div>
-      </CardContent>
-    </Card>
+        <div className="w-full bg-slate-700 rounded-full h-2">
+          <div 
+            className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+            style={{ width: `${progressPercentage}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Slide Content */}
+      <Card className="glass-effect tech-border min-h-[400px]">
+        <CardContent className="p-8 flex flex-col items-center justify-center text-center space-y-6">
+          <h4 className="text-3xl font-bold gradient-text">
+            {slides[currentSlide].title}
+          </h4>
+          <p className="text-slate-300 text-lg leading-relaxed max-w-2xl">
+            {slides[currentSlide].content}
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* Navigation Controls */}
+      <div className="flex items-center justify-between">
+        <Button
+          variant="outline"
+          onClick={prevSlide}
+          disabled={currentSlide === 0}
+          className="flex items-center gap-2"
+        >
+          ← Anterior
+        </Button>
+
+        {/* Slide Indicators */}
+        <div className="flex space-x-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentSlide 
+                  ? 'bg-blue-500 scale-125' 
+                  : 'bg-slate-600 hover:bg-slate-500'
+              }`}
+            />
+          ))}
+        </div>
+
+        {currentSlide === slides.length - 1 ? (
+          <Button
+            onClick={onComplete}
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
+          >
+            Concluir Apresentação
+          </Button>
+        ) : (
+          <Button
+            onClick={nextSlide}
+            className="flex items-center gap-2"
+          >
+            Próximo →
+          </Button>
+        )}
+      </div>
+    </div>
   );
 }
 
