@@ -877,93 +877,92 @@ export default function ModuleEvaluation({
 
   if (!attemptStatus.canAttempt) {
     const hoursRemaining = Math.ceil((attemptStatus.remainingTime || 0) / (1000 * 60 * 60));
+    
     return (
-      <div className="max-w-3xl mx-auto">
-        {/* Header DWU IT Academy */}
-        <div className="mb-8 text-center">
-          <div className="glass-effect p-6 rounded-2xl tech-border mb-6">
-            <div className="flex items-center justify-center space-x-4 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-yellow-600 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Clock className="text-white" size={24} />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold gradient-text">DWU IT Academy</h1>
-                <p className="text-sm text-slate-400">Centro de Excelência Técnica</p>
-              </div>
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+        <div className="max-w-2xl w-full space-y-8">
+          
+          {/* Header */}
+          <div className="text-center">
+            <div className="w-24 h-24 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Clock size={48} className="text-slate-900" />
             </div>
-            <h2 className="text-xl font-semibold text-yellow-300">
-              Limite de Tentativas - Módulo {moduleNumber}
-            </h2>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              Limite de Tentativas Atingido
+            </h1>
+            <p className="text-slate-300 text-lg">
+              Módulo {moduleNumber} - DWU IT Academy
+            </p>
           </div>
-        </div>
 
-        <Card className="glass-effect tech-border">
-          <CardContent className="p-8">
-            <div className="text-center mb-8">
-              <div className="w-20 h-20 bg-yellow-600/20 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-yellow-500">
-                <Clock size={40} className="text-yellow-500" />
-              </div>
+          {/* Main Content */}
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center">
+            <div className="space-y-6">
               
-              <h3 className="text-2xl font-bold text-white mb-4">
-                Limite de Tentativas Atingido
-              </h3>
-              
-              <div className="space-y-3 mb-6">
-                <p className="text-slate-300 text-lg">
-                  Você já realizou <span className="font-bold text-yellow-400">2 tentativas</span> hoje para este módulo.
+              {/* Message */}
+              <div className="space-y-4">
+                <p className="text-slate-200 text-lg">
+                  Você já realizou <strong className="text-yellow-400">2 tentativas</strong> hoje para este módulo.
                 </p>
                 <p className="text-slate-400">
-                  Para manter a qualidade do aprendizado, permitimos apenas 2 tentativas por dia por módulo.
+                  Para garantir a qualidade do aprendizado, limitamos a 2 tentativas por dia.
                 </p>
+                
                 {hoursRemaining > 0 && (
-                  <div className="p-4 bg-yellow-600/10 border border-yellow-500/30 rounded-lg">
+                  <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
                     <p className="text-yellow-300 font-medium">
-                      ⏰ Próxima tentativa disponível em: <span className="font-bold">{hoursRemaining} hora(s)</span>
+                      ⏰ Próxima tentativa disponível em: <strong>{hoursRemaining} hora(s)</strong>
                     </p>
                   </div>
                 )}
               </div>
 
-              <div className="space-y-4 mb-8">
-                <h4 className="text-lg font-semibold text-blue-300">
-                  💡 Sugestões para aproveitar este tempo:
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                  <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-600">
-                    <span className="text-slate-300">📚 Revisar o conteúdo do módulo</span>
+              {/* Suggestions */}
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-blue-300">
+                  💡 Aproveite este tempo para:
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="bg-slate-700/50 rounded-lg p-4">
+                    <div className="text-slate-300">📚 Revisar o conteúdo</div>
                   </div>
-                  <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-600">
-                    <span className="text-slate-300">📝 Fazer anotações importantes</span>
+                  <div className="bg-slate-700/50 rounded-lg p-4">
+                    <div className="text-slate-300">📝 Fazer anotações</div>
                   </div>
-                  <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-600">
-                    <span className="text-slate-300">🎥 Assistir novamente os vídeos</span>
+                  <div className="bg-slate-700/50 rounded-lg p-4">
+                    <div className="text-slate-300">🎥 Assistir vídeos novamente</div>
                   </div>
-                  <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-600">
-                    <span className="text-slate-300">❓ Tirar dúvidas com a equipe</span>
+                  <div className="bg-slate-700/50 rounded-lg p-4">
+                    <div className="text-slate-300">❓ Tirar dúvidas</div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-                <Button
-                  onClick={handleCancel}
-                  variant="outline"
-                  className="flex items-center gap-2 border-slate-600 hover:bg-slate-700 text-white cursor-pointer"
-                >
-                  <ChevronLeft size={16} />
-                  Voltar ao Conteúdo
-                </Button>
-                <Button
-                  onClick={() => setLocation("/onboarding")}
-                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 cursor-pointer"
-                >
-                  <Home size={16} />
-                  Ir para Dashboard
-                </Button>
-              </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              onClick={handleCancel}
+              variant="outline"
+              size="lg"
+              className="flex items-center gap-2 border-slate-600 hover:bg-slate-700 text-white"
+            >
+              <ChevronLeft size={20} />
+              Voltar ao Conteúdo
+            </Button>
+            <Button
+              onClick={() => setLocation("/onboarding")}
+              size="lg"
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
+            >
+              <Home size={20} />
+              Ir para Dashboard
+            </Button>
+          </div>
+
+        </div>
       </div>
     );
   }
