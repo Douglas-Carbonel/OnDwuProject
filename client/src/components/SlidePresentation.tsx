@@ -91,6 +91,8 @@ export default function SlidePresentation({ onComplete }: SlidePresentationProps
   const nextSlide = () => {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
+    } else {
+      handleComplete();
     }
   };
 
@@ -180,6 +182,7 @@ export default function SlidePresentation({ onComplete }: SlidePresentationProps
           <Button
             variant="outline"
             onClick={nextSlide}
+            disabled={currentSlide >= slides.length - 1}
             className="flex items-center gap-2"
           >
             Próximo
