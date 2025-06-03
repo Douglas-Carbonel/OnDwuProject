@@ -679,10 +679,19 @@ export default function ModuleEvaluation({
   const handleCancel = () => {
     console.log("🔙 Botão Voltar clicado - iniciando redirecionamento");
     
+    // Prevenir múltiplos cliques
+    if (loading) return;
+    
     // Callback direto se disponível
     if (onCancel) {
       console.log("🔙 Usando callback onCancel");
-      onCancel();
+      try {
+        onCancel();
+      } catch (error) {
+        console.error("🔙 Erro no callback onCancel:", error);
+        // Fallback para redirecionamento direto
+        setLocation("/onboarding");
+      }
       return;
     }
     
@@ -693,7 +702,9 @@ export default function ModuleEvaluation({
     } catch (error) {
       console.error("🔙 Erro no redirecionamento:", error);
       // Fallback para window.location
-      window.location.href = "/onboarding";
+      setTimeout(() => {
+        window.location.href = "/onboarding";
+      }, 100);
     }
   };
 
@@ -919,37 +930,37 @@ export default function ModuleEvaluation({
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-600">
-                    <p className="text-slate-300">📚 Revisar o conteúdo do módulo</p>
+                    <span className="text-slate-300">📚 Revisar o conteúdo do módulo</span>
                   </div>
                   <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-600">
-                    <p className="text-slate-300">📝 Fazer anotações importantes</p>
+                    <span className="text-slate-300">📝 Fazer anotações importantes</span>
                   </div>
                   <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-600">
-                    <p className="text-slate-300">🎥 Assistir novamente os vídeos</p>
+                    <span className="text-slate-300">🎥 Assistir novamente os vídeos</span>
                   </div>
                   <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-600">
-                    <p className="text-slate-300">❓ Tirar dúvidas com a equipe</p>
+                    <span className="text-slate-300">❓ Tirar dúvidas com a equipe</span>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button
-                onClick={handleCancel}
-                variant="outline"
-                className="flex items-center gap-2 border-slate-600 hover:bg-slate-700 text-white"
-              >
-                <ChevronLeft size={16} />
-                Voltar ao Conteúdo
-              </Button>
-              <Button
-                onClick={() => setLocation("/onboarding")}
-                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
-              >
-                <Home size={16} />
-                Ir para Dashboard
-              </Button>
+              <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+                <Button
+                  onClick={handleCancel}
+                  variant="outline"
+                  className="flex items-center gap-2 border-slate-600 hover:bg-slate-700 text-white cursor-pointer"
+                >
+                  <ChevronLeft size={16} />
+                  Voltar ao Conteúdo
+                </Button>
+                <Button
+                  onClick={() => setLocation("/onboarding")}
+                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 cursor-pointer"
+                >
+                  <Home size={16} />
+                  Ir para Dashboard
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
