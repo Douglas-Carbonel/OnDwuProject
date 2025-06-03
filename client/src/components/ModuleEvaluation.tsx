@@ -679,22 +679,21 @@ export default function ModuleEvaluation({
   const handleCancel = () => {
     console.log("🔙 Botão Voltar clicado - iniciando redirecionamento");
     
-    // Estratégia múltipla de redirecionamento
+    // Callback direto se disponível
+    if (onCancel) {
+      console.log("🔙 Usando callback onCancel");
+      onCancel();
+      return;
+    }
+    
+    // Redirecionamento direto e simples
     try {
-      // Primeira tentativa: usar setLocation
-      console.log("🔙 Tentativa 1: setLocation");
+      console.log("🔙 Redirecionando para /onboarding");
       setLocation("/onboarding");
-      
-      // Segunda tentativa: usar window.location como fallback
-      setTimeout(() => {
-        console.log("🔙 Tentativa 2: window.location fallback");
-        window.location.href = "/onboarding";
-      }, 100);
-      
     } catch (error) {
       console.error("🔙 Erro no redirecionamento:", error);
-      // Terceira tentativa: forçar reload na página principal
-      window.location.href = "/";
+      // Fallback para window.location
+      window.location.href = "/onboarding";
     }
   };
 
@@ -868,46 +867,89 @@ export default function ModuleEvaluation({
   if (!attemptStatus.canAttempt) {
     const hoursRemaining = Math.ceil((attemptStatus.remainingTime || 0) / (1000 * 60 * 60));
     return (
-      <div className="max-w-2xl mx-auto">
-        <Card className="glass-effect tech-border">
-          <CardContent className="p-8 text-center">
-            <div className="mb-6">
-              <Clock size={64} className="mx-auto mb-4 text-yellow-500" />
-              <h3 className="text-2xl font-bold text-white mb-2">Limite de Tentativas Atingido</h3>
-              <div className="text-slate-300 mb-4">
-                Você já realizou 2 tentativas hoje para este módulo.
+      <div className="max-w-3xl mx-auto">
+        {/* Header DWU IT Academy */}
+        <div className="mb-8 text-center">
+          <div className="glass-effect p-6 rounded-2xl tech-border mb-6">
+            <div className="flex items-center justify-center space-x-4 mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-yellow-600 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+                <Clock className="text-white" size={24} />
               </div>
-              <div className="text-yellow-400 font-medium">
-                Próxima tentativa disponível em: {hoursRemaining} hora(s)
+              <div>
+                <h1 className="text-2xl font-bold gradient-text">DWU IT Academy</h1>
+                <p className="text-sm text-slate-400">Centro de Excelência Técnica</p>
               </div>
             </div>
-            <div className="flex justify-center gap-4">
-              <button 
-                onClick={(e) => {
-                  console.log("🔙 Click event triggered", e);
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleCancel();
-                }}
-                onMouseDown={(e) => {
-                  console.log("🔙 MouseDown event triggered");
-                }}
-                className="px-4 py-2 bg-slate-700 border border-slate-600 hover:bg-slate-600 text-white rounded-lg cursor-pointer transition-colors"
-                type="button"
+            <h2 className="text-xl font-semibold text-yellow-300">
+              Limite de Tentativas - Módulo {moduleNumber}
+            </h2>
+          </div>
+        </div>
+
+        <Card className="glass-effect tech-border">
+          <CardContent className="p-8">
+            <div className="text-center mb-8">
+              <div className="w-20 h-20 bg-yellow-600/20 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-yellow-500">
+                <Clock size={40} className="text-yellow-500" />
+              </div>
+              
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Limite de Tentativas Atingido
+              </h3>
+              
+              <div className="space-y-3 mb-6">
+                <p className="text-slate-300 text-lg">
+                  Você já realizou <span className="font-bold text-yellow-400">2 tentativas</span> hoje para este módulo.
+                </p>
+                <p className="text-slate-400">
+                  Para manter a qualidade do aprendizado, permitimos apenas 2 tentativas por dia por módulo.
+                </p>
+                {hoursRemaining > 0 && (
+                  <div className="p-4 bg-yellow-600/10 border border-yellow-500/30 rounded-lg">
+                    <p className="text-yellow-300 font-medium">
+                      ⏰ Próxima tentativa disponível em: <span className="font-bold">{hoursRemaining} hora(s)</span>
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-4 mb-8">
+                <h4 className="text-lg font-semibold text-blue-300">
+                  💡 Sugestões para aproveitar este tempo:
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-600">
+                    <p className="text-slate-300">📚 Revisar o conteúdo do módulo</p>
+                  </div>
+                  <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-600">
+                    <p className="text-slate-300">📝 Fazer anotações importantes</p>
+                  </div>
+                  <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-600">
+                    <p className="text-slate-300">🎥 Assistir novamente os vídeos</p>
+                  </div>
+                  <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-600">
+                    <p className="text-slate-300">❓ Tirar dúvidas com a equipe</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Button
+                onClick={handleCancel}
+                variant="outline"
+                className="flex items-center gap-2 border-slate-600 hover:bg-slate-700 text-white"
               >
-                Voltar ao Módulo
-              </button>
-              <button 
-                onClick={(e) => {
-                  console.log("🔙 Redirecionamento alternativo");
-                  e.preventDefault();
-                  window.location.href = "/onboarding";
-                }}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg cursor-pointer transition-colors"
-                type="button"
+                <ChevronLeft size={16} />
+                Voltar ao Conteúdo
+              </Button>
+              <Button
+                onClick={() => setLocation("/onboarding")}
+                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
               >
+                <Home size={16} />
                 Ir para Dashboard
-              </button>
+              </Button>
             </div>
           </CardContent>
         </Card>
