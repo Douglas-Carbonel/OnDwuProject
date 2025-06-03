@@ -676,6 +676,17 @@ export default function ModuleEvaluation({
   const progressPercentage =
     ((currentQuestionIndex + 1) / questions.length) * 100;
 
+  const handleCancel = () => {
+    console.log("🔙 Botão Voltar clicado");
+    if (onCancel) {
+      console.log("🔙 Chamando onCancel callback");
+      onCancel();
+    } else {
+      console.log("🔙 Redirecionando para /onboarding");
+      setLocation("/onboarding");
+    }
+  };
+
   useEffect(() => {
     setStartTime(Date.now());
   }, []);
@@ -821,14 +832,6 @@ export default function ModuleEvaluation({
     const passed = score >= 90;
     if (onEvaluationComplete) {
       onEvaluationComplete(passed, score);
-    } else {
-      setLocation("/onboarding");
-    }
-  };
-
-  const handleCancel = () => {
-    if (onCancel) {
-      onCancel();
     } else {
       setLocation("/onboarding");
     }
