@@ -295,11 +295,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/check-attempts/:userId/:moduleId", async (req, res) => {
     try {
       const { userId, moduleId } = req.params;
+      console.log("🔍 Verificando tentativas para userId:", userId, "moduleId:", moduleId);
       const result = await storage.checkDailyAttempts(userId, parseInt(moduleId));
+      console.log("✅ Resultado da verificação:", result);
       res.json(result);
     } catch (error) {
       console.error("Error checking attempts:", error);
       res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  });
+
+  // Add new endpoint to handle evaluation attempts check
+  app.get("/api/evaluations/attempts", async (req, res) => {
+    try {
+      const { userId, moduleId } = req.query;
+      
+      if (!userId || !moduleId) {
+        return res.status(400).json({ 
+          message: "userId e moduleId são obrigatórios",
+          canAttempt: false 
+        });
+      }
+
+      console.log("🔍 Verificando tentativas para userId:", userId, "moduleId:", moduleId);
+      const result = await storage.checkDailyAttempts(userId.toString(), parseInt(moduleId.toString()));
+      console.log("✅ Resultado da verificação:", result);
+      res.json(result);
+    } catch (error) {
+      console.error("Error checking attempts:", error);
+      res.status(500).json({ 
+        message: "Erro interno do servidor",
+        canAttempt: false 
+      });
     }
   });
 

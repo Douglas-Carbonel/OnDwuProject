@@ -694,18 +694,20 @@ export default function ModuleEvaluation({
       setIsCheckingAttempts(true);
       try {
         if (user?.userId) {
-          const response = await fetch(`/api/evaluations/attempts?moduleId=${moduleNumber}&userId=${user.userId}`);
+          console.log("🔍 Verificando tentativas para userId:", user.userId, "módulo:", moduleNumber);
+          const response = await fetch(`/api/evaluations/attempts?userId=${user.userId}&moduleId=${moduleNumber}`);
           if (response.ok) {
             const data = await response.json();
+            console.log("✅ Status de tentativas recebido:", data);
             setAttemptStatus(data);
           } else {
             console.error("Failed to fetch attempt status");
-            setAttemptStatus({ canAttempt: false });
+            setAttemptStatus({ canAttempt: true }); // Permitir tentativa em caso de erro
           }
         }
       } catch (error) {
         console.error("Error checking attempts:", error);
-        setAttemptStatus({ canAttempt: false });
+        setAttemptStatus({ canAttempt: true }); // Permitir tentativa em caso de erro
       } finally {
         setIsCheckingAttempts(false);
       }

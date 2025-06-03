@@ -513,8 +513,11 @@ export class DatabaseStorage implements IStorage {
 
   async checkDailyAttempts(userId: string, moduleId: number): Promise<{ canAttempt: boolean; remainingTime?: number }> {
     try {
+      console.log("🔍 Verificando tentativas diárias - userId:", userId, "moduleId:", moduleId);
+      
       const today = new Date();
       today.setHours(0, 0, 0, 0);
+      console.log("📅 Data de hoje (início do dia):", today);
 
       const result = await this.db
         .select()
@@ -527,7 +530,10 @@ export class DatabaseStorage implements IStorage {
           )
         );
 
+      console.log("📊 Tentativas encontradas hoje:", result);
+
       const todayAttempts = result.reduce((sum, attempt) => sum + attempt.attempt_count, 0);
+      console.log("🔢 Total de tentativas hoje:", todayAttempts);
 
       if (todayAttempts >= 2) {
         const lastAttempt = result[result.length - 1];
@@ -535,9 +541,11 @@ export class DatabaseStorage implements IStorage {
         nextAttemptTime.setDate(nextAttemptTime.getDate() + 1);
         const remainingTime = nextAttemptTime.getTime() - Date.now();
 
+        console.log("❌ Limite excedido - próxima tentativa em:", Math.max(0, remainingTime), "ms");
         return { canAttempt: false, remainingTime: Math.max(0, remainingTime) };
       }
 
+      console.log("✅ Pode tentar - tentativas restantes:", 2 - todayAttempts);
       return { canAttempt: true };
     } catch (error) {
       console.error("Error checking daily attempts:", error);
