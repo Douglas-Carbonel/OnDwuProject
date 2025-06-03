@@ -948,8 +948,7 @@ export default function ModuleEvaluation({
                 Questão {currentQuestionIndex + 1}
               </h3>
               <span className="text-sm text-slate-400">
-                {currentQuestion_final_file>
-Index + 1} de {questions.length}
+                {currentQuestionIndex + 1} de {questions.length}
               </span>
             </div>
             <Progress value={progressPercentage} />
