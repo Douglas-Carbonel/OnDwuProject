@@ -24,51 +24,67 @@ export default function SlidePresentation({ onComplete }: SlidePresentationProps
   const slides: Slide[] = [
     {
       id: 1,
-      title: "Bem-vindo à DWU IT Solutions",
-      content: "Somos uma empresa líder em soluções tecnológicas, especializada em CRM One e SAP Business One. Nossa missão é transformar negócios através da tecnologia.",
+      title: "Cultura da DWU IT Solutions",
+      content: "Bem-vindos à nossa jornada de transformação digital e inovação tecnológica.",
       icon: Building,
       backgroundColor: "from-blue-600 to-blue-800",
       textColor: "text-blue-100"
     },
     {
       id: 2,
-      title: "Nossa História",
-      content: "Fundada com o propósito de democratizar o acesso a soluções empresariais de alto nível, a DWU tem ajudado centenas de empresas a otimizar seus processos.",
-      icon: Globe,
+      title: "Quem Somos?",
+      content: "Somos uma empresa especializada em soluções para empresas que utilizam SAP Business One, com foco na área comercial e equipe de vendas. Com 9 anos de experiência, nos destacamos no mercado pelo desenvolvimento do CRM One, uma solução certificada pela SAP.",
+      icon: Users,
       backgroundColor: "from-green-600 to-green-800",
       textColor: "text-green-100"
     },
     {
       id: 3,
-      title: "Nossos Valores",
-      content: "Inovação, Excelência, Transparência e Compromisso com o Cliente. Estes são os pilares que guiam todas as nossas decisões e ações.",
-      icon: Heart,
+      title: "Nosso Modelo de Negócio",
+      content: "Baseamos nossa atuação em 5 pilares fundamentais que garantem excelência e satisfação dos nossos clientes.",
+      icon: Target,
       backgroundColor: "from-purple-600 to-purple-800",
       textColor: "text-purple-100"
     },
     {
       id: 4,
-      title: "Estrutura Organizacional",
-      content: "Nossa equipe é dividida em times especializados: Desenvolvimento, Suporte Técnico, Implementação, Vendas e Recursos Humanos. Cada time trabalha de forma integrada.",
-      icon: Users,
-      backgroundColor: "from-orange-600 to-orange-800",
-      textColor: "text-orange-100"
+      title: "1. Cultura e Treinamento",
+      content: "Manter a cultura da empresa voltada em cuidar das pessoas.",
+      icon: Heart,
+      backgroundColor: "from-yellow-600 to-orange-600",
+      textColor: "text-yellow-100"
     },
     {
       id: 5,
-      title: "Missão & Visão",
-      content: "Missão: Fornecer soluções tecnológicas que impulsionem o crescimento dos nossos clientes. Visão: Ser referência em inovação e qualidade no mercado de ERP.",
-      icon: Target,
-      backgroundColor: "from-indigo-600 to-indigo-800",
-      textColor: "text-indigo-100"
+      title: "2. Perfilamento",
+      content: "Buscar o cliente e perfilar ele na demonstração do sistema.",
+      icon: Globe,
+      backgroundColor: "from-orange-600 to-red-600",
+      textColor: "text-orange-100"
     },
     {
       id: 6,
-      title: "Certificações & Reconhecimentos",
-      content: "Somos parceiros certificados SAP e possuímos diversas certificações de qualidade. Nossa excelência é reconhecida por clientes e pela indústria.",
+      title: "3. Produto Único",
+      content: "Cuidado do desenvolvimento dos sistemas e linha de produção do produto.",
       icon: Award,
-      backgroundColor: "from-red-600 to-red-800",
-      textColor: "text-red-100"
+      backgroundColor: "from-pink-600 to-purple-600",
+      textColor: "text-pink-100"
+    },
+    {
+      id: 7,
+      title: "4. Cuidado Personalizado com o Cliente",
+      content: "Entender sobre o contexto do cliente antes de implantar o sistema.",
+      icon: Users,
+      backgroundColor: "from-cyan-600 to-blue-600",
+      textColor: "text-cyan-100"
+    },
+    {
+      id: 8,
+      title: "5. Atendimento Humanizado",
+      content: "Cada cliente tem sua história e nós conectamos o nosso produto ao universo dele para gerar satisfação.",
+      icon: Heart,
+      backgroundColor: "from-indigo-600 to-blue-800",
+      textColor: "text-indigo-100"
     }
   ];
 
