@@ -31,7 +31,7 @@ export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
           Onboarding Interativo - Suporte Técnico
         </h2>
         <p className="text-xl text-slate-400 mb-12 max-w-3xl mx-auto leading-relaxed fade-in">
-          Embarque em uma jornada tecnológica de 5 dias que transformará você em um especialista em 
+          Embarque em uma jornada de certificação profissional que transformará você em um especialista em 
           <span className="text-blue-400 font-semibold"> CRM One</span>, 
           <span className="text-green-400 font-semibold"> SAP Business One</span> e nossas 
           <span className="text-purple-400 font-semibold"> metodologias avançadas de suporte</span>.
@@ -42,24 +42,24 @@ export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
             <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300">
               <Calendar className="text-white" size={32} />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-blue-300">5 Dias Intensivos</h3>
-            <p className="text-slate-400">Cronograma estruturado com conteúdo progressivo e prático</p>
+            <h3 className="text-xl font-bold mb-3 text-blue-300">Certificação CRM One</h3>
+            <p className="text-slate-400">Programa completo de certificação profissional em CRM One</p>
           </div>
           
           <div className="glass-effect p-8 rounded-2xl tech-border group hover:scale-105 transition-all duration-300 scale-in delay-200">
             <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300">
               <Cog className="text-white" size={32} />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-green-300">Stack Tecnológico</h3>
-            <p className="text-slate-400">Domine as principais ferramentas do ecossistema DWU</p>
+            <h3 className="text-xl font-bold mb-3 text-green-300">Módulos Intensivos</h3>
+            <p className="text-slate-400">Conteúdo estruturado e progressivo com avaliações práticas</p>
           </div>
           
           <div className="glass-effect p-8 rounded-2xl tech-border group hover:scale-105 transition-all duration-300 slide-in-right">
             <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300">
               <Users className="text-white" size={32} />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-purple-300">Suporte de Elite</h3>
-            <p className="text-slate-400">Metodologias N1, N2 e N3 para excelência no atendimento</p>
+            <h3 className="text-xl font-bold mb-3 text-purple-300">Expertise DWU</h3>
+            <p className="text-slate-400">Torne-se um especialista certificado no ecossistema DWU</p>
           </div>
         </div>
         
