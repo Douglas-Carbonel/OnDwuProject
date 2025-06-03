@@ -9,19 +9,80 @@ import { onboardingData } from "@/lib/onboarding-data";
 import { 
   Building, Globe, Heart, Database, BarChart, Ticket, 
   CheckCircle, Clock, Headset, Download, Trophy, Users,
-  FileText, TriangleAlert, Search, Gamepad, Info, ArrowUp, ArrowRight, UserCircle
+  FileText, TriangleAlert, Search, Gamepad, Info, ArrowUp, ArrowRight, UserCircle, Presentation
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface DayContentProps {
   day: number;
   onProgressUpdate: (progress: number) => void;
 }
 
+// Slide Presentation Component (Mock)
+const slides = [
+  { id: 1, title: "Bem-vindo à DWU", content: "Uma jornada de transformação digital." },
+  { id: 2, title: "Nossa Missão", content: "Inovação e excelência em cada solução." },
+  { id: 3, title: "Nossos Valores", content: "Paixão, colaboração, e impacto." },
+];
+
+interface SlidePresentationProps {
+  onComplete: () => void;
+}
+
+function SlidePresentation({ onComplete }: SlidePresentationProps) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const nextSlide = () => {
+    if (currentSlide < slides.length - 1) {
+      setCurrentSlide(currentSlide + 1);
+    } else {
+      onComplete();
+    }
+  };
+
+  return (
+    <Card className="glass-effect tech-border">
+      <CardContent className="p-8">
+        <h4 className="text-2xl font-bold mb-6 gradient-text text-center">{slides[currentSlide].title}</h4>
+        <p className="text-center text-slate-300 mb-8">{slides[currentSlide].content}</p>
+        <div className="text-center">
+          {currentSlide < slides.length - 1 ? (
+            <Button onClick={nextSlide}>Próximo Slide</Button>
+          ) : (
+            <Button onClick={nextSlide}>Concluir Apresentação</Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function getModuleIcon(day: number) {
+  switch (day) {
+    case 1:
+      return <Building className="text-white" size={32} />;
+    case 2:
+      return <Database className="text-white" size={32} />;
+    case 3:
+      return <BarChart className="text-white" size={32} />;
+    case 4:
+      return <FileText className="text-white" size={32} />;
+    default:
+      return <Info className="text-white" size={32} />;
+  }
+}
+
 export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const dayData = onboardingData.find(d => d.day === day);
   const lastProgressRef = useRef<number>(-1);
+  const [completedItems, setCompletedItems] = useState<boolean[]>([]);
+  const [allCompleted, setAllCompleted] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [showSimulation, setShowSimulation] = useState(false);
+  const [presentationCompleted, setPresentationCompleted] = useState(false);
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Load saved progress from localStorage
@@ -84,11 +145,134 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
 
   if (!dayData) return null;
 
+  const handleItemCheck = (index: number, checked: boolean) => {
+    const newCompletedItems = [...completedItems];
+    newCompletedItems[index] = checked;
+    setCompletedItems(newCompletedItems);
+  };
+
+  const handlePresentationComplete = () => {
+    setPresentationCompleted(true);
+  };
+
+  useEffect(() => {
+    const completed = completedItems.filter(Boolean).length;
+    const total = dayData.checklist.length;
+    let progress = (completed / total) * 100;
+
+    // For module 1, include presentation completion in progress
+    if (day === 1) {
+      const baseProgress = (completed / total) * 70; // Checklist is 70% of progress
+      const presentationProgress = presentationCompleted ? 30 : 0; // Presentation is 30%
+      progress = baseProgress + presentationProgress;
+    }
+
+    setAllCompleted(completed === total && (day !== 1 || presentationCompleted));
+    onProgressUpdate(progress);
+  }, [completedItems, dayData.checklist.length, onProgressUpdate, day, presentationCompleted]);
+
+  // Special handling for Module 1 with slide presentation
+  if (day === 1) {
+    return (
+      <div className="max-w-6xl mx-auto p-6 space-y-8">
+        <div className="text-center space-y-4">
+          <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl mx-auto flex items-center justify-center">
+            {getModuleIcon(day)}
+          </div>
+          <h1 className="text-3xl font-bold gradient-text">{dayData.title}</h1>
+          <p className="text-slate-400 text-lg max-w-2xl mx-auto">{dayData.description}</p>
+        </div>
+
+        <Tabs defaultValue="presentation" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsTrigger value="presentation" className="flex items-center gap-2">
+              <Presentation size={16} />
+              Apresentação Institucional
+            </TabsTrigger>
+            <TabsTrigger value="checklist" className="flex items-center gap-2">
+              <CheckCircle size={16} />
+              Lista de Verificação
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="presentation" className="space-y-6">
+            <SlidePresentation onComplete={handlePresentationComplete} />
+            {presentationCompleted && (
+              <div className="text-center">
+                <Badge variant="secondary" className="bg-green-600/20 text-green-400 border-green-600/50">
+                  <CheckCircle size={16} className="mr-1" />
+                  Apresentação Concluída
+                </Badge>
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="checklist" className="space-y-6">
+            <Card className="glass-effect border-slate-700/50">
+              <CardContent className="p-8">
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-semibold text-slate-200 flex items-center gap-2">
+                      <CheckCircle className="text-green-400" size={20} />
+                      Lista de Verificação
+                    </h3>
+                    <Badge variant="outline" className="text-slate-300">
+                      {completedItems.filter(Boolean).length}/{dayData.checklist.length}
+                    </Badge>
+                  </div>
+
+                  <div className="space-y-4">
+                    {dayData.checklist.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex items-start space-x-4 p-4 rounded-lg bg-slate-800/30 border border-slate-700/50 hover:bg-slate-800/50 transition-colors"
+                      >
+                        <Checkbox
+                          id={`item-${index}`}
+                          checked={completedItems[index] || false}
+                          onCheckedChange={(checked) => handleItemCheck(index, checked as boolean)}
+                          className="mt-1"
+                        />
+                        <label
+                          htmlFor={`item-${index}`}
+                          className={`text-sm leading-relaxed cursor-pointer flex-1 ${
+                            completedItems[index] ? 'text-slate-400 line-through' : 'text-slate-300'
+                          }`}
+                        >
+                          {item}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
+        {allCompleted && (
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="bg-green-600/20 text-green-400 border-green-600/50 text-sm px-4 py-2">
+              <Trophy className="mr-2" size={16} />
+              Módulo Concluído com Sucesso!
+            </Badge>
+            <p className="text-slate-400 text-sm">
+              Você completou a apresentação institucional e todos os itens de verificação.
+            </p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
-    <div className="day-content">
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold mb-2">{dayData.title}</h2>
-        <p className="text-slate-400">{dayData.description}</p>
+    <div className="max-w-4xl mx-auto p-6 space-y-8">
+      <div className="text-center space-y-4">
+        <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl mx-auto flex items-center justify-center">
+          {getModuleIcon(day)}
+        </div>
+        <h1 className="text-3xl font-bold gradient-text">{dayData.title}</h1>
+        <p className="text-slate-400 text-lg max-w-2xl mx-auto">{dayData.description}</p>
       </div>
 
       {/* Day 1 Content - Expanded */}
@@ -769,7 +953,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
         </>
       )}
 
-      
+
 
       {/* Checklist */}
       <Card className="bg-slate-800 border-slate-700">

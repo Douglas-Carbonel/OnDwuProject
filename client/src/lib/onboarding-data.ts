@@ -9,14 +9,14 @@ export const onboardingData: OnboardingDay[] = [
   {
     day: 1,
     title: "Cultura da Empresa",
-    description: "Fundamentos da empresa, cultura organizacional e visão estratégica",
+    description: "Apresentação institucional, cultura organizacional e fundamentos da DWU IT Solutions",
     checklist: [
-      "Assistir ao vídeo institucional completo",
-      "Conhecer a história e missão da DWU",
-      "Compreender nossa cultura de inovação",
-      "Identificar os diferentes times e departamentos",
-      "Entender nosso compromisso com a excelência",
-      "Conhecer benefícios e oportunidades de crescimento"
+      "Visualizar a apresentação institucional completa",
+      "Compreender a história e missão da DWU",
+      "Assimilar nossos valores fundamentais",
+      "Conhecer a estrutura organizacional da empresa",
+      "Entender nossa missão e visão estratégica",
+      "Reconhecer nossas certificações e reconhecimentos"
     ]
   },
   {
