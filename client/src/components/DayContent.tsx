@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -9,7 +10,8 @@ import { onboardingData } from "@/lib/onboarding-data";
 import { 
   Building, Globe, Heart, Database, BarChart, Ticket, 
   CheckCircle, Clock, Headset, Download, Trophy, Users,
-  FileText, TriangleAlert, Search, Gamepad, Info, ArrowUp, ArrowRight, UserCircle, Presentation
+  FileText, TriangleAlert, Search, Gamepad, Info, ArrowUp, ArrowRight, UserCircle, Presentation,
+  Target, Lightbulb, Zap, Shield, Eye, Rocket, Brain, Handshake, TrendingUp, Settings
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -29,43 +31,112 @@ function SlidePresentation({ onComplete }: SlidePresentationProps) {
   const slides = [
     {
       id: 1,
-      title: "Cultura da DWU IT Solutions",
-      content: "Bem-vindos à nossa jornada de transformação digital e inovação tecnológica."
+      title: "Bem-vindos à DWU IT Solutions",
+      subtitle: "Sua jornada de transformação digital começa aqui",
+      content: "Somos uma empresa especializada em soluções para empresas que utilizam SAP Business One, com foco na área comercial e equipe de vendas.",
+      type: "intro",
+      bgGradient: "from-blue-600 via-purple-600 to-blue-800"
     },
     {
       id: 2,
-      title: "Quem Somos?",
-      content: "Somos uma empresa especializada em soluções para empresas que utilizam SAP Business One, com foco na área comercial e equipe de vendas. Com 9 anos de experiência, nos destacamos no mercado pelo desenvolvimento do CRM One, uma solução certificada pela SAP."
+      title: "Axiomas dos Colaboradores",
+      subtitle: "Nossos princípios fundamentais",
+      content: "Afirmações e proposições fundamentais que são consideradas verdades evidentes e que não precisam de provas adicionais.",
+      type: "axioms-colaboradores",
+      bgGradient: "from-cyan-600 to-blue-700",
+      axioms: [
+        { text: "Viver para aprender", icon: Brain },
+        { text: "Zelar pela verdade", icon: Eye },
+        { text: "Entregar mais do que o esperado", icon: TrendingUp },
+        { text: "Se posicionar com base em dados e fatos", icon: BarChart },
+        { text: "Ensinar algo a alguém todos os dias", icon: Users },
+        { text: "Trabalhar para si mesmo", icon: Target },
+        { text: "Aceitar e cometer somente erros inéditos", icon: Lightbulb },
+        { text: "Cuide da sua mente e leia livros", icon: Brain },
+        { text: "Manter o seu ego forte", icon: Shield },
+        { text: "Acreditar em você e nunca se comparar", icon: Heart },
+        { text: "Comunicação anti-fragilidade", icon: Handshake }
+      ]
     },
     {
       id: 3,
-      title: "Nosso Modelo de Negócio",
-      content: "Baseamos nossa atuação em 5 pilares fundamentais que garantem excelência e satisfação dos nossos clientes."
+      title: "Axiomas da Empresa",
+      subtitle: "Pilares que guiam nossa organização",
+      content: "Princípios fundamentais que definem nossa cultura organizacional e direcionam nossas decisões estratégicas.",
+      type: "axioms-empresa",
+      bgGradient: "from-green-600 to-teal-700",
+      axioms: [
+        { 
+          text: "Energia gera resultado", 
+          desc: "Manter a energia constante é o motor que move o time rumo ao crescimento.",
+          icon: Zap 
+        },
+        { 
+          text: "Ideias boas merecem palco", 
+          desc: "Iniciativas de valor serão sempre reconhecidas. Aqui, mérito gera impacto.",
+          icon: Lightbulb 
+        },
+        { 
+          text: "Aprender é a única constante", 
+          desc: "A evolução da equipe depende do nosso compromisso com o aprendizado contínuo.",
+          icon: Brain 
+        },
+        { 
+          text: "Inovar é não aceitar o comum", 
+          desc: "Para sermos os melhores, precisamos pensar o que ainda não foi feito.",
+          icon: Rocket 
+        },
+        { 
+          text: "Transparência constrói confiança", 
+          desc: "Clareza, ética e verdade são os pilares de qualquer relação duradoura.",
+          icon: Shield 
+        },
+        { 
+          text: "Problemas existem para serem resolvidos", 
+          desc: "Agilidade, foco e atitude fazem parte do nosso DNA.",
+          icon: Settings 
+        }
+      ]
     },
     {
       id: 4,
-      title: "1. Cultura e Treinamento",
-      content: "Manter a cultura da empresa voltada em cuidar das pessoas."
+      title: "Estrutura Organizacional DWU",
+      subtitle: "Como estamos organizados",
+      content: "Nossa estrutura é pensada para maximizar a colaboração e a eficiência, com times especializados e multidisciplinares.",
+      type: "structure",
+      bgGradient: "from-purple-600 to-indigo-700"
     },
     {
       id: 5,
-      title: "2. Perfilamento",
-      content: "Buscar o cliente e perfilar ele na demonstração do sistema."
+      title: "Nossos Deveres e Horários",
+      subtitle: "Diretrizes profissionais",
+      content: "Estabelecemos padrões claros para manter nossa excelência e profissionalismo.",
+      type: "duties",
+      bgGradient: "from-slate-700 to-slate-900"
     },
     {
       id: 6,
-      title: "3. Produto Único",
-      content: "Cuidado do desenvolvimento dos sistemas e linha de produção do produto."
+      title: "Uniforme Corporativo",
+      subtitle: "Identidade visual profissional",
+      content: "Para mantermos uma imagem profissional e alinhada com a identidade da empresa, informamos que o uso do uniforme passa a ser obrigatório para todos os colaboradores.",
+      type: "uniform",
+      bgGradient: "from-navy-600 to-blue-800"
     },
     {
       id: 7,
-      title: "4. Cuidado Personalizado com o Cliente",
-      content: "Entender sobre o contexto do cliente antes de implantar o sistema."
+      title: "Nossa Equipe",
+      subtitle: "Pessoas que fazem a diferença",
+      content: "Conheça os profissionais que trabalham todos os dias para entregar excelência e inovação aos nossos clientes.",
+      type: "team",
+      bgGradient: "from-indigo-600 to-purple-700"
     },
     {
       id: 8,
-      title: "5. Atendimento Humanizado",
-      content: "Cada cliente tem sua história e nós conectamos o nosso produto ao universo dele para gerar satisfação."
+      title: "Horários e Responsabilidades",
+      subtitle: "Como organizamos nosso trabalho",
+      content: "Estrutura de horários flexível com foco em resultados e atendimento de qualidade aos nossos clientes.",
+      type: "schedule",
+      bgGradient: "from-teal-600 to-cyan-700"
     }
   ];
 
@@ -85,6 +156,291 @@ function SlidePresentation({ onComplete }: SlidePresentationProps) {
   };
 
   const progressPercentage = ((currentSlide + 1) / slides.length) * 100;
+  const currentSlideData = slides[currentSlide];
+
+  const renderSlideContent = () => {
+    switch (currentSlideData.type) {
+      case "intro":
+        return (
+          <div className="text-center space-y-8">
+            <div className="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center mx-auto backdrop-blur-sm">
+              <Building size={64} className="text-white" />
+            </div>
+            <div>
+              <h3 className="text-5xl font-bold text-white mb-4">{currentSlideData.title}</h3>
+              <h4 className="text-2xl text-blue-100 mb-6">{currentSlideData.subtitle}</h4>
+              <p className="text-xl text-blue-100 leading-relaxed max-w-4xl mx-auto">{currentSlideData.content}</p>
+            </div>
+          </div>
+        );
+
+      case "axioms-colaboradores":
+        return (
+          <div className="space-y-8">
+            <div className="text-center mb-8">
+              <h3 className="text-4xl font-bold text-white mb-2">{currentSlideData.title}</h3>
+              <h4 className="text-xl text-cyan-100 mb-4">{currentSlideData.subtitle}</h4>
+              <p className="text-cyan-100 max-w-3xl mx-auto">{currentSlideData.content}</p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {currentSlideData.axioms?.map((axiom, index) => {
+                const IconComponent = axiom.icon;
+                return (
+                  <div 
+                    key={index}
+                    className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center border border-white/20 hover:bg-white/20 transition-all duration-300 group"
+                  >
+                    <div className="w-12 h-12 bg-cyan-400/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                      <IconComponent size={24} className="text-cyan-200" />
+                    </div>
+                    <p className="text-white text-sm font-medium leading-tight">{axiom.text}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+
+      case "axioms-empresa":
+        return (
+          <div className="space-y-8">
+            <div className="text-center mb-8">
+              <h3 className="text-4xl font-bold text-white mb-2">{currentSlideData.title}</h3>
+              <h4 className="text-xl text-green-100 mb-4">{currentSlideData.subtitle}</h4>
+              <p className="text-green-100 max-w-3xl mx-auto">{currentSlideData.content}</p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              {currentSlideData.axioms?.map((axiom, index) => {
+                const IconComponent = axiom.icon;
+                return (
+                  <div 
+                    key={index}
+                    className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 group"
+                  >
+                    <div className="flex items-start space-x-4">
+                      <div className="w-14 h-14 bg-green-400/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                        <IconComponent size={28} className="text-green-200" />
+                      </div>
+                      <div>
+                        <h5 className="text-white font-bold text-lg mb-2">{axiom.text}</h5>
+                        <p className="text-green-100 text-sm leading-relaxed">{axiom.desc}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+
+      case "structure":
+        return (
+          <div className="space-y-8">
+            <div className="text-center mb-8">
+              <h3 className="text-4xl font-bold text-white mb-2">{currentSlideData.title}</h3>
+              <h4 className="text-xl text-purple-100 mb-4">{currentSlideData.subtitle}</h4>
+              <p className="text-purple-100 max-w-3xl mx-auto">{currentSlideData.content}</p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Tribos */}
+              <div className="space-y-6">
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-12 h-12 bg-blue-400/20 rounded-xl flex items-center justify-center">
+                      <Users size={24} className="text-blue-200" />
+                    </div>
+                    <h5 className="text-2xl font-bold text-blue-200">Tribo</h5>
+                  </div>
+                  <h6 className="text-white font-semibold mb-2">Administrativa e Comercial</h6>
+                  <p className="text-purple-100 text-sm">Foco em garantir suporte às áreas de negócio, marketing e vendas, além de atender aos requisitos jurídicos e financeiros.</p>
+                </div>
+
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-12 h-12 bg-cyan-400/20 rounded-xl flex items-center justify-center">
+                      <Rocket size={24} className="text-cyan-200" />
+                    </div>
+                    <h5 className="text-2xl font-bold text-cyan-200">Tribo</h5>
+                  </div>
+                  <h6 className="text-white font-semibold mb-2">Inovação e Operações</h6>
+                  <p className="text-purple-100 text-sm">Foco na entrega de valor do cliente final por meio de melhorias no produto, UX/UI, e inovação tecnológica.</p>
+                </div>
+              </div>
+
+              {/* Squads */}
+              <div className="space-y-4">
+                <h5 className="text-2xl font-bold text-purple-200 mb-4">Squads</h5>
+                
+                <div className="space-y-3">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 flex items-center space-x-3">
+                    <TrendingUp size={20} className="text-purple-200" />
+                    <span className="text-white font-medium">Marketing e Vendas</span>
+                  </div>
+                  
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 flex items-center space-x-3">
+                    <Users size={20} className="text-purple-200" />
+                    <span className="text-white font-medium">Financeiro e RH</span>
+                  </div>
+                  
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 flex items-center space-x-3">
+                    <Settings size={20} className="text-purple-200" />
+                    <span className="text-white font-medium">Engenharia e Produto</span>
+                  </div>
+                  
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 flex items-center space-x-3">
+                    <Rocket size={20} className="text-purple-200" />
+                    <span className="text-white font-medium">Implantação</span>
+                  </div>
+                  
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 flex items-center space-x-3">
+                    <Headset size={20} className="text-purple-200" />
+                    <span className="text-white font-medium">Sustentação e Experiência do Cliente</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case "duties":
+        return (
+          <div className="text-center space-y-8">
+            <div>
+              <h3 className="text-4xl font-bold text-white mb-2">{currentSlideData.title}</h3>
+              <h4 className="text-xl text-slate-300 mb-4">{currentSlideData.subtitle}</h4>
+              <p className="text-slate-200 max-w-3xl mx-auto">{currentSlideData.content}</p>
+            </div>
+            <div className="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center mx-auto backdrop-blur-sm">
+              <Clock size={64} className="text-white" />
+            </div>
+          </div>
+        );
+
+      case "uniform":
+        return (
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h3 className="text-4xl font-bold text-white mb-2">{currentSlideData.title}</h3>
+              <h4 className="text-xl text-blue-100 mb-6">{currentSlideData.subtitle}</h4>
+              <p className="text-blue-100 leading-relaxed mb-6">{currentSlideData.content}</p>
+              
+              <div className="space-y-4">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                  <p className="text-white text-sm"><strong>A calça fica a critério de escolha do colaborador</strong>, desde que seja uma peça neutra e apropriada para ambiente profissional.</p>
+                </div>
+                
+                <div className="bg-yellow-500/20 backdrop-blur-sm rounded-xl p-4 border border-yellow-400/30">
+                  <p className="text-yellow-100 text-sm"><strong>Está proibido o uso de:</strong> saias, vestidos, macacões, bermudas, chinelos e rasteiras que não componham o uniforme completo.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-48 h-48 bg-white/20 rounded-3xl flex items-center justify-center mx-auto backdrop-blur-sm">
+                <Building size={96} className="text-white" />
+              </div>
+              <p className="text-blue-100 text-sm mt-4">Uniforme corporativo DWU</p>
+            </div>
+          </div>
+        );
+
+      case "team":
+        return (
+          <div className="text-center space-y-8">
+            <div>
+              <h3 className="text-4xl font-bold text-white mb-2">{currentSlideData.title}</h3>
+              <h4 className="text-xl text-purple-100 mb-4">{currentSlideData.subtitle}</h4>
+              <p className="text-purple-100 max-w-3xl mx-auto">{currentSlideData.content}</p>
+            </div>
+            
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+              <div className="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center mx-auto backdrop-blur-sm mb-6">
+                <Users size={64} className="text-white" />
+              </div>
+              <p className="text-white text-lg">Nossa equipe é formada por profissionais apaixonados por tecnologia e comprometidos com a excelência.</p>
+            </div>
+          </div>
+        );
+
+      case "schedule":
+        return (
+          <div className="space-y-8">
+            <div className="text-center mb-8">
+              <h3 className="text-4xl font-bold text-white mb-2">{currentSlideData.title}</h3>
+              <h4 className="text-xl text-teal-100 mb-4">{currentSlideData.subtitle}</h4>
+              <p className="text-teal-100 max-w-3xl mx-auto">{currentSlideData.content}</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div className="flex items-center space-x-3 mb-4">
+                  <Clock size={24} className="text-teal-200" />
+                  <h5 className="text-xl font-bold text-teal-200">Nossos Horários</h5>
+                </div>
+                <ul className="space-y-2 text-white">
+                  <li>• 08h e 30min às 12h e das 13h e 30min às 18h</li>
+                  <li>• Intervalo de 1h30 para almoço</li>
+                </ul>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div className="flex items-center space-x-3 mb-4">
+                  <Shield size={24} className="text-teal-200" />
+                  <h5 className="text-xl font-bold text-teal-200">Responsabilidade de Todos</h5>
+                </div>
+                <ul className="space-y-2 text-white text-sm">
+                  <li>• Cumprimento dos horários estabelecidos</li>
+                  <li>• Atendimento e suporte ao cliente dentro dos períodos definidos</li>
+                  <li>• Uso adequado do uniforme ou vestimenta conforme especificado</li>
+                  <li>• Atendimento rápido e eficiente para garantir a qualidade dos serviços prestados</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-red-500/20 backdrop-blur-sm rounded-2xl p-6 border border-red-400/30">
+                <div className="flex items-center space-x-3 mb-4">
+                  <TriangleAlert size={24} className="text-red-200" />
+                  <h5 className="text-xl font-bold text-red-200">Em caso de falta ou atraso</h5>
+                </div>
+                <ul className="space-y-2 text-red-100 text-sm">
+                  <li>• Informe imediatamente seu gestor direto ou a direção da empresa</li>
+                  <li>• <strong>A comunicação deve ser feita o mais rápido possível, preferencialmente antes do horário de entrada</strong></li>
+                  <li>• Justifique o motivo da ausência ou do atraso</li>
+                  <li>• Caso necessário, apresente documentação como: atestado médico</li>
+                </ul>
+              </div>
+
+              <div className="bg-cyan-500/20 backdrop-blur-sm rounded-2xl p-6 border border-cyan-400/30">
+                <div className="flex items-center space-x-3 mb-4">
+                  <Globe size={24} className="text-cyan-200" />
+                  <h5 className="text-xl font-bold text-cyan-200">Sobre o período de férias</h5>
+                </div>
+                <ul className="space-y-2 text-cyan-100 text-sm">
+                  <li>• O profissional deve se organizar com no <strong>mínimo 45 dias de antecedência</strong></li>
+                  <li>• Caso as férias estejam próximas do vencimento e envolvam dois períodos consecutivos, a empresa pode fazer a solicitação a qualquer momento para adequação da escala</li>
+                  <li>• É obrigatório avisar seu gestor para que o planejamento da equipe não seja comprometido</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return (
+          <div className="text-center space-y-8">
+            <div className="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center mx-auto backdrop-blur-sm">
+              <Building size={64} className="text-white" />
+            </div>
+            <div>
+              <h3 className="text-4xl font-bold text-white mb-4">{currentSlideData.title}</h3>
+              <p className="text-xl text-white/80 leading-relaxed max-w-3xl mx-auto">{currentSlideData.content}</p>
+            </div>
+          </div>
+        );
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -107,14 +463,9 @@ function SlidePresentation({ onComplete }: SlidePresentationProps) {
       </div>
 
       {/* Slide Content */}
-      <Card className="glass-effect tech-border min-h-[400px]">
-        <CardContent className="p-8 flex flex-col items-center justify-center text-center space-y-6">
-          <h4 className="text-3xl font-bold gradient-text">
-            {slides[currentSlide].title}
-          </h4>
-          <p className="text-slate-300 text-lg leading-relaxed max-w-2xl">
-            {slides[currentSlide].content}
-          </p>
+      <Card className={`glass-effect tech-border min-h-[500px] bg-gradient-to-br ${currentSlideData.bgGradient}`}>
+        <CardContent className="p-8 flex flex-col items-center justify-center">
+          {renderSlideContent()}
         </CardContent>
       </Card>
 
