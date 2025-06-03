@@ -874,15 +874,15 @@ export default function ModuleEvaluation({
             <div className="mb-6">
               <Clock size={64} className="mx-auto mb-4 text-yellow-500" />
               <h3 className="text-2xl font-bold text-white mb-2">Limite de Tentativas Atingido</h3>
-              <p className="text-slate-300 mb-4">
+              <div className="text-slate-300 mb-4">
                 Você já realizou 2 tentativas hoje para este módulo.
-              </p>
-              <p className="text-yellow-400 font-medium">
+              </div>
+              <div className="text-yellow-400 font-medium">
                 Próxima tentativa disponível em: {hoursRemaining} hora(s)
-              </p>
+              </div>
             </div>
             <div className="flex justify-center gap-4">
-              <Button 
+              <button 
                 onClick={(e) => {
                   console.log("🔙 Click event triggered", e);
                   e.preventDefault();
@@ -892,23 +892,22 @@ export default function ModuleEvaluation({
                 onMouseDown={(e) => {
                   console.log("🔙 MouseDown event triggered");
                 }}
-                variant="outline" 
-                className="bg-slate-700 border-slate-600 hover:bg-slate-600 cursor-pointer"
+                className="px-4 py-2 bg-slate-700 border border-slate-600 hover:bg-slate-600 text-white rounded-lg cursor-pointer transition-colors"
                 type="button"
               >
                 Voltar ao Módulo
-              </Button>
-              <Button 
+              </button>
+              <button 
                 onClick={(e) => {
                   console.log("🔙 Redirecionamento alternativo");
                   e.preventDefault();
                   window.location.href = "/onboarding";
                 }}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg cursor-pointer transition-colors"
                 type="button"
               >
                 Ir para Dashboard
-              </Button>
+              </button>
             </div>
           </CardContent>
         </Card>
