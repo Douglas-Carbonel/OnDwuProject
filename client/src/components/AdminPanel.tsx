@@ -24,7 +24,10 @@ import {
   BarChart3,
   Plus,
   Minus,
-  Target
+  Target,
+  Edit,
+  Trash2,
+  Save
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
@@ -86,6 +89,14 @@ export default function AdminPanel() {
   const [loadingEvaluations, setLoadingEvaluations] = useState<Set<number>>(new Set());
   const [selectedUserForModal, setSelectedUserForModal] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    profile: "colaborador",
+  });
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -155,6 +166,96 @@ export default function AdminPanel() {
       fetchUserEvaluations(userId);
     }
     setIsModalOpen(true);
+  };
+
+  const openEditModal = (user: User) => {
+    setEditingUser(user);
+    setEditFormData({
+      username: user.username,
+      email: user.user_mail,
+      password: "",
+      profile: user.user_profile,
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingUser) return;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/admin/users/${editingUser.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: editFormData.username,
+          email: editFormData.email,
+          password: editFormData.password || undefined,
+          profile: editFormData.profile,
+        }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Sucesso!",
+          description: `Usuário ${editFormData.username} atualizado com sucesso!`,
+        });
+        setIsEditModalOpen(false);
+        setEditingUser(null);
+        fetchUsers(); // Refresh users list
+      } else {
+        const error = await response.json();
+        toast({
+          title: "Erro",
+          description: error.message || "Erro ao atualizar usuário",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Erro de conexão com o servidor",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteUser = async (user: User) => {
+    if (!confirm(`Tem certeza que deseja excluir o usuário ${user.username}?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/admin/users/${user.id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Sucesso!",
+          description: `Usuário ${user.username} excluído com sucesso!`,
+        });
+        fetchUsers(); // Refresh users list
+      } else {
+        const error = await response.json();
+        toast({
+          title: "Erro",
+          description: error.message || "Erro ao excluir usuário",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Erro de conexão com o servidor",
+        variant: "destructive",
+      });
+    }
   };
 
   useEffect(() => {
@@ -378,6 +479,28 @@ export default function AdminPanel() {
                             >
                               {user.user_profile === 'admin' ? 'Admin' : 'Colaborador'}
                             </Badge>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-8 w-8 p-0 bg-slate-700 border-slate-600 hover:bg-blue-600"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                openEditModal(user);
+                              }}
+                            >
+                              <Edit size={14} className="text-slate-300" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-8 w-8 p-0 bg-slate-700 border-slate-600 hover:bg-red-600"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteUser(user);
+                              }}
+                            >
+                              <Trash2 size={14} className="text-slate-300" />
+                            </Button>
                           </div>
                         </Button>
                       </CollapsibleTrigger>
@@ -741,6 +864,112 @@ export default function AdminPanel() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Edit User Modal */}
+        <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+          <DialogContent className="max-w-md bg-slate-800 border-slate-700">
+            <DialogHeader>
+              <DialogTitle className="text-white flex items-center gap-3">
+                <Edit className="text-blue-400" size={24} />
+                Editar Usuário
+              </DialogTitle>
+              <DialogDescription className="text-slate-400">
+                Altere as informações do usuário {editingUser?.username}
+              </DialogDescription>
+            </DialogHeader>
+
+            <form onSubmit={handleEditUser} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="edit-username" className="text-slate-300 font-medium">
+                  Nome Completo
+                </Label>
+                <Input
+                  id="edit-username"
+                  type="text"
+                  placeholder="Nome do colaborador"
+                  value={editFormData.username}
+                  onChange={(e) => setEditFormData(prev => ({ ...prev, username: e.target.value }))}
+                  className="bg-slate-900/50 border-slate-700 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-blue-500/20"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="edit-email" className="text-slate-300 font-medium">
+                  Email Corporativo
+                </Label>
+                <Input
+                  id="edit-email"
+                  type="email"
+                  placeholder="usuario@dwu.com.br"
+                  value={editFormData.email}
+                  onChange={(e) => setEditFormData(prev => ({ ...prev, email: e.target.value }))}
+                  className="bg-slate-900/50 border-slate-700 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-blue-500/20"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="edit-password" className="text-slate-300 font-medium">
+                  Nova Senha (deixe em branco para manter a atual)
+                </Label>
+                <Input
+                  id="edit-password"
+                  type="password"
+                  placeholder="Nova senha (opcional)"
+                  value={editFormData.password}
+                  onChange={(e) => setEditFormData(prev => ({ ...prev, password: e.target.value }))}
+                  className="bg-slate-900/50 border-slate-700 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-blue-500/20"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="edit-profile" className="text-slate-300 font-medium">
+                  Perfil de Acesso
+                </Label>
+                <Select
+                  value={editFormData.profile}
+                  onValueChange={(value) => setEditFormData(prev => ({ ...prev, profile: value }))}
+                >
+                  <SelectTrigger className="bg-slate-900/50 border-slate-700 text-white focus:border-blue-500 focus:ring-blue-500/20">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-slate-800 border-slate-700">
+                    <SelectItem value="colaborador" className="text-white">
+                      Colaborador - Acesso ao Onboarding
+                    </SelectItem>
+                    <SelectItem value="admin" className="text-white">
+                      Administrador - Acesso Total
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex gap-2 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsEditModalOpen(false)}
+                  className="flex-1 bg-slate-700 border-slate-600 text-slate-300 hover:bg-slate-600"
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Salvando..." : (
+                    <>
+                      <Save size={16} className="mr-2" />
+                      Salvar
+                    </>
+                  )}
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

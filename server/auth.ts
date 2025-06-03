@@ -182,6 +182,90 @@ export class AuthService {
       return [];
     }
   }
+
+  async updateUser(id: number, userData: {
+    username?: string;
+    user_mail?: string;
+    password?: string;
+    user_profile?: string;
+  }): Promise<AuthUser | null> {
+    try {
+      console.log("🔧 Atualizando usuário ID:", id, "com dados:", userData);
+
+      // Check if user exists
+      const existingUser = await this.getUserById(id);
+      if (!existingUser) {
+        console.log("❌ Usuário não encontrado:", id);
+        return null;
+      }
+
+      // Check if email is being changed and if it already exists
+      if (userData.user_mail && userData.user_mail !== existingUser.user_mail) {
+        const emailExists = await this.getDb()
+          .select()
+          .from(users)
+          .where(eq(users.user_mail, userData.user_mail))
+          .limit(1);
+
+        if (emailExists.length > 0) {
+          console.log("❌ Email já existe:", userData.user_mail);
+          return null;
+        }
+      }
+
+      // Prepare update data
+      const updateData: any = {};
+      
+      if (userData.username) updateData.username = userData.username;
+      if (userData.user_mail) updateData.user_mail = userData.user_mail;
+      if (userData.user_profile) updateData.user_profile = userData.user_profile;
+      
+      // Hash password if provided
+      if (userData.password) {
+        updateData.password = await bcrypt.hash(userData.password, 10);
+      }
+
+      const updatedUser = await this.getDb()
+        .update(users)
+        .set(updateData)
+        .where(eq(users.id, id))
+        .returning({
+          id: users.id,
+          username: users.username,
+          user_mail: users.user_mail,
+          user_profile: users.user_profile,
+        });
+
+      console.log("✅ Usuário atualizado:", updatedUser[0]);
+      return updatedUser[0];
+    } catch (error) {
+      console.error("❌ Erro ao atualizar usuário:", error);
+      return null;
+    }
+  }
+
+  async deleteUser(id: number): Promise<boolean> {
+    try {
+      console.log("🗑️ Excluindo usuário ID:", id);
+
+      // Check if user exists
+      const existingUser = await this.getUserById(id);
+      if (!existingUser) {
+        console.log("❌ Usuário não encontrado:", id);
+        return false;
+      }
+
+      await this.getDb()
+        .delete(users)
+        .where(eq(users.id, id));
+
+      console.log("✅ Usuário excluído com sucesso:", id);
+      return true;
+    } catch (error) {
+      console.error("❌ Erro ao excluir usuário:", error);
+      return false;
+    }
+  }
 }
 
 export const authService = new AuthService();

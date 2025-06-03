@@ -173,6 +173,71 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin route to update user
+  app.put("/api/admin/users/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { username, email, password, profile } = req.body;
+
+      console.log("🔧 Atualizando usuário:", userId, { username, email, profile });
+
+      if (!username || !email || !profile) {
+        return res.status(400).json({ message: "Nome, email e perfil são obrigatórios" });
+      }
+
+      if (!["colaborador", "admin"].includes(profile)) {
+        return res.status(400).json({ message: "Perfil inválido" });
+      }
+
+      const updatedUser = await authService.updateUser(parseInt(userId), {
+        username,
+        user_mail: email,
+        password: password || undefined,
+        user_profile: profile,
+      });
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: "Usuário não encontrado" });
+      }
+
+      console.log("✅ Usuário atualizado com sucesso:", updatedUser.username);
+
+      res.json({
+        success: true,
+        message: "Usuário atualizado com sucesso",
+        user: updatedUser
+      });
+    } catch (error) {
+      console.error("❌ Erro ao atualizar usuário:", error);
+      res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  });
+
+  // Admin route to delete user
+  app.delete("/api/admin/users/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+
+      console.log("🗑️ Excluindo usuário:", userId);
+
+      const deleted = await authService.deleteUser(parseInt(userId));
+
+      if (!deleted) {
+        return res.status(404).json({ message: "Usuário não encontrado" });
+      }
+
+      console.log("✅ Usuário excluído com sucesso");
+
+      res.json({
+        success: true,
+        message: "Usuário excluído com sucesso"
+      });
+    } catch (error) {
+      console.error("❌ Erro ao excluir usuário:", error);
+      res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  });
+
   // Get user progress
   app.get("/api/progress/:userId", async (req, res) => {
     try {
