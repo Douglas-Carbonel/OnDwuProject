@@ -941,6 +941,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Test endpoint to simulate user completing all modules
+  app.post("/api/test-complete-modules/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      console.log("🎓 Simulando conclusão de todos os módulos para userId:", userId);
+
+      // Create evaluation records for all modules with passing scores
+      for (let moduleId = 1; moduleId <= 4; moduleId++) {
+        const evaluationData = {
+          userId: parseInt(userId),
+          moduleId,
+          score: 95, // High score to ensure passing
+          passed: true,
+          answers: { "1": 1, "2": 0, "3": 2, "4": 1, "5": 3 },
+          totalQuestions: 20,
+          correctAnswers: 19,
+          timeSpent: 300,
+          completedAt: new Date().toISOString()
+        };
+
+        await storage.saveModuleEvaluation(evaluationData);
+        console.log(`✅ Módulo ${moduleId} concluído com sucesso`);
+      }
+
+      // Sync progress to update user's status
+      const updatedProgress = await storage.syncProgressWithEvaluations(userId);
+
+      res.json({
+        success: true,
+        message: "Todos os módulos foram simulados como concluídos!",
+        progress: updatedProgress,
+        certificateReady: true,
+        nextStep: "O usuário agora pode gerar seu certificado"
+      });
+
+    } catch (error) {
+      console.error("❌ Erro ao simular conclusão dos módulos:", error);
+      res.status(500).json({
+        success: false,
+        message: "Erro ao simular conclusão",
+        error: error.message
+      });
+    }
+  });
+
   // Complete validation endpoint
   app.get("/api/validate-all-data", async (req, res) => {
     try {
