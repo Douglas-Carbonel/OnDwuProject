@@ -1,4 +1,3 @@
-
 import { getDatabase } from "./database";
 import { users } from "@shared/schema";
 import { eq } from "drizzle-orm";
@@ -40,10 +39,10 @@ export class AuthService {
       }
 
       const userData = user[0];
-      
+
       // Verificar senha
       const isValidPassword = await bcrypt.compare(password, userData.password);
-      
+
       if (!isValidPassword) {
         return null;
       }
@@ -71,7 +70,7 @@ export class AuthService {
   }): Promise<AuthUser | null> {
     try {
       console.log("🔧 Tentando criar usuário:", userData.username, userData.user_mail);
-      
+
       // Verificar se o email já existe
       const existingUser = await this.getDb()
         .select()
@@ -131,7 +130,7 @@ export class AuthService {
       }
 
       const userData = user[0];
-      
+
       return {
         id: userData.id,
         username: userData.username,
@@ -219,17 +218,21 @@ export class AuthService {
 
       // Prepare update data
       const updateData: any = {};
-      
+
       if (userData.username) updateData.username = userData.username;
       if (userData.user_mail) updateData.user_mail = userData.user_mail;
       if (userData.user_profile) updateData.user_profile = userData.user_profile;
-      
+
       // Hash password if provided
       if (userData.password) {
-        updateData.password = await bcrypt.hash(userData.password, 10);
+        userData.password = await bcrypt.hash(userData.password, 10);
       }
 
-      const updatedUser = await this.getDb()
+      // Remove any created_at field to prevent modification
+      const updateData = { ...userData };
+      delete (updateData as any).created_at;
+
+      const [updatedUser] = await this.getDb()
         .update(users)
         .set(updateData)
         .where(eq(users.id, id))
