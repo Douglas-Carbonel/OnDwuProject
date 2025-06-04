@@ -1,0 +1,105 @@
+
+{
+  "users": {
+    "testUser": {
+      "username": "Usuario Teste Cypress",
+      "email": "cypress.test@dwu.com.br",
+      "password": "cypress123",
+      "profile": "colaborador",
+      "address": "Rua Teste Cypress, 123, São Paulo, SP",
+      "phone": "(11) 99999-8888"
+    },
+    "testAdmin": {
+      "username": "Admin Teste Cypress",
+      "email": "cypress.admin@dwu.com.br",
+      "password": "cypress123",
+      "profile": "admin"
+    }
+  },
+  "evaluations": {
+    "moduleEvaluation": {
+      "moduleId": 1,
+      "score": 85,
+      "passed": true,
+      "answers": {
+        "1": 1,
+        "2": 0,
+        "3": 2,
+        "4": 1,
+        "5": 3
+      },
+      "totalQuestions": 20,
+      "correctAnswers": 17,
+      "timeSpent": 300
+    },
+    "failedEvaluation": {
+      "moduleId": 1,
+      "score": 45,
+      "passed": false,
+      "answers": {
+        "1": 0,
+        "2": 1,
+        "3": 0,
+        "4": 2,
+        "5": 1
+      },
+      "totalQuestions": 20,
+      "correctAnswers": 9,
+      "timeSpent": 180
+    }
+  },
+  "progress": {
+    "initialProgress": {
+      "currentModule": 1,
+      "completedModules": [],
+      "moduleProgress": {},
+      "moduleEvaluations": {}
+    },
+    "advancedProgress": {
+      "currentModule": 3,
+      "completedModules": [1, 2],
+      "moduleProgress": {
+        "1": 100,
+        "2": 100,
+        "3": 50
+      },
+      "moduleEvaluations": {
+        "1": {
+          "score": 85,
+          "passed": true,
+          "completedAt": "2025-01-01T10:00:00.000Z"
+        },
+        "2": {
+          "score": 92,
+          "passed": true,
+          "completedAt": "2025-01-02T14:30:00.000Z"
+        }
+      }
+    }
+  },
+  "apiResponses": {
+    "loginSuccess": {
+      "success": true,
+      "user": {
+        "userId": "test-user-id",
+        "name": "Usuario Teste",
+        "email": "test@dwu.com.br",
+        "profile": "colaborador"
+      }
+    },
+    "loginError": {
+      "message": "Credenciais inválidas"
+    },
+    "evaluationSuccess": {
+      "success": true,
+      "message": "Avaliação salva com sucesso!",
+      "data": {
+        "evaluation": {
+          "id": 1,
+          "score": 85,
+          "passed": true
+        }
+      }
+    }
+  }
+}
