@@ -4,6 +4,9 @@ import { Progress } from "@/components/ui/progress";
 import { Building, UserCircle, ChevronLeft, ChevronRight, CheckCircle, LogOut, Shield } from "lucide-react";
 import ModuleContent from "./ModuleContent";
 import DayCompletionModal from "./DayCompletionModal";
+import NotificationSystem from "./NotificationSystem";
+import AchievementSystem from "./AchievementSystem";
+import FeedbackSystem from "./FeedbackSystem";
 import { useProgress } from "@/hooks/useProgress";
 import { onboardingData } from "@/lib/onboarding-data";
 import { useAuth } from "@/hooks/useAuth";
@@ -215,6 +218,7 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
             </div>
 
             <div className="flex items-center space-x-4 slide-in-right">
+              <NotificationSystem />
               {isAdmin && (
                 <Button 
                   variant="ghost" 
@@ -339,7 +343,7 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
                   <span className="text-slate-300 font-medium">Módulos Completos</span>
                   <div className="flex items-center space-x-2">
                     <span className="text-2xl font-bold text-green-400">{completedDays.length}</span>
-                    <span className="text-slate-400">/5</span>
+                    <span className="text-slate-400">/4</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
@@ -355,6 +359,11 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
                   </span>
                 </div>
               </div>
+            </div>
+
+            {/* Achievement System */}
+            <div className="mt-6">
+              <AchievementSystem userProgress={progress} />
             </div>
           </div>
         </nav>
