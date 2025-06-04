@@ -514,7 +514,7 @@ export class DatabaseStorage implements IStorage {
   async checkDailyAttempts(userId: string, moduleId: number): Promise<{ canAttempt: boolean; remainingTime?: number }> {
     try {
       console.log("🔍 Verificando tentativas diárias - userId:", userId, "moduleId:", moduleId);
-      
+
       // Para verificar tentativas, vamos olhar as últimas 24 horas e também contar tentativas do módulo
       const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
       console.log("🕐 Verificando tentativas desde:", twentyFourHoursAgo.toLocaleString('pt-BR'));
@@ -547,14 +547,19 @@ export class DatabaseStorage implements IStorage {
 
         return { 
           canAttempt: false, 
-          remainingTime: Math.max(0, remainingTime)
+          remainingTime, 
+          message: "Limite de 2 tentativas em 24 horas atingido. Tente novamente mais tarde.",
+          lastAttempt: evaluations[0].completed_at,
+          nextAttemptAt: nextAttemptTime.toISOString(),
+          attemptCount: evaluations.length,
+          maxAttempts: 2
         };
       }
 
       // Também verificar na tabela dailyAttempts como backup
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      
+
       const dailyResult = await this.db
         .select()
         .from(dailyAttempts)
@@ -567,7 +572,7 @@ export class DatabaseStorage implements IStorage {
         );
 
       const todayAttempts = dailyResult.reduce((sum, attempt) => sum + attempt.attempt_count, 0);
-      
+
       if (todayAttempts >= 2) {
         const lastDailyAttempt = dailyResult[dailyResult.length - 1];
         const nextAttemptTime = new Date(lastDailyAttempt.attempt_date);
@@ -589,7 +594,7 @@ export class DatabaseStorage implements IStorage {
   async recordAttempt(userId: string, moduleId: number): Promise<void> {
     try {
       console.log("📝 Registrando tentativa - userId:", userId, "moduleId:", moduleId);
-      
+
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 

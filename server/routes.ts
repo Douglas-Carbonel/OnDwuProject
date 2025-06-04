@@ -330,6 +330,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Specific endpoint for evaluation attempts with userId and moduleId in path
+  app.get("/api/evaluation-attempts/:userId/:moduleId", async (req, res) => {
+    try {
+      const { userId, moduleId } = req.params;
+      
+      console.log("🔍 Verificando tentativas para userId:", userId, "moduleId:", moduleId);
+      
+      if (!userId || !moduleId) {
+        return res.status(400).json({ 
+          message: "userId e moduleId são obrigatórios",
+          canAttempt: false 
+        });
+      }
+
+      const result = await storage.checkDailyAttempts(userId.toString(), parseInt(moduleId.toString()));
+      console.log("✅ Resultado da verificação:", result);
+      
+      res.json(result);
+    } catch (error) {
+      console.error("Error checking attempts:", error);
+      res.status(500).json({ 
+        message: "Erro interno do servidor",
+        canAttempt: false 
+      });
+    }
+  });
+
   // Check deadline
   app.get("/api/check-deadline/:userId", async (req, res) => {
     try {
@@ -938,6 +965,86 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({
         success: false,
         message: "Erro interno do servidor",
+        error: error.message
+      });
+    }
+  });
+
+  // Get evaluation questions for a module
+  app.get("/api/evaluation-questions/:moduleId", async (req, res) => {
+    try {
+      const { moduleId } = req.params;
+      
+      console.log("🔍 Buscando questões para módulo:", moduleId);
+      
+      // Sample questions - in production these would come from database
+      const sampleQuestions = [
+        {
+          id: 1,
+          question: "Qual é o protocolo padrão para transferência segura de dados na web?",
+          options: ["HTTP", "HTTPS", "FTP", "SSH"],
+          correctAnswer: 1,
+          explanation: "HTTPS (HyperText Transfer Protocol Secure) é o protocolo padrão para transferência segura de dados na web."
+        },
+        {
+          id: 2,
+          question: "O que significa DNS?",
+          options: ["Domain Name System", "Data Network Security", "Dynamic Network Service", "Digital Name Server"],
+          correctAnswer: 0,
+          explanation: "DNS significa Domain Name System, sistema responsável por traduzir nomes de domínio em endereços IP."
+        },
+        {
+          id: 3,
+          question: "Qual porta é usada por padrão para HTTP?",
+          options: ["21", "22", "80", "443"],
+          correctAnswer: 2,
+          explanation: "A porta 80 é usada por padrão para HTTP, enquanto a 443 é usada para HTTPS."
+        },
+        {
+          id: 4,
+          question: "O que é um firewall?",
+          options: ["Um antivírus", "Um sistema de segurança de rede", "Um navegador web", "Um banco de dados"],
+          correctAnswer: 1,
+          explanation: "Firewall é um sistema de segurança de rede que monitora e controla o tráfego de rede."
+        },
+        {
+          id: 5,
+          question: "Qual comando é usado para verificar conectividade de rede no Windows?",
+          options: ["ping", "ipconfig", "netstat", "tracert"],
+          correctAnswer: 0,
+          explanation: "O comando ping é usado para testar a conectividade de rede entre dispositivos."
+        }
+      ];
+
+      // Add more questions based on module
+      const additionalQuestions = Array.from({ length: 15 }, (_, i) => ({
+        id: i + 6,
+        question: `Questão ${i + 6} do Módulo ${moduleId} - Pergunta sobre conceitos técnicos de suporte?`,
+        options: [
+          `Opção A para questão ${i + 6}`,
+          `Opção B para questão ${i + 6}`,
+          `Opção C para questão ${i + 6}`,
+          `Opção D para questão ${i + 6}`
+        ],
+        correctAnswer: Math.floor(Math.random() * 4),
+        explanation: `Explicação para a questão ${i + 6} do módulo ${moduleId}.`
+      }));
+
+      const allQuestions = [...sampleQuestions, ...additionalQuestions];
+
+      res.json({
+        success: true,
+        moduleId: parseInt(moduleId),
+        questions: allQuestions,
+        totalQuestions: allQuestions.length
+      });
+
+    } catch (error) {
+      console.error("❌ Erro ao buscar questões:", error);
+      res.status(500).json({
+        success: false,
+        message: "Erro interno do servidor",
+        questions: [],
         error: error.message
       });
     }

@@ -76,6 +76,12 @@ export default function ModuleEvaluation({ moduleId, userId, onComplete, onBack 
   const checkAttemptStatus = async () => {
     try {
       console.log('🔍 Verificando tentativas para userId:', userId, 'módulo:', moduleId);
+      
+      if (!userId || !moduleId) {
+        console.error('❌ UserId ou ModuleId não definidos');
+        return;
+      }
+      
       const response = await fetch(`/api/evaluation-attempts/${userId}/${moduleId}`);
       const data = await response.json();
       console.log('✅ Status de tentativas recebido:', data);
@@ -112,11 +118,19 @@ export default function ModuleEvaluation({ moduleId, userId, onComplete, onBack 
   const loadQuestions = async () => {
     try {
       setLoading(true);
+      console.log('🔍 Carregando questões para moduleId:', moduleId);
+      
+      if (!moduleId) {
+        console.error('❌ ModuleId não definido');
+        return;
+      }
+      
       const response = await fetch(`/api/evaluation-questions/${moduleId}`);
       if (!response.ok) {
         throw new Error('Falha ao carregar questões');
       }
       const data = await response.json();
+      console.log('✅ Questões carregadas:', data.questions?.length || 0);
       setQuestions(data.questions || []);
     } catch (error) {
       console.error('Erro ao carregar questões:', error);
