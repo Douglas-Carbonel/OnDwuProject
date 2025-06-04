@@ -943,6 +943,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get user's last evaluation details
+  app.get("/api/user-last-evaluation/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      console.log("🔍 Buscando última avaliação do usuário:", userId);
+
+      const numericUserId = userId.toString().replace('user-', '');
+
+      const result = await storage.getEvaluationHistory(numericUserId);
+
+      if (result.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Nenhuma avaliação encontrada para este usuário"
+        });
+      }
+
+      const lastEvaluation = result[0]; // First item is the most recent
+
+      // Convert UTC to Brazil time (UTC-3)
+      const utcDate = new Date(lastEvaluation.createdAt || lastEvaluation.completed_at);
+      const brazilDate = new Date(utcDate.getTime() - (3 * 60 * 60 * 1000));
+
+      res.json({
+        success: true,
+        lastEvaluation: {
+          ...lastEvaluation,
+          completedAtUTC: utcDate.toISOString(),
+          completedAtBrazil: brazilDate.toLocaleString('pt-BR', {
+            timeZone: 'America/Sao_Paulo',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          }),
+          brazilTime: brazilDate.toLocaleTimeString('pt-BR')
+        },
+        totalEvaluations: result.length
+      });
+
+    } catch (error) {
+      console.error("❌ Erro ao buscar última avaliação:", error);
+      res.status(500).json({
+        success: false,
+        message: "Erro interno do servidor",
+        error: error.message
+      });
+    }
+  });
+
   // Complete validation endpoint
   app.get("/api/validate-all-data", async (req, res) => {
     try {
