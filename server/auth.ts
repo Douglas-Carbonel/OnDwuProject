@@ -225,14 +225,13 @@ export class AuthService {
 
       // Hash password if provided
       if (userData.password) {
-        userData.password = await bcrypt.hash(userData.password, 10);
+        updateData.password = await bcrypt.hash(userData.password, 10);
       }
 
       // Remove any created_at field to prevent modification
-      const updateData = { ...userData };
       delete (updateData as any).created_at;
 
-      const [updatedUser] = await this.getDb()
+      const updatedUser = await this.getDb()
         .update(users)
         .set(updateData)
         .where(eq(users.id, id))
