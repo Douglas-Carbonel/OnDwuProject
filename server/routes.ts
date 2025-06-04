@@ -995,6 +995,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Test endpoint to verify blocking logic for user 2
+  app.get("/api/test-blocking/:userId/:moduleId", async (req, res) => {
+    try {
+      const { userId, moduleId } = req.params;
+      console.log("🧪 Testando lógica de bloqueio - userId:", userId, "moduleId:", moduleId);
+
+      // Get attempt status
+      const attemptStatus = await storage.checkDailyAttempts(userId, parseInt(moduleId));
+      
+      // Get user's evaluation history for context
+      const numericUserId = userId.replace('user-', '');
+      const evaluationHistory = await storage.getEvaluationHistory(numericUserId, parseInt(moduleId));
+      
+      // Calculate when next attempt will be available
+      let nextAttemptInfo = null;
+      if (!attemptStatus.canAttempt && attemptStatus.remainingTime) {
+        const nextAttemptTime = new Date(Date.now() + attemptStatus.remainingTime);
+        nextAttemptInfo = {
+          nextAttemptTime: nextAttemptTime.toISOString(),
+          nextAttemptTimeBrazil: nextAttemptTime.toLocaleString('pt-BR', {
+            timeZone: 'America/Sao_Paulo'
+          }),
+          hoursRemaining: Math.ceil(attemptStatus.remainingTime / (1000 * 60 * 60)),
+          minutesRemaining: Math.ceil(attemptStatus.remainingTime / (1000 * 60))
+        };
+      }
+
+      res.json({
+        success: true,
+        userId,
+        moduleId: parseInt(moduleId),
+        attemptStatus,
+        nextAttemptInfo,
+        evaluationHistory: evaluationHistory.slice(0, 5), // Last 5 attempts
+        totalAttempts: evaluationHistory.length,
+        currentTime: new Date().toISOString(),
+        currentTimeBrazil: new Date().toLocaleString('pt-BR', {
+          timeZone: 'America/Sao_Paulo'
+        })
+      });
+
+    } catch (error) {
+      console.error("❌ Erro no teste de bloqueio:", error);
+      res.status(500).json({
+        success: false,
+        message: "Erro interno do servidor",
+        error: error.message
+      });
+    }
+  });
+
   // Complete validation endpoint
   app.get("/api/validate-all-data", async (req, res) => {
     try {

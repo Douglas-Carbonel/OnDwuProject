@@ -515,11 +515,47 @@ export class DatabaseStorage implements IStorage {
     try {
       console.log("🔍 Verificando tentativas diárias - userId:", userId, "moduleId:", moduleId);
       
+      // Para verificar tentativas, vamos olhar as últimas 24 horas e também contar tentativas do módulo
+      const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+      console.log("🕐 Verificando tentativas desde:", twentyFourHoursAgo.toLocaleString('pt-BR'));
+
+      // Primeiro, vamos verificar na tabela module_evaluations (que é onde as avaliações são realmente salvas)
+      const evaluations = await this.db
+        .select()
+        .from(moduleEvaluations)
+        .where(
+          and(
+            eq(moduleEvaluations.user_id, userId.replace('user-', '')),
+            eq(moduleEvaluations.module_id, moduleId),
+            gte(moduleEvaluations.completed_at, twentyFourHoursAgo)
+          )
+        )
+        .orderBy(desc(moduleEvaluations.completed_at));
+
+      console.log("📊 Avaliações encontradas nas últimas 24h:", evaluations.length);
+
+      if (evaluations.length >= 2) {
+        // Se já fez 2 tentativas nas últimas 24h, calcular quando pode tentar novamente
+        const lastAttemptTime = new Date(evaluations[0].completed_at);
+        const nextAttemptTime = new Date(lastAttemptTime.getTime() + 24 * 60 * 60 * 1000);
+        const remainingTime = nextAttemptTime.getTime() - Date.now();
+
+        console.log("❌ Limite de 2 tentativas em 24h excedido");
+        console.log("🕐 Última tentativa:", lastAttemptTime.toLocaleString('pt-BR'));
+        console.log("🕐 Próxima tentativa liberada em:", nextAttemptTime.toLocaleString('pt-BR'));
+        console.log("⏰ Tempo restante:", Math.ceil(remainingTime / (1000 * 60 * 60)), "horas");
+
+        return { 
+          canAttempt: false, 
+          remainingTime: Math.max(0, remainingTime)
+        };
+      }
+
+      // Também verificar na tabela dailyAttempts como backup
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      console.log("📅 Data de hoje (início do dia):", today);
-
-      const result = await this.db
+      
+      const dailyResult = await this.db
         .select()
         .from(dailyAttempts)
         .where(
@@ -530,22 +566,19 @@ export class DatabaseStorage implements IStorage {
           )
         );
 
-      console.log("📊 Tentativas encontradas hoje:", result);
-
-      const todayAttempts = result.reduce((sum, attempt) => sum + attempt.attempt_count, 0);
-      console.log("🔢 Total de tentativas hoje:", todayAttempts);
-
+      const todayAttempts = dailyResult.reduce((sum, attempt) => sum + attempt.attempt_count, 0);
+      
       if (todayAttempts >= 2) {
-        const lastAttempt = result[result.length - 1];
-        const nextAttemptTime = new Date(lastAttempt.attempt_date);
+        const lastDailyAttempt = dailyResult[dailyResult.length - 1];
+        const nextAttemptTime = new Date(lastDailyAttempt.attempt_date);
         nextAttemptTime.setDate(nextAttemptTime.getDate() + 1);
         const remainingTime = nextAttemptTime.getTime() - Date.now();
 
-        console.log("❌ Limite excedido - próxima tentativa em:", Math.max(0, remainingTime), "ms");
+        console.log("❌ Limite diário de 2 tentativas excedido (backup check)");
         return { canAttempt: false, remainingTime: Math.max(0, remainingTime) };
       }
 
-      console.log("✅ Pode tentar - tentativas restantes:", 2 - todayAttempts);
+      console.log("✅ Pode tentar - avaliações nas últimas 24h:", evaluations.length, "/ tentativas hoje:", todayAttempts);
       return { canAttempt: true };
     } catch (error) {
       console.error("Error checking daily attempts:", error);
@@ -555,6 +588,8 @@ export class DatabaseStorage implements IStorage {
 
   async recordAttempt(userId: string, moduleId: number): Promise<void> {
     try {
+      console.log("📝 Registrando tentativa - userId:", userId, "moduleId:", moduleId);
+      
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
@@ -571,6 +606,7 @@ export class DatabaseStorage implements IStorage {
         .limit(1);
 
       if (existingAttempt.length > 0) {
+        console.log("📝 Atualizando tentativa existente - count:", existingAttempt[0].attempt_count + 1);
         await this.db
           .update(dailyAttempts)
           .set({ 
@@ -579,6 +615,7 @@ export class DatabaseStorage implements IStorage {
           })
           .where(eq(dailyAttempts.id, existingAttempt[0].id));
       } else {
+        console.log("📝 Criando nova entrada de tentativa");
         await this.db
           .insert(dailyAttempts)
           .values({
@@ -588,8 +625,10 @@ export class DatabaseStorage implements IStorage {
             attempt_date: new Date()
           });
       }
+
+      console.log("✅ Tentativa registrada com sucesso");
     } catch (error) {
-      console.error("Error recording attempt:", error);
+      console.error("❌ Error recording attempt:", error);
     }
   }
 
