@@ -16,12 +16,8 @@ export default function OnboardingPage() {
   useEffect(() => {
     if (!isAuthenticated) {
       setLocation("/welcome");
-    } else if (isAdmin && location === "/") {
-      setLocation("/admin");
-    } else if (!isAdmin && location === "/") {
-      setLocation("/onboarding");
     }
-  }, [isAuthenticated, isAdmin, location, setLocation]);
+  }, [isAuthenticated, setLocation]);
 
   if (!isAuthenticated) {
     return <WelcomeScreen onStart={() => setLocation("/login")} />;
@@ -74,10 +70,7 @@ export default function OnboardingPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => {
-                    logout();
-                    setLocation("/welcome");
-                  }}
+                  onClick={logout}
                   className="bg-transparent border-slate-600 text-slate-300 hover:bg-red-600 hover:border-red-600"
                 >
                   <LogOut size={16} className="mr-2" />

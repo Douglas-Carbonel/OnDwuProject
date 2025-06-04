@@ -40,12 +40,6 @@ export const useAuth = create<AuthState>()(
 
           if (response.ok) {
             const data = await response.json();
-            const isAdmin = data.user.profile === "admin";
-            set({
-              user: data.user,
-              isAuthenticated: true,
-              isAdmin,
-            });
             
             if (data.success && data.user) {
               const userData = {
@@ -55,10 +49,16 @@ export const useAuth = create<AuthState>()(
                 profile: data.user.profile
               };
 
+              const isAdmin = userData.profile === "admin";
+
               // Clear any guest user data before setting authenticated user
               localStorage.removeItem("dwu-user-id");
 
-              set({ user: userData });
+              set({ 
+                user: userData,
+                isAuthenticated: true,
+                isAdmin
+              });
               localStorage.setItem("auth-user", JSON.stringify(userData));
 
               console.log("✅ Login bem-sucedido - userId:", userData.userId);
@@ -80,9 +80,10 @@ export const useAuth = create<AuthState>()(
       },
       logout: () => {
         set({ user: null, isAuthenticated: false, isAdmin: false });
-        // Clear any stored location state
+        localStorage.removeItem("auth-user");
+        // Clear any stored location state and redirect to welcome
         if (typeof window !== 'undefined') {
-          window.history.pushState({}, '', '/welcome');
+          window.location.href = '/welcome';
         }
       },
       createUser: async (userData) => {

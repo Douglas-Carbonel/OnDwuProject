@@ -237,7 +237,7 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
                <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => logout()}
+                  onClick={logout}
                   className="hover:bg-slate-800/50 rounded-xl transition-all duration-300"
                 >
                   <LogOut className="text-slate-400 hover:text-white transition-colors" size={24} />

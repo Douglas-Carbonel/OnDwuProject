@@ -17,11 +17,8 @@ function App() {
   const { isAuthenticated, isAdmin } = useAuth();
 
   const handleLoginSuccess = () => {
-    if (isAdmin) {
-      setLocation("/admin");
-    } else {
-      setLocation("/onboarding");
-    }
+    // Sempre direcionar para onboarding após login, independente do perfil
+    setLocation("/onboarding");
   };
 
   return (

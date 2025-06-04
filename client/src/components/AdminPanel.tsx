@@ -266,7 +266,7 @@ export default function AdminPanel() {
 
   const handleLogout = () => {
     logout();
-    setLocation("/");
+    // O logout já faz o redirecionamento para /welcome
   };
 
   const handleCreateUser = async (e: React.FormEvent) => {
