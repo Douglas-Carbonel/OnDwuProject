@@ -514,7 +514,7 @@ export class DatabaseStorage implements IStorage {
   async checkDailyAttempts(userId: string, moduleId: number): Promise<{ canAttempt: boolean; remainingTime?: number }> {
     try {
       console.log("🔍 Verificando tentativas diárias - userId:", userId, "moduleId:", moduleId);
-      
+
       // Verificar tentativas nas últimas 24 horas, não apenas no dia atual
       const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
       console.log("📅 24 horas atrás:", twentyFourHoursAgo);
@@ -543,7 +543,7 @@ export class DatabaseStorage implements IStorage {
         console.log("❌ Limite excedido - próxima tentativa em:", Math.max(0, remainingTime), "ms");
         console.log("🕒 Última tentativa:", lastAttempt.completed_at);
         console.log("🕒 Próxima tentativa disponível em:", nextAttemptTime);
-        
+
         return { 
           canAttempt: false, 
           remainingTime: Math.max(0, remainingTime),
@@ -837,8 +837,7 @@ export class MemStorage implements IStorage {
     console.log("MemStorage - Saving module evaluation:", data);
     const evaluationRecord = {
       id: Date.now(),
-      userId: data.userId,
-      moduleId: data.moduleId,
+      userId: data.userId      moduleId: data.moduleId,
       score: data.score,
       passed: data.passed,
       answers: data.answers,

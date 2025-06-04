@@ -771,8 +771,14 @@ export default function ModuleEvaluation({
 
         try {
           if (user) {
+            // Garantir que userId seja um número válido
+            const numericUserId = parseInt(user.userId.replace('user-', ''));
+            if (isNaN(numericUserId)) {
+              throw new Error("ID de usuário inválido");
+            }
+
             const evaluationData = {
-              userId: parseInt(user?.userId || '0'),
+              userId: numericUserId,
               moduleId: moduleNumber,
               score: finalScore,
               totalQuestions: questions.length,

@@ -309,7 +309,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/evaluations/attempts", async (req, res) => {
     try {
       const { userId, moduleId } = req.query;
-      
+
       if (!userId || !moduleId) {
         return res.status(400).json({ 
           message: "userId e moduleId são obrigatórios",
