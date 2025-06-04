@@ -264,9 +264,8 @@ export default function AdminPanel() {
     fetchUsers();
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    // O logout já faz o redirecionamento para /welcome
+  const handleBackToOnboarding = () => {
+    setLocation("/onboarding");
   };
 
   const handleCreateUser = async (e: React.FormEvent) => {
@@ -315,12 +314,12 @@ export default function AdminPanel() {
         {/* Header */}
         <div className="text-center space-y-4 relative">
           <Button
-            onClick={handleLogout}
+            onClick={handleBackToOnboarding}
             variant="outline"
-            className="absolute top-0 right-0 bg-slate-800 border-slate-600 text-slate-300 hover:bg-red-600 hover:border-red-600 hover:text-white"
+            className="absolute top-0 right-0 bg-slate-800 border-slate-600 text-slate-300 hover:bg-blue-600 hover:border-blue-600 hover:text-white"
           >
             <LogOut size={16} className="mr-2" />
-            Sair
+            Voltar ao Onboarding
           </Button>
 
           <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center">
