@@ -356,12 +356,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!attemptCheck.canAttempt) {
         return res.status(429).json({ 
           message: "Limite de tentativas diárias excedido. Tente novamente em 24 horas.",
-          remainingTime: attemptCheck.remainingTime
+          remainingTime: attemptCheck.remainingTime,
+          ...attemptCheck
         });
       }
-
-      // Record attempt
-      await storage.recordAttempt(userId.toString(), moduleId);
 
       // Salvar na tabela de avaliações detalhadas
       const evaluation = await storage.saveModuleEvaluation({
