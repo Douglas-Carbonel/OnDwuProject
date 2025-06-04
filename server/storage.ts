@@ -837,7 +837,8 @@ export class MemStorage implements IStorage {
     console.log("MemStorage - Saving module evaluation:", data);
     const evaluationRecord = {
       id: Date.now(),
-      userId: data.userId      moduleId: data.moduleId,
+      userId: data.userId,
+      moduleId: data.moduleId,
       score: data.score,
       passed: data.passed,
       answers: data.answers,
