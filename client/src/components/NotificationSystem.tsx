@@ -26,6 +26,14 @@ export default function NotificationSystem() {
     const now = new Date();
     const diffTime = deadline.getTime() - now.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    console.log("🕒 CÁLCULO FRONTEND:");
+    console.log("   - Data atual:", now.toISOString());
+    console.log("   - Deadline:", deadline.toISOString());
+    console.log("   - Diferença (ms):", diffTime);
+    console.log("   - Dias calculados:", diffDays);
+    console.log("   - Dias retornados:", Math.max(0, diffDays));
+    
     return Math.max(0, diffDays);
   };
 

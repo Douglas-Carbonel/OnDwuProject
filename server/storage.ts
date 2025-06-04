@@ -575,33 +575,53 @@ export class DatabaseStorage implements IStorage {
       
       // Buscar dados do usuário para obter data de criação
       const numericUserId = parseInt(userId.replace('user-', ''));
+      console.log("🔍 NumericUserId extraído:", numericUserId);
+      
       const user = await this.getUser(numericUserId);
       
       if (!user) {
-        console.log("❌ Usuário não encontrado:", userId);
+        console.log("❌ Usuário não encontrado para ID:", numericUserId);
         const deadline = new Date();
         deadline.setDate(deadline.getDate() + 15);
         return { isExpired: false, deadline };
       }
 
-      console.log("👤 Usuário encontrado - criado em:", user.created_at);
+      console.log("👤 Usuário encontrado:");
+      console.log("   - ID:", user.id);
+      console.log("   - Nome:", user.username);
+      console.log("   - Email:", user.user_mail);
+      console.log("   - Data de criação RAW:", user.created_at);
 
-      const progress = await this.getProgress(userId);
-
-      // Calcular deadline baseado na data de criação do usuário (não do progresso)
+      // Garantir que a data seja parseada corretamente
       const userCreationDate = new Date(user.created_at);
-      const deadline = new Date(userCreationDate);
+      console.log("📅 Data de criação parseada:", userCreationDate.toISOString());
+      
+      // Verificar se a data é válida
+      if (isNaN(userCreationDate.getTime())) {
+        console.log("❌ Data de criação inválida, usando data atual");
+        const fallbackDeadline = new Date();
+        fallbackDeadline.setDate(fallbackDeadline.getDate() + 15);
+        return { isExpired: false, deadline: fallbackDeadline };
+      }
+
+      // Calcular deadline: data de criação + 15 dias
+      const deadline = new Date(userCreationDate.getTime());
       deadline.setDate(deadline.getDate() + 15);
 
-      console.log("📅 Data de criação do usuário:", userCreationDate);
-      console.log("📅 Deadline calculado:", deadline);
-      console.log("📅 Data atual:", new Date());
+      const now = new Date();
+      const timeDifference = deadline.getTime() - now.getTime();
+      const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+      const isExpired = timeDifference <= 0;
 
-      const isExpired = Date.now() > deadline.getTime();
-      const daysRemaining = Math.ceil((deadline.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+      console.log("📊 CÁLCULO DE PRAZO:");
+      console.log("   - Data de criação:", userCreationDate.toISOString());
+      console.log("   - Data atual:", now.toISOString());
+      console.log("   - Deadline (criação + 15d):", deadline.toISOString());
+      console.log("   - Diferença em ms:", timeDifference);
+      console.log("   - Dias restantes:", daysRemaining);
+      console.log("   - Expirado:", isExpired);
 
-      console.log("⏰ Dias restantes:", daysRemaining);
-      console.log("⚠️ Expirado:", isExpired);
+      const progress = await this.getProgress(userId);
 
       if (!progress) {
         // Create initial progress se não existir
@@ -636,7 +656,7 @@ export class DatabaseStorage implements IStorage {
 
       return { isExpired, deadline };
     } catch (error) {
-      console.error("Error checking deadline:", error);
+      console.error("❌ Error checking deadline:", error);
       const deadline = new Date();
       deadline.setDate(deadline.getDate() + 15);
       return { isExpired: false, deadline };

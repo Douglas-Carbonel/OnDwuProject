@@ -154,12 +154,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
           id: user.id,
           username: user.username,
           user_mail: user.user_mail,
-          user_profile: user.user_profile
+          user_profile: user.user_profile,
+          created_at: user.created_at
         } : null
       });
     } catch (error) {
       console.error("Error finding user:", error);
       res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  });
+
+  // Debug route to check deadline calculation
+  app.get("/api/debug/deadline/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      console.log("🐛 DEBUG: Verificando deadline para userId:", userId);
+      
+      const numericUserId = parseInt(userId.replace('user-', ''));
+      const user = await authService.getUserById(numericUserId);
+      
+      if (!user) {
+        return res.json({
+          error: "Usuário não encontrado",
+          userId: userId,
+          numericUserId: numericUserId
+        });
+      }
+
+      const userCreationDate = new Date(user.created_at);
+      const deadline = new Date(userCreationDate.getTime());
+      deadline.setDate(deadline.getDate() + 15);
+      
+      const now = new Date();
+      const timeDifference = deadline.getTime() - now.getTime();
+      const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+      
+      res.json({
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.user_mail,
+          created_at: user.created_at,
+          created_at_iso: userCreationDate.toISOString()
+        },
+        calculation: {
+          userCreationDate: userCreationDate.toISOString(),
+          currentDate: now.toISOString(),
+          deadline: deadline.toISOString(),
+          timeDifference: timeDifference,
+          daysRemaining: daysRemaining,
+          isExpired: timeDifference <= 0,
+          minutesRemaining: Math.ceil(timeDifference / (1000 * 60)),
+          hoursRemaining: Math.ceil(timeDifference / (1000 * 60 * 60))
+        }
+      });
+    } catch (error) {
+      console.error("Error in debug deadline:", error);
+      res.status(500).json({ 
+        error: "Erro interno do servidor",
+        message: error.message 
+      });
     }
   });
 
