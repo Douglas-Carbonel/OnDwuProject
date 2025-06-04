@@ -571,13 +571,41 @@ export class DatabaseStorage implements IStorage {
 
   async checkAndUpdateDeadline(userId: string): Promise<{ isExpired: boolean; deadline: Date }> {
     try {
-      const progress = await this.getProgress(userId);
-
-      if (!progress) {
-        // Create initial progress with 15-day deadline
+      console.log("🔍 Verificando prazo para userId:", userId);
+      
+      // Buscar dados do usuário para obter data de criação
+      const numericUserId = parseInt(userId.replace('user-', ''));
+      const user = await this.getUser(numericUserId);
+      
+      if (!user) {
+        console.log("❌ Usuário não encontrado:", userId);
         const deadline = new Date();
         deadline.setDate(deadline.getDate() + 15);
+        return { isExpired: false, deadline };
+      }
 
+      console.log("👤 Usuário encontrado - criado em:", user.created_at);
+
+      const progress = await this.getProgress(userId);
+
+      // Calcular deadline baseado na data de criação do usuário (não do progresso)
+      const userCreationDate = new Date(user.created_at);
+      const deadline = new Date(userCreationDate);
+      deadline.setDate(deadline.getDate() + 15);
+
+      console.log("📅 Data de criação do usuário:", userCreationDate);
+      console.log("📅 Deadline calculado:", deadline);
+      console.log("📅 Data atual:", new Date());
+
+      const isExpired = Date.now() > deadline.getTime();
+      const daysRemaining = Math.ceil((deadline.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+
+      console.log("⏰ Dias restantes:", daysRemaining);
+      console.log("⚠️ Expirado:", isExpired);
+
+      if (!progress) {
+        // Create initial progress se não existir
+        console.log("📝 Criando progresso inicial para usuário");
         await this.createProgress({
           userId,
           currentModule: 1,
@@ -586,24 +614,24 @@ export class DatabaseStorage implements IStorage {
           moduleEvaluations: {},
           deadline: deadline.toISOString()
         });
-
-        return { isExpired: false, deadline };
       }
 
-      const deadline = new Date(progress.deadline || progress.created_at);
-      deadline.setDate(deadline.getDate() + 15);
-      const isExpired = Date.now() > deadline.getTime();
-
-      if (isExpired && !progress.is_expired) {
+      if (isExpired && progress && !progress.is_expired) {
         // Reset progress if expired
+        console.log("🔄 Resetando progresso - prazo expirado");
+        const newDeadline = new Date();
+        newDeadline.setDate(newDeadline.getDate() + 15);
+        
         await this.updateProgress(userId, {
           currentModule: 1,
           completedModules: [],
           moduleProgress: {},
           moduleEvaluations: {},
           is_expired: true,
-          deadline: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString()
+          deadline: newDeadline.toISOString()
         });
+
+        return { isExpired: true, deadline: newDeadline };
       }
 
       return { isExpired, deadline };

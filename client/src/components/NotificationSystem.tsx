@@ -35,20 +35,29 @@ export default function NotificationSystem() {
       if (!user?.userId) return;
 
       try {
+        console.log("🔍 Buscando informações de prazo para usuário:", user.userId);
         const response = await fetch(`/api/check-deadline/${user.userId}`);
         if (response.ok) {
           const data = await response.json();
           const deadline = new Date(data.deadline);
           const daysRemaining = calculateDaysRemaining(deadline);
           
+          console.log("📊 Dados de prazo recebidos:", {
+            isExpired: data.isExpired,
+            deadline: deadline.toISOString(),
+            daysRemaining
+          });
+          
           setDeadlineInfo({
             isExpired: data.isExpired,
             deadline,
             daysRemaining
           });
+        } else {
+          console.error("❌ Erro na resposta do servidor:", response.status);
         }
       } catch (error) {
-        console.error("Erro ao buscar informações de prazo:", error);
+        console.error("❌ Erro ao buscar informações de prazo:", error);
       }
     };
 
