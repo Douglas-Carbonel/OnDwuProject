@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Bell, X, Mail, Calendar, AlertTriangle, CheckCircle } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 
 interface Notification {
   id: string;
@@ -16,25 +17,113 @@ interface Notification {
 }
 
 export default function NotificationSystem() {
-  const [notifications, setNotifications] = useState<Notification[]>([
-    {
-      id: "1",
-      type: "reminder",
-      title: "Prazo de conclusão",
-      message: "Você tem 10 dias restantes para concluir o onboarding",
-      date: new Date(),
-      read: false,
-      actionRequired: true
-    },
-    {
-      id: "2",
-      type: "info",
-      title: "Novo conteúdo disponível",
-      message: "Módulo 3 foi atualizado com novos materiais",
-      date: new Date(Date.now() - 24 * 60 * 60 * 1000),
-      read: false
+  const { user } = useAuth();
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [deadlineInfo, setDeadlineInfo] = useState<{ isExpired: boolean; deadline: Date; daysRemaining: number } | null>(null);
+
+  // Função para calcular dias restantes
+  const calculateDaysRemaining = (deadline: Date): number => {
+    const now = new Date();
+    const diffTime = deadline.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return Math.max(0, diffDays);
+  };
+
+  // Buscar informações de prazo do usuário
+  useEffect(() => {
+    const fetchDeadlineInfo = async () => {
+      if (!user?.userId) return;
+
+      try {
+        const response = await fetch(`/api/check-deadline/${user.userId}`);
+        if (response.ok) {
+          const data = await response.json();
+          const deadline = new Date(data.deadline);
+          const daysRemaining = calculateDaysRemaining(deadline);
+          
+          setDeadlineInfo({
+            isExpired: data.isExpired,
+            deadline,
+            daysRemaining
+          });
+        }
+      } catch (error) {
+        console.error("Erro ao buscar informações de prazo:", error);
+      }
+    };
+
+    fetchDeadlineInfo();
+  }, [user?.userId]);
+
+  // Gerar notificações baseadas nos dados reais
+  useEffect(() => {
+    const generateNotifications = () => {
+      const newNotifications: Notification[] = [];
+
+      // Notificação de prazo baseada em dados reais
+      if (deadlineInfo) {
+        const { daysRemaining, isExpired } = deadlineInfo;
+        
+        if (isExpired) {
+          newNotifications.push({
+            id: "deadline-expired",
+            type: "warning",
+            title: "Prazo expirado",
+            message: "Seu prazo para conclusão do onboarding expirou. Seu progresso foi reiniciado.",
+            date: new Date(),
+            read: false,
+            actionRequired: true
+          });
+        } else if (daysRemaining <= 3) {
+          newNotifications.push({
+            id: "deadline-urgent",
+            type: "warning",
+            title: "Prazo urgente",
+            message: `Apenas ${daysRemaining} dia${daysRemaining !== 1 ? 's' : ''} restante${daysRemaining !== 1 ? 's' : ''} para concluir o onboarding`,
+            date: new Date(),
+            read: false,
+            actionRequired: true
+          });
+        } else if (daysRemaining <= 7) {
+          newNotifications.push({
+            id: "deadline-warning",
+            type: "reminder",
+            title: "Prazo de conclusão",
+            message: `Você tem ${daysRemaining} dias restantes para concluir o onboarding`,
+            date: new Date(),
+            read: false,
+            actionRequired: true
+          });
+        } else {
+          newNotifications.push({
+            id: "deadline-info",
+            type: "info",
+            title: "Prazo de conclusão",
+            message: `Você tem ${daysRemaining} dias para concluir o onboarding`,
+            date: new Date(),
+            read: false,
+            actionRequired: false
+          });
+        }
+      }
+
+      // Notificação informativa padrão
+      newNotifications.push({
+        id: "welcome",
+        type: "info",
+        title: "Bem-vindo ao onboarding",
+        message: "Complete todos os módulos para obter seu certificado",
+        date: new Date(Date.now() - 12 * 60 * 60 * 1000), // 12 horas atrás
+        read: false
+      });
+
+      setNotifications(newNotifications);
+    };
+
+    if (deadlineInfo) {
+      generateNotifications();
     }
-  ]);
+  }, [deadlineInfo]);
 
   const [showNotifications, setShowNotifications] = useState(false);
   const unreadCount = notifications.filter(n => !n.read).length;
