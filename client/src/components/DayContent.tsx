@@ -1540,21 +1540,13 @@ DIFERENCIAIS COMPETITIVOS:
                         <p className="text-slate-400 text-sm mb-3">
                           Especificações mínimas e recomendadas para instalação do CRM One.
                         </p>
-                        <ul className="text-sm text-slate-400 space-y-1 mb-3">
+                        <ul className="text-sm text-slate-400 space-y-1">
                           <li>• CPU: Intel Core i5+ (i7 recomendado)</li>
                           <li>• RAM: 8GB mínimo (16GB recomendado)</li>
                           <li>• Storage: 100GB SSD (500GB recomendado)</li>
                           <li>• OS: Windows Server 2016+</li>
                           <li>• .NET Framework 4.8+</li>
                         </ul>
-                        <Button 
-                          size="sm" 
-                          onClick={() => downloadMaterial('Requisitos-Tecnicos-Completos')}
-                          className="cursor-pointer hover:bg-red-700 transition-colors"
-                        >
-                          <Download className="mr-2" size={14} />
-                          Ver Requisitos Completos
-                        </Button>
                       </div>
                     </div>
                   </div>
@@ -1705,18 +1697,10 @@ DIFERENCIAIS COMPETITIVOS:
                 <div className="space-y-4">
                   <div className="bg-slate-900 p-4 rounded border border-yellow-600/30">
                     <h6 className="font-semibold text-yellow-200 mb-2">Balancers & Variáveis</h6>
-                    <p className="text-slate-400 text-sm mb-3">
+                    <p className="text-slate-400 text-sm">
                       Através de arquivos de configuração JSON, é possível definir N configurações 
                       para uso de APIs específicas, conexões de banco, e parâmetros de integração.
                     </p>
-                    <Button 
-                      size="sm" 
-                      onClick={() => downloadMaterial('Config-Balancers')}
-                      className="cursor-pointer hover:bg-yellow-700 transition-colors"
-                    >
-                      <Download className="mr-2" size={14} />
-                      Ver Configurações
-                    </Button>
                   </div>
                   <div className="bg-slate-900 p-4 rounded border border-blue-600/30">
                     <h6 className="font-semibold text-blue-200 mb-2">Serviços Windows & IIS</h6>
