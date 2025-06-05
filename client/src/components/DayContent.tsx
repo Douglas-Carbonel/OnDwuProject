@@ -600,7 +600,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
       try {
         // Import jsPDF dynamically
         import('jspdf').then((jsPDFModule) => {
-          const { jsPDF } = jsPDFModule;
+          const jsPDF = jsPDFModule.default || jsPDFModule.jsPDF || jsPDFModule;
           const doc = new jsPDF();
           
           // Set document properties
@@ -688,9 +688,22 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           // Save the PDF
           doc.save(`${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`);
           console.log('✅ Download concluído:', materialName);
+        }).catch((error) => {
+          console.error('❌ Erro ao importar jsPDF:', error);
+          // Fallback to text file if PDF generation fails
+          const blob = new Blob([`${title}\n\n${content}`], { type: 'text/plain;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.txt`;
+          link.style.display = 'none';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
         });
       } catch (error) {
-        console.error('❌ Erro no download:', error);
+        console.error('❌ Erro geral no download:', error);
         // Fallback to text file if PDF generation fails
         const blob = new Blob([`${title}\n\n${content}`], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
