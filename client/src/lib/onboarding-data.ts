@@ -21,15 +21,17 @@ export const onboardingData: OnboardingDay[] = [
   },
   {
     day: 2,
-    title: "Estrutura do CRM One",
-    description: "Arquitetura completa do sistema, banco de dados, APIs e ferramentas de suporte",
+    title: "Estrutura Técnica do CRM One",
+    description: "Arquitetura completa, instalação no IIS, integração SAP, bancos suportados e requisitos técnicos",
     checklist: [
-      "Compreender a estrutura do banco de dados (SQL/Hana)",
-      "Conhecer as APIs utilizadas (DI-Server e Service Layer)",
-      "Entender a estrutura do portal web (IIS, Load Balancer, Serviços Windows)",
-      "Familiarizar-se com o Notion (controle de bugs)",
-      "Configurar acesso ao GLPI (sistema de chamados)",
-      "Conhecer o TeamViewer e Teams (comunicação e manuais)"
+      "Compreender onde o CRM One é instalado (IIS) e ambiente de integração",
+      "Entender a comunicação em tempo real com SAP e processamento em background",
+      "Conhecer os bancos de dados suportados (SQL Server 2016-2022, SAP HANA)",
+      "Identificar a versão mínima do SAP Business One (9.3+)",
+      "Revisar requisitos de hardware e especificações técnicas",
+      "Analisar o diagrama de comunicação CRM One ↔ SAP interativo",
+      "Estudar configurações de balancers e variáveis do sistema",
+      "Verificar domínios obrigatórios para funcionamento completo"
     ]
   },
   {

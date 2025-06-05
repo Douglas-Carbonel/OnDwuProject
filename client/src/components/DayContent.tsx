@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -11,7 +10,8 @@ import {
   Building, Globe, Heart, Database, BarChart, Ticket, 
   CheckCircle, Clock, Headset, Download, Trophy, Users,
   FileText, TriangleAlert, Search, Gamepad, Info, ArrowUp, ArrowRight, UserCircle, Presentation,
-  Target, Lightbulb, Zap, Shield, Eye, Rocket, Brain, Handshake, TrendingUp, Settings
+  Target, Lightbulb, Zap, Shield, Eye, Rocket, Brain, Handshake, TrendingUp, Settings,
+  Server, Code, Network
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -241,7 +241,7 @@ function SlidePresentation({ onComplete }: SlidePresentationProps) {
               <h4 className="text-xl text-purple-100 mb-4">{currentSlideData.subtitle}</h4>
               <p className="text-purple-100 max-w-3xl mx-auto">{currentSlideData.content}</p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 gap-8">
               {/* Tribos */}
               <div className="space-y-6">
@@ -271,28 +271,28 @@ function SlidePresentation({ onComplete }: SlidePresentationProps) {
               {/* Squads */}
               <div className="space-y-4">
                 <h5 className="text-2xl font-bold text-purple-200 mb-4">Squads</h5>
-                
+
                 <div className="space-y-3">
                   <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 flex items-center space-x-3">
                     <TrendingUp size={20} className="text-purple-200" />
                     <span className="text-white font-medium">Marketing e Vendas</span>
                   </div>
-                  
+
                   <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 flex items-center space-x-3">
                     <Users size={20} className="text-purple-200" />
                     <span className="text-white font-medium">Financeiro e RH</span>
                   </div>
-                  
+
                   <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 flex items-center space-x-3">
                     <Settings size={20} className="text-purple-200" />
                     <span className="text-white font-medium">Engenharia e Produto</span>
                   </div>
-                  
+
                   <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 flex items-center space-x-3">
                     <Rocket size={20} className="text-purple-200" />
                     <span className="text-white font-medium">Implantação</span>
                   </div>
-                  
+
                   <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 flex items-center space-x-3">
                     <Headset size={20} className="text-purple-200" />
                     <span className="text-white font-medium">Sustentação e Experiência do Cliente</span>
@@ -324,18 +324,18 @@ function SlidePresentation({ onComplete }: SlidePresentationProps) {
               <h3 className="text-4xl font-bold text-white mb-2">{currentSlideData.title}</h3>
               <h4 className="text-xl text-blue-100 mb-6">{currentSlideData.subtitle}</h4>
               <p className="text-blue-100 leading-relaxed mb-6">{currentSlideData.content}</p>
-              
+
               <div className="space-y-4">
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                   <p className="text-white text-sm"><strong>A calça fica a critério de escolha do colaborador</strong>, desde que seja uma peça neutra e apropriada para ambiente profissional.</p>
                 </div>
-                
+
                 <div className="bg-yellow-500/20 backdrop-blur-sm rounded-xl p-4 border border-yellow-400/30">
                   <p className="text-yellow-100 text-sm"><strong>Está proibido o uso de:</strong> saias, vestidos, macacões, bermudas, chinelos e rasteiras que não componham o uniforme completo.</p>
                 </div>
               </div>
             </div>
-            
+
             <div className="text-center">
               <div className="w-48 h-48 bg-white/20 rounded-3xl flex items-center justify-center mx-auto backdrop-blur-sm">
                 <Building size={96} className="text-white" />
@@ -353,7 +353,7 @@ function SlidePresentation({ onComplete }: SlidePresentationProps) {
               <h4 className="text-xl text-purple-100 mb-4">{currentSlideData.subtitle}</h4>
               <p className="text-purple-100 max-w-3xl mx-auto">{currentSlideData.content}</p>
             </div>
-            
+
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
               <div className="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center mx-auto backdrop-blur-sm mb-6">
                 <Users size={64} className="text-white" />
@@ -1029,104 +1029,317 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
       {/* Day 2 Content */}
       {day === 2 && (
         <>
-          <Card className="mb-8 glass-effect tech-border slide-in-left">
+          {/* Estrutura do CRM One */}
+          <Card className="mb-8 bg-slate-800 border-slate-700">
             <CardContent className="p-8">
-              <h4 className="text-2xl font-bold mb-6 gradient-text text-center">Estrutura do CRM One</h4>
+              <h4 className="text-2xl font-bold mb-6 text-dwu-green flex items-center">
+                <Database className="mr-3" />
+                Estrutura Técnica do CRM One
+              </h4>
 
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <Card className="bg-gradient-to-br from-blue-900/30 to-blue-800/30 tech-border">
-                  <CardContent className="p-6">
-                    <h5 className="text-xl font-bold mb-3 text-blue-300 flex items-center">
-                      <Database className="mr-3" size={24} />
-                      Banco de Dados
-                    </h5>
-                    <p className="text-slate-300 mb-4">Estrutura de dados SQL Server e SAP HANA</p>
-                    <ul className="space-y-2 text-slate-400">
-                      <li>• SQL Server (dados principais)</li>
-                      <li>• SAP HANA (integração ERP)</li>
-                      <li>• Stored Procedures</li>
-                      <li>• Views e triggers</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-gradient-to-br from-green-900/30 to-green-800/30 tech-border">
-                  <CardContent className="p-6">
-                    <h5 className="text-xl font-bold mb-3 text-green-300 flex items-center">
-                      <Globe className="mr-3" size={24} />
-                      APIs
-                    </h5>
-                    <p className="text-slate-300 mb-4">APIs de integração e comunicação</p>
-                    <ul className="space-y-2 text-slate-400">
-                      <li>• DI-Server (Data Interface)</li>
-                      <li>• Service Layer (SAP B1)</li>
-                      <li>• REST APIs</li>
-                      <li>• WebServices SOAP</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-gradient-to-br from-purple-900/30 to-purple-800/30 tech-border">
-                  <CardContent className="p-6">
-                    <h5 className="text-xl font-bold mb-3 text-purple-300 flex items-center">
-                      <Building className="mr-3" size={24} />
-                      Portal Web
-                    </h5>
-                    <p className="text-slate-300 mb-4">Infraestrutura do portal e serviços</p>
-                    <ul className="space-y-2 text-slate-400">
-                      <li>• IIS (Internet Information Services)</li>
-                      <li>• Load Balancer</li>
-                      <li>• Serviços Windows</li>
-                      <li>• SSL/TLS Certificados</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-gradient-to-br from-orange-900/30 to-orange-800/30 tech-border">
-                  <CardContent className="p-6">
-                    <h5 className="text-xl font-bold mb-3 text-orange-300 flex items-center">
-                      <Headset className="mr-3" size={24} />
-                      Ferramentas de Suporte
-                    </h5>
-                    <p className="text-slate-300 mb-4">Ferramentas para gestão e comunicação</p>
-                    <ul className="space-y-2 text-slate-400">
-                      <li>• Notion (controle de bugs)</li>
-                      <li>• GLPI (sistema de chamados)</li>
-                      <li>• TeamViewer (acesso remoto)</li>
-                      <li>• Teams (manuais e comunicação)</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Card className="bg-gradient-to-r from-slate-900/50 to-slate-800/50 tech-border">
-                <CardContent className="p-6">
-                  <h5 className="text-xl font-bold mb-4 text-center gradient-text">Fluxo de Dados</h5>
-                  <div className="flex flex-wrap justify-center items-center gap-4">
-                    <div className="bg-blue-600/20 px-4 py-2 rounded-lg border border-blue-500/30">
-                      <span className="text-blue-300 font-semibold">Frontend</span>
-                      <div className="text-xs text-slate-400">Portal CRM One</div>
+              <div className="space-y-8">
+                {/* Onde é instalado - IIS */}
+                <div className="bg-gradient-to-br from-blue-900/30 to-blue-800/30 p-6 rounded-lg tech-border">
+                  <h5 className="text-xl font-bold mb-4 text-blue-300 flex items-center">
+                    <Server className="mr-3" size={24} />
+                    Instalação e Ambiente
+                  </h5>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <h6 className="font-semibold mb-3 text-blue-200">Internet Information Services (IIS)</h6>
+                      <ul className="space-y-2 text-slate-300">
+                        <li>• <strong>Servidor Web Principal:</strong> O CRM One é uma aplicação web hospedada no IIS</li>
+                        <li>• <strong>Ambiente .NET:</strong> Framework robusto para aplicações empresariais</li>
+                        <li>• <strong>Configurações de Pool:</strong> Gestão de recursos e performance</li>
+                        <li>• <strong>SSL/TLS:</strong> Comunicação segura e criptografada</li>
+                      </ul>
                     </div>
-                    <ArrowRight className="text-slate-500" size={20} />
-                    <div className="bg-green-600/20 px-4 py-2 rounded-lg border border-green-500/30">
-                      <span className="text-green-300 font-semibold">APIs</span>
-                      <div className="text-xs text-slate-400">DI-Server/Service Layer</div>
-                    </div>
-                    <ArrowRight className="text-slate-500" size={20} />
-                    <div className="bg-purple-600/20 px-4 py-2 rounded-lg border border-purple-500/30">
-                      <span className="text-purple-300 font-semibold">ERP</span>
-                      <div className="text-xs text-slate-400">SAP Business One</div>
-                    </div>
-                    <ArrowRight className="text-slate-500" size={20} />
-                    <div className="bg-orange-600/20 px-4 py-2 rounded-lg border border-orange-500/30">
-                      <span className="text-orange-300 font-semibold">Database</span>
-                      <div className="text-xs text-slate-400">SQL/HANA</div>
+                    <div>
+                      <h6 className="font-semibold mb-3 text-green-200">Ambiente de Integração</h6>
+                      <ul className="space-y-2 text-slate-300">
+                        <li>• <strong>Multi-tenant:</strong> Suporte a múltiplos clientes</li>
+                        <li>• <strong>Load Balancer:</strong> Distribuição inteligente de carga</li>
+                        <li>• <strong>Serviços Windows:</strong> Processamento em background</li>
+                        <li>• <strong>APIs RESTful:</strong> Comunicação moderna e eficiente</li>
+                      </ul>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+
+                {/* Integração em Tempo Real */}
+                <div className="bg-gradient-to-br from-green-900/30 to-green-800/30 p-6 rounded-lg tech-border">
+                  <h5 className="text-xl font-bold mb-4 text-green-300 flex items-center">
+                    <Zap className="mr-3" size={24} />
+                    Integração com SAP Business One
+                  </h5>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <h6 className="font-semibold mb-3 text-green-200">Comunicação em Tempo Real</h6>
+                      <div className="bg-slate-800 p-4 rounded border border-green-600/30">
+                        <p className="text-slate-300 mb-3">
+                          <strong>100% Real-time:</strong> O CRM One se comunica diretamente com o SAP Business One 
+                          através de APIs nativas, garantindo sincronização instantânea de dados.
+                        </p>
+                        <ul className="space-y-1 text-slate-400 text-sm">
+                          <li>✓ Consultas instantâneas ao banco SAP</li>
+                          <li>✓ Atualizações em tempo real</li>
+                          <li>✓ Validações automáticas</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div>
+                      <h6 className="font-semibold mb-3 text-orange-200">Processamento em Background</h6>
+                      <div className="bg-slate-800 p-4 rounded border border-orange-600/30">
+                        <p className="text-slate-300 mb-3">
+                          <strong>Fila de Sincronização:</strong> Para operações complexas, o sistema utiliza 
+                          filas de processamento que garantem a integridade dos dados.
+                        </p>
+                        <ul className="space-y-1 text-slate-400 text-sm">
+                          <li>✓ Processamento assíncrono</li>
+                          <li>✓ Retry automático em falhas</li>
+                          <li>✓ Logs detalhados de operações</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bancos de Dados */}
+                <div className="bg-gradient-to-br from-purple-900/30 to-purple-800/30 p-6 rounded-lg tech-border">
+                  <h5 className="text-xl font-bold mb-4 text-purple-300 flex items-center">
+                    <Database className="mr-3" size={24} />
+                    Bancos de Dados Suportados
+                  </h5>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <h6 className="font-semibold mb-3 text-purple-200">SQL Server (Service Layer)</h6>
+                      <div className="space-y-3">
+                        <div className="bg-slate-800 p-3 rounded border border-purple-600/30">
+                          <strong className="text-purple-300">Versões Suportadas:</strong>
+                          <ul className="mt-2 space-y-1 text-slate-400 text-sm">
+                            <li>• SQL Server 2016</li>
+                            <li>• SQL Server 2017</li>
+                            <li>• SQL Server 2018</li>
+                            <li>• SQL Server 2019</li>
+                            <li>• SQL Server 2022</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h6 className="font-semibold mb-3 text-cyan-200">SAP HANA</h6>
+                      <div className="bg-slate-800 p-3 rounded border border-cyan-600/30">
+                        <p className="text-slate-300 mb-2">
+                          <strong>In-Memory Database:</strong> Para clientes que utilizam SAP HANA como banco principal.
+                        </p>
+                        <ul className="space-y-1 text-slate-400 text-sm">
+                          <li>• Performance superior</li>
+                          <li>• Processamento em memória</li>
+                          <li>• Analytics em tempo real</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Versão SAP e Requisitos */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-br from-orange-900/30 to-orange-800/30 p-6 rounded-lg tech-border">
+                    <h5 className="text-xl font-bold mb-4 text-orange-300 flex items-center">
+                      <Settings className="mr-3" size={24} />
+                      Versão SAP Suportada
+                    </h5>
+                    <div className="bg-slate-800 p-4 rounded border border-orange-600/30">
+                      <p className="text-slate-300 mb-3">
+                        <strong>SAP Business One Client 9.3+</strong>
+                      </p>
+                      <p className="text-slate-400 text-sm">
+                        O CRM One é compatível com todas as versões do SAP Business One 
+                        a partir da versão 9.3, garantindo ampla compatibilidade com 
+                        instalações existentes.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-red-900/30 to-red-800/30 p-6 rounded-lg tech-border">
+                    <h5 className="text-xl font-bold mb-4 text-red-300 flex items-center">
+                      <FileText className="mr-3" size={24} />
+                      Requisitos de Hardware
+                    </h5>
+                    <div className="bg-slate-800 p-4 rounded border border-red-600/30">
+                      <p className="text-slate-300 mb-3">
+                        <strong>Especificações Técnicas</strong>
+                      </p>
+                      <Button size="sm" onClick={() => downloadMaterial('Requisitos-Hardware')}>
+                        <Download className="mr-2" size={14} />
+                        Download Requisitos
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
+
+          {/* Diagrama Interativo */}
+          <Card className="mb-8 bg-slate-800 border-slate-700">
+            <CardContent className="p-8">
+              <h4 className="text-2xl font-bold mb-6 text-dwu-green flex items-center">
+                <Network className="mr-3" />
+                Diagrama de Comunicação CRM One ↔ SAP
+              </h4>
+
+              <div className="bg-slate-900 p-6 rounded-lg border border-slate-600">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  {/* CRM Web */}
+                  <div className="group relative">
+                    <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-4 rounded-lg text-center cursor-pointer hover:scale-105 transition-all duration-300">
+                      <Globe className="mx-auto mb-2" size={32} />
+                      <h6 className="font-bold">CRM Web</h6>
+                      <p className="text-xs opacity-80">Interface do usuário</p>
+                    </div>
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-slate-800 p-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-blue-500/30">
+                      <h6 className="font-semibold text-blue-300 mb-1">CRM Web</h6>
+                      <p className="text-xs text-slate-400">Frontend da aplicação onde os usuários interagem com o sistema</p>
+                    </div>
+                  </div>
+
+                  {/* API CRM (Balancer) */}
+                  <div className="group relative">
+                    <div className="bg-gradient-to-br from-green-600 to-green-700 p-4 rounded-lg text-center cursor-pointer hover:scale-105 transition-all duration-300">
+                      <Server className="mx-auto mb-2" size={32} />
+                      <h6 className="font-bold">API CRM</h6>
+                      <p className="text-xs opacity-80">Load Balancer</p>
+                    </div>
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-slate-800 p-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-green-500/30">
+                      <h6 className="font-semibold text-green-300 mb-1">API CRM (Balancer)</h6>
+                      <p className="text-xs text-slate-400">Distribui requisições e gerencia comunicação entre CRM e SAP</p>
+                    </div>
+                  </div>
+
+                  {/* DI Server */}
+                  <div className="group relative">
+                    <div className="bg-gradient-to-br from-purple-600 to-purple-700 p-4 rounded-lg text-center cursor-pointer hover:scale-105 transition-all duration-300">
+                      <Database className="mx-auto mb-2" size={32} />
+                      <h6 className="font-bold">DI Server</h6>
+                      <p className="text-xs opacity-80">Data Interface</p>
+                    </div>
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-slate-800 p-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-purple-500/30">
+                      <h6 className="font-semibold text-purple-300 mb-1">DI Server</h6>
+                      <p className="text-xs text-slate-400">Interface de dados que conecta diretamente com o SAP Business One</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* B1WS */}
+                  <div className="group relative">
+                    <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-4 rounded-lg text-center cursor-pointer hover:scale-105 transition-all duration-300">
+                      <Code className="mx-auto mb-2" size={32} />
+                      <h6 className="font-bold">B1WS</h6>
+                      <p className="text-xs opacity-80">Web Services</p>
+                    </div>
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-slate-800 p-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-orange-500/30">
+                      <h6 className="font-semibold text-orange-300 mb-1">B1WS (Web Services)</h6>
+                      <p className="text-xs text-slate-400">Comunicação via XML para operações específicas do SAP</p>
+                    </div>
+                  </div>
+
+                  {/* SAP Business One */}
+                  <div className="group relative">
+                    <div className="bg-gradient-to-br from-cyan-600 to-cyan-700 p-4 rounded-lg text-center cursor-pointer hover:scale-105 transition-all duration-300">
+                      <BarChart className="mx-auto mb-2" size={32} />
+                      <h6 className="font-bold">SAP Business One</h6>
+                      <p className="text-xs opacity-80">ERP</p>
+                    </div>
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-slate-800 p-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-cyan-500/30">
+                      <h6 className="font-semibold text-cyan-300 mb-1">SAP Business One</h6>
+                      <p className="text-xs text-slate-400">Sistema ERP principal onde ficam armazenados todos os dados empresariais</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 text-center">
+                  <p className="text-slate-400 text-sm">
+                    <Info className="inline mr-2" size={16} />
+                    Passe o mouse sobre cada componente para ver detalhes
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Configurações e Domínios */}
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {/* Configurações */}
+            <Card className="bg-slate-800 border-slate-700">
+              <CardContent className="p-6">
+                <h5 className="text-xl font-bold mb-4 text-yellow-300 flex items-center">
+                  <Settings className="mr-3" size={24} />
+                  Configurações do Sistema
+                </h5>
+                <div className="space-y-4">
+                  <div className="bg-slate-900 p-4 rounded border border-yellow-600/30">
+                    <h6 className="font-semibold text-yellow-200 mb-2">Balancers & Variáveis</h6>
+                    <p className="text-slate-400 text-sm mb-3">
+                      Através de arquivos de configuração JSON, é possível definir N configurações 
+                      para uso de APIs específicas, conexões de banco, e parâmetros de integração.
+                    </p>
+                    <Button size="sm" onClick={() => downloadMaterial('Config-Balancers')}>
+                      <Download className="mr-2" size={14} />
+                      Ver Configurações
+                    </Button>
+                  </div>
+                  <div className="bg-slate-900 p-4 rounded border border-blue-600/30">
+                    <h6 className="font-semibold text-blue-200 mb-2">Serviços Windows & IIS</h6>
+                    <p className="text-slate-400 text-sm">
+                      O CRM One possui configurações tanto para serviços no Windows 
+                      quanto para balanceadores dentro do IIS, garantindo alta disponibilidade.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Domínios Obrigatórios */}
+            <Card className="bg-slate-800 border-slate-700">
+              <CardContent className="p-6">
+                <h5 className="text-xl font-bold mb-4 text-red-300 flex items-center">
+                  <Globe className="mr-3" size={24} />
+                  Domínios Obrigatórios
+                </h5>
+                <div className="bg-slate-900 p-4 rounded border border-red-600/30">
+                  <p className="text-slate-300 mb-4">
+                    Para que a estrutura responda corretamente, os seguintes domínios 
+                    devem estar acessíveis:
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <div>
+                        <code className="text-green-300 font-mono text-sm">viacep.com.br/ws</code>
+                        <p className="text-xs text-slate-400">Consulta de CEP</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <div>
+                        <code className="text-blue-300 font-mono text-sm">receita.ws.com.br/v1/cnpj</code>
+                        <p className="text-xs text-slate-400">Consulta de CNPJ</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <div>
+                        <code className="text-purple-300 font-mono text-sm">dwu.com.br</code>
+                        <p className="text-xs text-slate-400">Serviços DWU</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </>
       )}
 

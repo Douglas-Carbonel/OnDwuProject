@@ -183,20 +183,48 @@ const moduleQuestions: Record<number, Question[]> = {
   2: [
     {
       id: 1,
-      question: "Quais são os dois principais bancos de dados do CRM One?",
+      question: "Onde o CRM One é instalado?",
       options: [
-        "MySQL e PostgreSQL",
-        "SQL Server e SAP HANA",
-        "Oracle e MongoDB",
-        "SQLite e Redis",
+        "Apache Server",
+        "Internet Information Services (IIS)",
+        "Nginx",
+        "Tomcat",
       ],
       correctAnswer: 1,
     },
     {
       id: 2,
-      question: "O que significa DI-Server?",
+      question: "O CRM One realiza integração com SAP em:",
       options: [
-        "Database Interface",
+        "Apenas tempo real",
+        "Apenas background",
+        "100% tempo real + processamento background",
+        "Sincronização diária",
+      ],
+      correctAnswer: 2,
+    },
+    {
+      id: 3,
+      question: "Quais versões do SQL Server são suportadas?",
+      options: [
+        "2012 a 2019",
+        "2016 a 2022",
+        "2014 a 2020",
+        "2018 a 2024",
+      ],
+      correctAnswer: 1,
+    },
+    {
+      id: 4,
+      question: "Qual a versão mínima do SAP Business One suportada?",
+      options: ["9.0", "9.1", "9.2", "9.3"],
+      correctAnswer: 3,
+    },
+    {
+      id: 5,
+      question: "O que é o DI-Server?",
+      options: [
+        "Database Integration",
         "Data Interface",
         "Direct Integration",
         "Dynamic Interface",
@@ -204,137 +232,159 @@ const moduleQuestions: Record<number, Question[]> = {
       correctAnswer: 1,
     },
     {
-      id: 3,
-      question: "Qual tecnologia é usada para o portal web?",
-      options: ["Apache", "IIS", "Nginx", "Tomcat"],
-      correctAnswer: 1,
-    },
-    {
-      id: 4,
-      question: "Qual ferramenta é usada para controle de bugs?",
-      options: ["GLPI", "Teams", "Notion", "TeamViewer"],
-      correctAnswer: 2,
-    },
-    {
-      id: 5,
-      question: "O Service Layer é uma API de qual sistema?",
-      options: ["CRM One", "SQL Server", "SAP B1", "HANA"],
-      correctAnswer: 2,
-    },
-    {
       id: 6,
-      question: "Qual componente fornece balanceamento de carga?",
-      options: ["IIS", "Load Balancer", "SQL Server", "Service Layer"],
+      question: "SAP HANA é utilizado como:",
+      options: [
+        "Servidor web",
+        "In-Memory Database",
+        "Load balancer",
+        "Sistema de filas",
+      ],
       correctAnswer: 1,
     },
     {
       id: 7,
-      question: "Os Serviços Windows fazem parte de qual camada?",
-      options: ["Banco de dados", "APIs", "Portal Web", "Ferramentas"],
-      correctAnswer: 2,
+      question: "Load Balancer serve para:",
+      options: [
+        "Backup de dados",
+        "Distribuição inteligente de carga",
+        "Controle de versões",
+        "Monitoramento",
+      ],
+      correctAnswer: 1,
     },
     {
       id: 8,
-      question: "Qual protocolo é usado para REST APIs?",
-      options: ["SOAP", "HTTP/HTTPS", "FTP", "TCP"],
+      question: "Qual domínio é obrigatório para consulta de CEP?",
+      options: [
+        "receita.ws.com.br",
+        "viacep.com.br/ws",
+        "dwu.com.br",
+        "sap.com.br",
+      ],
       correctAnswer: 1,
     },
     {
       id: 9,
-      question: "Para que serve o GLPI?",
+      question: "O processamento em background utiliza:",
       options: [
-        "Controle de bugs",
-        "Sistema de chamados",
-        "Acesso remoto",
-        "Comunicação",
+        "APIs síncronas",
+        "Fila de sincronização",
+        "Banco temporário",
+        "Cache local",
       ],
       correctAnswer: 1,
     },
     {
       id: 10,
-      question: "Qual é a primeira etapa no fluxo de dados?",
-      options: ["APIs", "Database", "ERP", "Frontend"],
-      correctAnswer: 3,
+      question: "Qual protocolo é usado na comunicação segura?",
+      options: ["HTTP", "FTP", "SSL/TLS", "SMTP"],
+      correctAnswer: 2,
     },
     {
       id: 11,
-      question: "O SAP HANA é usado principalmente para:",
-      options: [
-        "Dados principais",
-        "Integração ERP",
-        "Portal web",
-        "Comunicação",
-      ],
+      question: "B1WS utiliza qual formato de comunicação?",
+      options: ["JSON", "XML", "CSV", "YAML"],
       correctAnswer: 1,
     },
     {
       id: 12,
-      question: "Stored Procedures são executadas em qual camada?",
-      options: ["Frontend", "APIs", "Banco de dados", "Portal"],
-      correctAnswer: 2,
+      question: "O ambiente é configurado como:",
+      options: [
+        "Single-tenant",
+        "Multi-tenant",
+        "Híbrido",
+        "Dedicated",
+      ],
+      correctAnswer: 1,
     },
     {
       id: 13,
-      question: "WebServices SOAP fazem parte de qual componente?",
-      options: ["Banco de dados", "APIs", "Portal", "Ferramentas"],
+      question: "Serviços Windows são responsáveis por:",
+      options: [
+        "Interface web",
+        "Processamento em background",
+        "Autenticação",
+        "Logs",
+      ],
       correctAnswer: 1,
     },
     {
       id: 14,
-      question: "SSL/TLS Certificados são usados em qual camada?",
-      options: ["Banco", "APIs", "Portal Web", "Todas"],
-      correctAnswer: 2,
+      question: "O domínio receita.ws.com.br é usado para:",
+      options: [
+        "Consulta CEP",
+        "Consulta CNPJ",
+        "Autenticação",
+        "Logs",
+      ],
+      correctAnswer: 1,
     },
     {
       id: 15,
-      question: "TeamViewer é usado para:",
+      question: "As configurações de balancers são definidas em:",
       options: [
-        "Controle de bugs",
-        "Sistema de chamados",
-        "Acesso remoto",
         "Banco de dados",
+        "Arquivos JSON",
+        "Registry Windows",
+        "XML files",
       ],
-      correctAnswer: 2,
+      correctAnswer: 1,
     },
     {
       id: 16,
-      question: "Views e triggers estão relacionados a:",
-      options: ["APIs", "Portal", "Banco de dados", "Ferramentas"],
+      question: "Service Layer é uma API nativa do:",
+      options: [
+        "CRM One",
+        "SQL Server",
+        "SAP Business One",
+        "IIS",
+      ],
       correctAnswer: 2,
     },
     {
       id: 17,
-      question: "A integração com SAP Business One é feita através de:",
-      options: ["SQL Server", "DI-Server e Service Layer", "IIS", "GLPI"],
+      question: "A comunicação em tempo real garante:",
+      options: [
+        "Backup automático",
+        "Sincronização instantânea",
+        "Logs detalhados",
+        "Cache otimizado",
+      ],
       correctAnswer: 1,
     },
     {
       id: 18,
-      question: "O fluxo de dados termina em qual componente?",
-      options: ["Frontend", "APIs", "ERP", "Database"],
-      correctAnswer: 3,
+      question: "dwu.com.br é necessário para:",
+      options: [
+        "Consultas externas",
+        "Serviços DWU",
+        "Backup",
+        "Monitoramento",
+      ],
+      correctAnswer: 1,
     },
     {
       id: 19,
-      question: "Teams é usado principalmente para:",
+      question: "O retry automático em falhas é feature do:",
       options: [
-        "Controle de bugs",
-        "Chamados",
-        "Acesso remoto",
-        "Manuais e comunicação",
+        "IIS",
+        "Processamento background",
+        "SQL Server",
+        "Load Balancer",
       ],
-      correctAnswer: 3,
+      correctAnswer: 1,
     },
     {
       id: 20,
-      question: "Qual é a sequência correta do fluxo de dados?",
+      question: "O framework principal da aplicação é:",
       options: [
-        "Frontend → APIs → ERP → Database",
-        "APIs → Frontend → Database → ERP",
-        "Database → ERP → APIs → Frontend",
-        "ERP → Database → Frontend → APIs",
+        "Java EE",
+        ".NET Framework",
+        "PHP Laravel",
+        "Node.js",
       ],
-      correctAnswer: 0,
+      correctAnswer: 1,
     },
   ],
   3: [
@@ -667,7 +717,7 @@ export default function ModuleEvaluation({
   const [loading, setLoading] = useState(false);
   const [location, setLocation] = useLocation();
   const [attemptStatus, setAttemptStatus] = useState<AttemptStatus>({ canAttempt: true });
-  const [isCheckingAttempts, setIsCheckingAttempts] = useState(true);
+  const [isCheckingAttempts, setIsCheckingAttempts] = useState(isCheckingAttempts);
   const { user } = useAuth();
   const { progress: userProgress, updateProgress } = useProgress();
 
@@ -678,10 +728,10 @@ export default function ModuleEvaluation({
 
   const handleCancel = () => {
     console.log("🔙 Botão Voltar clicado - iniciando redirecionamento");
-    
+
     // Prevenir múltiplos cliques
     if (loading) return;
-    
+
     // Callback direto se disponível
     if (onCancel) {
       console.log("🔙 Usando callback onCancel");
@@ -694,7 +744,7 @@ export default function ModuleEvaluation({
       }
       return;
     }
-    
+
     // Redirecionamento direto e simples
     try {
       console.log("🔙 Redirecionando para /onboarding");
@@ -883,7 +933,7 @@ export default function ModuleEvaluation({
 
   if (!attemptStatus.canAttempt) {
     const hoursRemaining = Math.ceil((attemptStatus.remainingTime || 0) / (1000 * 60 * 60));
-    
+
     return (
       <div className="max-w-4xl mx-auto">
         {/* Header DWU IT Academy */}
@@ -910,7 +960,7 @@ export default function ModuleEvaluation({
             {/* Status Icon and Title */}
             <div className="text-center mb-8">
               <div className="relative mb-6">
-                <div className="w-24 h-24 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-full flex items-center justify-center mx-auto border border-yellow-500/30 shadow-lg">
+                <div className="w-24 h-24 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-full flex items-center justify-center mx-auto border border-yellow500/30 shadow-lg">
                   <Clock size={48} className="text-yellow-400" />
                 </div>
                 <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center shadow-lg">
@@ -938,7 +988,7 @@ export default function ModuleEvaluation({
                   </div>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div className="bg-slate-800/50 rounded-xl p-4 text-center">
                   <div className="text-2xl font-bold text-yellow-400 mb-1">2/2</div>
@@ -980,7 +1030,7 @@ export default function ModuleEvaluation({
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 border border-green-500/30 rounded-xl p-5 hover:bg-green-500/15 transition-colors">
                   <div className="flex items-center space-x-3 mb-3">
                     <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
@@ -992,7 +1042,7 @@ export default function ModuleEvaluation({
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 border border-purple-500/30 rounded-xl p-5 hover:bg-purple-500/15 transition-colors">
                   <div className="flex items-center space-x-3 mb-3">
                     <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
@@ -1004,7 +1054,7 @@ export default function ModuleEvaluation({
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="bg-gradient-to-br from-orange-500/10 to-orange-600/10 border border-orange-500/30 rounded-xl p-5 hover:bg-orange-500/15 transition-colors">
                   <div className="flex items-center space-x-3 mb-3">
                     <div className="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center">
