@@ -691,7 +691,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           const fileName = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
           console.log('💾 Salvando arquivo:', fileName);
 ```text
-          doc.save(fileName);
+                    doc.save(fileName);
           console.log('✅ Download concluído:', materialName);
         }).catch((error) => {
           console.error('❌ Erro ao importar jsPDF:', error);
@@ -1367,7 +1367,7 @@ DIFERENCIAIS COMPETITIVOS:
                       </ul>
                     </div>
                     <div>
-                      <h6 className="font-semibold mb-3 text-green-200">Ambiente de Integração</h6>
+                                            <h6 className="font-semibold mb-3 text-green-200">Ambiente de Integração</h6>
                       <ul className="space-y-2 text-slate-300">
                         <li>• <strong>Multi-tenant:</strong> Suporte a múltiplos clientes</li>
                         <li>• <strong>Load Balancer:</strong> Distribuição inteligente de carga</li>
@@ -1975,8 +1975,7 @@ DIFERENCIAIS COMPETITIVOS:
                   <div className="grid md:grid-cols-4 gap-4">
                     <div className="text-center">
                       <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mx-auto mb-3">
-                        <Database```text
- className="text-white" size={20} />
+                        <Database className="text-white" size={20} />
                       </div>
                       <h6 className="font-bold text-blue-300 mb-1">Customizações</h6>
                       <p className="text-xs text-slate-400">Scripts e personalizações</p>
