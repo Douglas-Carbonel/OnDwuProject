@@ -1555,7 +1555,7 @@ DIFERENCIAIS COMPETITIVOS:
             </CardContent>
           </Card>
 
-          {/* Diagrama Interativo com Hovers */}
+          {/* Diagrama Interativo Circular Moderno */}
           <Card className="mb-8 bg-slate-800 border-slate-700">
             <CardContent className="p-8">
               <h4 className="text-2xl font-bold mb-6 text-dwu-green flex items-center">
@@ -1567,279 +1567,293 @@ DIFERENCIAIS COMPETITIVOS:
               </p>
 
               <TooltipProvider>
-                <div className="bg-slate-900 p-8 rounded-lg border border-slate-600">
-                  <div className="space-y-8">
-                    {/* Server_1 */}
-                    <div className="flex justify-center">
-                      <div className="bg-yellow-500/10 border-2 border-yellow-400/30 rounded-2xl p-6 w-80 hover:shadow-2xl hover:shadow-yellow-500/20 transition-all duration-300">
-                        <div className="text-center mb-4">
-                          <h6 className="font-bold text-yellow-300 text-lg">Server_1</h6>
-                          <p className="text-xs text-yellow-200/60">Servidor Principal de Aplicação</p>
-                        </div>
-
-                        {/* CRM */}
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 p-4 rounded-xl border border-blue-400/30 mb-4 group hover:scale-105 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 cursor-pointer">
-                              <div className="text-center">
-                                <div className="w-14 h-14 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-2 group-hover:bg-blue-400 transition-colors">
-                                  <Monitor className="text-white" size={28} />
-                                </div>
-                                <h6 className="font-semibold text-blue-300 group-hover:text-blue-200">CRM</h6>
-                                <p className="text-xs text-blue-200/70">Interface Web</p>
+                <div className="bg-slate-900 p-8 rounded-lg border border-slate-600 relative">
+                  {/* Container principal com layout circular */}
+                  <div className="relative w-full h-[600px] flex items-center justify-center">
+                    
+                    {/* Elemento central - Núcleo do Sistema */}
+                    <div className="absolute inset-0 flex items-center justify-center z-10">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="w-48 h-48 rounded-full bg-gradient-to-br from-blue-500/30 via-purple-500/30 to-cyan-500/30 border-4 border-slate-500/50 flex items-center justify-center group hover:scale-110 hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-500 cursor-pointer backdrop-blur-sm">
+                            <div className="text-center">
+                              <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:rotate-12 transition-transform duration-300">
+                                <Globe className="text-white" size={32} />
                               </div>
+                              <h6 className="font-bold text-white text-lg group-hover:text-blue-200 transition-colors">CRM One</h6>
+                              <p className="text-xs text-slate-300 group-hover:text-slate-200 transition-colors">Sistema Central</p>
                             </div>
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-slate-800 border-blue-500/50 max-w-xs">
-                            <div className="p-3">
-                              <h6 className="font-bold text-blue-300 mb-2">CRM One Interface</h6>
-                              <p className="text-sm text-slate-300">Interface web principal onde os usuários interagem com o sistema CRM. Desenvolvida em React com design responsivo e UX otimizada.</p>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-
-                        {/* Arrow down */}
-                        <div className="flex justify-center mb-4">
-                          <ArrowDown className="text-slate-400 hover:text-blue-400 transition-colors animate-pulse" size={24} />
-                        </div>
-
-                        {/* IIS */}
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 p-4 rounded-xl border border-purple-400/30 mb-4 group hover:scale-105 hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300 cursor-pointer">
-                              <div className="text-center">
-                                <div className="w-14 h-14 bg-purple-500 rounded-lg flex items-center justify-center mx-auto mb-2 group-hover:bg-purple-400 transition-colors">
-                                  <Server className="text-white" size={28} />
-                                </div>
-                                <h6 className="font-semibold text-purple-300 group-hover:text-purple-200">IIS</h6>
-                                <p className="text-xs text-purple-200/70">Web Server</p>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-slate-800 border-purple-500/50 max-w-xs">
-                            <div className="p-3">
-                              <h6 className="font-bold text-purple-300 mb-2">Internet Information Services</h6>
-                              <p className="text-sm text-slate-300">Servidor web da Microsoft que hospeda a aplicação CRM One. Gerencia pools de aplicação, certificados SSL e configurações de segurança.</p>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-
-                        {/* Arrow down */}
-                        <div className="flex justify-center mb-4">
-                          <ArrowDown className="text-slate-400 hover:text-purple-400 transition-colors animate-pulse" size={24} />
-                        </div>
-
-                        {/* API DWU */}
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 p-4 rounded-xl border border-green-400/30 mb-4 group hover:scale-105 hover:shadow-lg hover:shadow-green-500/30 transition-all duration-300 cursor-pointer">
-                              <div className="text-center">
-                                <div className="w-14 h-14 bg-green-500 rounded-lg flex items-center justify-center mx-auto mb-2 group-hover:bg-green-400 transition-colors">
-                                  <Globe className="text-white" size={28} />
-                                </div>
-                                <h6 className="font-semibold text-green-300 group-hover:text-green-200">API DWU</h6>
-                                <p className="text-xs text-green-200/70">Load Balancer</p>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-slate-800 border-green-500/50 max-w-xs">
-                            <div className="p-3">
-                              <h6 className="font-bold text-green-300 mb-2">API DWU & Load Balancer</h6>
-                              <p className="text-sm text-slate-300">API proprietária da DWU que gerencia balanceamento de carga, autenticação, cache e roteamento de requisições para os serviços SAP.</p>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-
-                        {/* Arrow down */}
-                        <div className="flex justify-center mb-4">
-                          <ArrowDown className="text-slate-400 hover:text-green-400 transition-colors animate-pulse" size={24} />
-                        </div>
-
-                        {/* DI Server */}
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 p-4 rounded-xl border border-orange-400/30 group hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300 cursor-pointer">
-                              <div className="text-center">
-                                <div className="w-14 h-14 bg-orange-500 rounded-lg flex items-center justify-center mx-auto mb-2 group-hover:bg-orange-400 transition-colors">
-                                  <Database className="text-white" size={28} />
-                                </div>
-                                <h6 className="font-semibold text-orange-300 group-hover:text-orange-200">DI Server</h6>
-                                <p className="text-xs text-orange-200/70">Data Interface</p>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-slate-800 border-orange-500/50 max-w-xs">
-                            <div className="p-3">
-                              <h6 className="font-bold text-orange-300 mb-2">Data Interface Server</h6>
-                              <p className="text-sm text-slate-300">Servidor de dados SAP que atua como interface entre aplicações externas e o SAP Business One. Permite CRUD operations via API.</p>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
-                    </div>
-
-                    {/* Conexões com animação */}
-                    <div className="flex justify-center items-center gap-8">
-                      <div className="flex flex-col items-center group">
-                        <div className="w-px h-16 bg-slate-400 group-hover:bg-cyan-400 transition-colors"></div>
-                        <ArrowRight className="text-slate-400 rotate-45 group-hover:text-cyan-400 transition-colors" size={24} />
-                      </div>
-                      <div className="flex flex-col items-center group">
-                        <div className="w-px h-16 bg-slate-400 group-hover:bg-indigo-400 transition-colors"></div>
-                        <ArrowRight className="text-slate-400 -rotate-45 group-hover:text-indigo-400 transition-colors" size={24} />
-                      </div>
-                    </div>
-
-                    {/* Server_2 e Server_3 */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {/* Server_2 */}
-                      <div className="bg-yellow-500/10 border-2 border-yellow-400/30 rounded-2xl p-6 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-300">
-                        <div className="text-center mb-4">
-                          <h6 className="font-bold text-yellow-300 text-lg">Server_2</h6>
-                          <p className="text-xs text-yellow-200/60">Servidor de APIs SAP</p>
-                        </div>
-
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 p-4 rounded-xl border border-cyan-400/30 group hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 cursor-pointer">
-                              <div className="text-center">
-                                <div className="w-14 h-14 bg-cyan-500 rounded-lg flex items-center justify-center mx-auto mb-2 group-hover:bg-cyan-400 transition-colors">
-                                  <Code className="text-white" size={28} />
-                                </div>
-                                <h6 className="font-semibold text-cyan-300 group-hover:text-cyan-200">Service Layer</h6>
-                                <p className="text-xs text-cyan-200/70">B1WS API</p>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-slate-800 border-cyan-500/50 max-w-xs">
-                            <div className="p-3">
-                              <h6 className="font-bold text-cyan-300 mb-2">SAP Service Layer</h6>
-                              <p className="text-sm text-slate-300">API RESTful moderna do SAP Business One que permite integração via HTTP/HTTPS. Substitui métodos legados como DI-API em muitos cenários.</p>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
-
-                      {/* Server_3 */}
-                      <div className="bg-yellow-500/10 border-2 border-yellow-400/30 rounded-2xl p-6 hover:shadow-2xl hover:shadow-indigo-500/20 transition-all duration-300">
-                        <div className="text-center mb-4">
-                          <h6 className="font-bold text-yellow-300 text-lg">Server_3</h6>
-                          <p className="text-xs text-yellow-200/60">Servidor SAP Client</p>
-                        </div>
-
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="bg-gradient-to-br from-indigo-500/20 to-indigo-600/20 p-4 rounded-xl border border-indigo-400/30 group hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/30 transition-all duration-300 cursor-pointer">
-                              <div className="text-center">
-                                <div className="w-14 h-14 bg-indigo-500 rounded-lg flex items-center justify-center mx-auto mb-2 group-hover:bg-indigo-400 transition-colors">
-                                  <Building className="text-white" size={28} />
-                                </div>
-                                <h6 className="font-semibold text-indigo-300 group-hover:text-indigo-200">SAP Client</h6>
-                                <p className="text-xs text-indigo-200/70">Business One</p>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-slate-800 border-indigo-500/50 max-w-xs">
-                            <div className="p-3">
-                              <h6 className="font-bold text-indigo-300 mb-2">SAP Business One Client</h6>
-                              <p className="text-sm text-slate-300">Aplicação cliente do SAP Business One onde usuários fazem operações ERP tradicionais. Integrado ao CRM One via APIs.</p>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
-                    </div>
-
-                    {/* Conexões convergindo para o banco */}
-                    <div className="flex justify-center items-center gap-8">
-                      <ArrowRight className="text-slate-400 rotate-45 hover:text-red-400 transition-colors animate-pulse" size={24} />
-                      <ArrowRight className="text-slate-400 -rotate-45 hover:text-red-400 transition-colors animate-pulse" size={24} />
-                    </div>
-
-                    {/* Banco de Dados */}
-                    <div className="flex justify-center">
-                      <div className="bg-yellow-500/10 border-2 border-yellow-400/30 rounded-2xl p-6 w-80 hover:shadow-2xl hover:shadow-red-500/20 transition-all duration-300">
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="bg-gradient-to-br from-red-500/20 to-red-600/20 p-6 rounded-xl border border-red-400/30 group hover:scale-105 hover:shadow-lg hover:shadow-red-500/30 transition-all duration-300 cursor-pointer">
-                              <div className="text-center">
-                                <div className="w-16 h-16 bg-red-500 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-red-400 transition-colors">
-                                  <Database className="text-white" size={32} />
-                                </div>
-                                <h6 className="font-semibold text-red-300 text-lg group-hover:text-red-200">Banco HANA/SQL</h6>
-                                <p className="text-sm text-red-200/70">Dados do SAP Business One</p>
-                                <div className="mt-3 flex justify-center space-x-2">
-                                  <Badge variant="secondary" className="bg-red-800/50 text-red-200 text-xs group-hover:bg-red-700/50 transition-colors">SQL Server</Badge>
-                                  <Badge variant="secondary" className="bg-red-800/50 text-red-200 text-xs group-hover:bg-red-700/50 transition-colors">SAP HANA</Badge>
-                                </div>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-slate-800 border-red-500/50 max-w-xs">
-                            <div className="p-3">
-                              <h6 className="font-bold text-red-300 mb-2">Banco de Dados Central</h6>
-                              <p className="text-sm text-slate-300">Banco principal onde ficam todos os dados do SAP Business One. Suporta tanto SQL Server tradicional quanto SAP HANA in-memory database para performance superior.</p>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Resumo interativo */}
-                  <div className="mt-8 bg-slate-800/50 rounded-lg p-6 border border-slate-600/50">
-                    <h6 className="text-center text-slate-300 font-semibold mb-4 text-lg">Fluxo de Comunicação</h6>
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-3">
-                        <div className="flex items-center space-x-3 p-3 rounded-lg bg-blue-900/20 border border-blue-600/30 hover:bg-blue-800/30 transition-colors">
-                          <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">1</span>
                           </div>
-                          <div>
-                            <p className="text-blue-300 font-semibold">Requisição do Usuário</p>
-                            <p className="text-xs text-slate-400">Interface CRM → IIS → API DWU</p>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-slate-800 border-blue-500/50 max-w-xs">
+                          <div className="p-3">
+                            <h6 className="font-bold text-blue-300 mb-2">CRM One - Sistema Central</h6>
+                            <p className="text-sm text-slate-300">Núcleo do sistema que orquestra toda a comunicação entre os componentes. Interface moderna, APIs robustas e integrações em tempo real.</p>
                           </div>
-                        </div>
-                        
-                        <div className="flex items-center space-x-3 p-3 rounded-lg bg-green-900/20 border border-green-600/30 hover:bg-green-800/30 transition-colors">
-                          <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">2</span>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+
+                    {/* Círculo decorativo */}
+                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-slate-600/40 animate-spin" style={{ animation: 'spin 30s linear infinite' }}></div>
+                    <div className="absolute inset-8 rounded-full border border-slate-600/20"></div>
+
+                    {/* Elemento 01 - CRM Interface (Top) */}
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="group cursor-pointer">
+                            {/* Hexágono estilo da imagem */}
+                            <div className="relative">
+                              <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-red-500/50 transition-all duration-300"></div>
+                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
+                                <Monitor className="text-white" size={24} />
+                              </div>
+                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-red-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 transition-transform duration-300"></div>
+                            </div>
+                            {/* Label */}
+                            <div className="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-red-500/30 transition-all duration-300">
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                                  <span className="text-sm font-bold">01</span>
+                                </div>
+                                <div className="text-left">
+                                  <p className="font-bold text-sm">CRM Interface</p>
+                                  <p className="text-xs opacity-80">Interface Web Responsiva</p>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <div>
-                            <p className="text-green-300 font-semibold">Processamento</p>
-                            <p className="text-xs text-slate-400">Load Balancer → DI Server</p>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-slate-800 border-red-500/50 max-w-xs">
+                          <div className="p-3">
+                            <h6 className="font-bold text-red-300 mb-2">Interface CRM One</h6>
+                            <p className="text-sm text-slate-300">Interface web principal desenvolvida em React. Design moderno, responsivo e otimizado para produtividade máxima dos usuários.</p>
                           </div>
-                        </div>
-                      </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+
+                    {/* Elemento 02 - IIS Server (Left) */}
+                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="group cursor-pointer">
+                            <div className="relative">
+                              <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-orange-500/50 transition-all duration-300"></div>
+                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
+                                <Server className="text-white" size={24} />
+                              </div>
+                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-orange-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 transition-transform duration-300"></div>
+                            </div>
+                            <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-orange-500/30 transition-all duration-300">
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                                  <span className="text-sm font-bold">02</span>
+                                </div>
+                                <div className="text-left">
+                                  <p className="font-bold text-sm">IIS Server</p>
+                                  <p className="text-xs opacity-80">Servidor Web Microsoft</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-slate-800 border-orange-500/50 max-w-xs">
+                          <div className="p-3">
+                            <h6 className="font-bold text-orange-300 mb-2">Internet Information Services</h6>
+                            <p className="text-sm text-slate-300">Servidor web da Microsoft que hospeda a aplicação CRM One. Gerencia pools de aplicação, certificados SSL e balanceamento de carga.</p>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+
+                    {/* Elemento 03 - Service Layer (Right) */}
+                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="group cursor-pointer">
+                            <div className="relative">
+                              <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-yellow-500/50 transition-all duration-300"></div>
+                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
+                                <Code className="text-white" size={24} />
+                              </div>
+                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 transition-transform duration-300"></div>
+                            </div>
+                            <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-yellow-500/30 transition-all duration-300">
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                                  <span className="text-sm font-bold">03</span>
+                                </div>
+                                <div className="text-left">
+                                  <p className="font-bold text-sm">Service Layer</p>
+                                  <p className="text-xs opacity-80">API RESTful SAP B1</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-slate-800 border-yellow-500/50 max-w-xs">
+                          <div className="p-3">
+                            <h6 className="font-bold text-yellow-300 mb-2">SAP Service Layer</h6>
+                            <p className="text-sm text-slate-300">API RESTful moderna do SAP Business One. Permite integração via HTTP/HTTPS com autenticação OAuth e operações CRUD completas.</p>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+
+                    {/* Elemento 04 - Database (Bottom) */}
+                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-4">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="group cursor-pointer">
+                            <div className="relative">
+                              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-green-500/50 transition-all duration-300"></div>
+                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
+                                <Database className="text-white" size={24} />
+                              </div>
+                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 transition-transform duration-300"></div>
+                            </div>
+                            <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-green-500/30 transition-all duration-300">
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                                  <span className="text-sm font-bold">04</span>
+                                </div>
+                                <div className="text-left">
+                                  <p className="font-bold text-sm">Database</p>
+                                  <p className="text-xs opacity-80">HANA/SQL Server</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-slate-800 border-green-500/50 max-w-xs">
+                          <div className="p-3">
+                            <h6 className="font-bold text-green-300 mb-2">Banco de Dados SAP</h6>
+                            <p className="text-sm text-slate-300">Banco principal do SAP Business One. Suporta SQL Server e SAP HANA in-memory para performance superior e analytics em tempo real.</p>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+
+                    {/* Linhas de conexão animadas */}
+                    <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }}>
+                      <defs>
+                        <linearGradient id="connectionGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.6"/>
+                          <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.6"/>
+                        </linearGradient>
+                        <linearGradient id="connectionGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#10B981" stopOpacity="0.6"/>
+                          <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.6"/>
+                        </linearGradient>
+                      </defs>
                       
-                      <div className="space-y-3">
-                        <div className="flex items-center space-x-3 p-3 rounded-lg bg-cyan-900/20 border border-cyan-600/30 hover:bg-cyan-800/30 transition-colors">
-                          <div className="w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">3</span>
-                          </div>
-                          <div>
-                            <p className="text-cyan-300 font-semibold">Integração SAP</p>
-                            <p className="text-xs text-slate-400">Service Layer → SAP Client</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center space-x-3 p-3 rounded-lg bg-red-900/20 border border-red-600/30 hover:bg-red-800/30 transition-colors">
-                          <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">4</span>
-                          </div>
-                          <div>
-                            <p className="text-red-300 font-semibold">Persistência</p>
-                            <p className="text-xs text-slate-400">Dados no HANA/SQL Server</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                      {/* Linha do CRM Interface para o centro */}
+                      <line 
+                        x1="50%" y1="15%" 
+                        x2="50%" y2="50%" 
+                        stroke="url(#connectionGradient1)" 
+                        strokeWidth="3" 
+                        strokeDasharray="10,5"
+                        className="animate-pulse"
+                      />
+                      
+                      {/* Linha do IIS Server para o centro */}
+                      <line 
+                        x1="15%" y1="50%" 
+                        x2="50%" y2="50%" 
+                        stroke="url(#connectionGradient1)" 
+                        strokeWidth="3" 
+                        strokeDasharray="10,5"
+                        className="animate-pulse"
+                        style={{ animationDelay: '0.5s' }}
+                      />
+                      
+                      {/* Linha do Service Layer para o centro */}
+                      <line 
+                        x1="85%" y1="50%" 
+                        x2="50%" y2="50%" 
+                        stroke="url(#connectionGradient2)" 
+                        strokeWidth="3" 
+                        strokeDasharray="10,5"
+                        className="animate-pulse"
+                        style={{ animationDelay: '1s' }}
+                      />
+                      
+                      {/* Linha do Database para o centro */}
+                      <line 
+                        x1="50%" y1="85%" 
+                        x2="50%" y2="50%" 
+                        stroke="url(#connectionGradient2)" 
+                        strokeWidth="3" 
+                        strokeDasharray="10,5"
+                        className="animate-pulse"
+                        style={{ animationDelay: '1.5s' }}
+                      />
+                    </svg>
+
                   </div>
 
-                  <div className="mt-6 text-center">
-                    <p className="text-slate-400 text-sm flex items-center justify-center">
-                      <Info className="mr-2" size={16} />
-                      Arquitetura distribuída seguindo as melhores práticas de integração SAP
-                    </p>
+                  {/* Resumo do fluxo com design moderno */}
+                  <div className="mt-8 bg-gradient-to-r from-slate-800/50 via-slate-700/50 to-slate-800/50 rounded-xl p-6 border border-slate-600/50 backdrop-blur-sm">
+                    <h6 className="text-center text-slate-300 font-semibold mb-6 text-xl flex items-center justify-center">
+                      <Zap className="mr-3" size={24} />
+                      Fluxo de Comunicação Integrada
+                    </h6>
+                    
+                    <div className="grid md:grid-cols-4 gap-4">
+                      <div className="bg-gradient-to-br from-red-900/30 to-red-800/30 p-4 rounded-xl border border-red-600/30 hover:scale-105 transition-all duration-300">
+                        <div className="flex items-center space-x-3 mb-3">
+                          <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
+                            <span className="text-white font-bold">01</span>
+                          </div>
+                          <Monitor className="text-red-300" size={20} />
+                        </div>
+                        <h6 className="text-red-300 font-semibold mb-2">Interface</h6>
+                        <p className="text-slate-400 text-xs">Usuário interage com CRM moderno e responsivo</p>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-orange-900/30 to-orange-800/30 p-4 rounded-xl border border-orange-600/30 hover:scale-105 transition-all duration-300">
+                        <div className="flex items-center space-x-3 mb-3">
+                          <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
+                            <span className="text-white font-bold">02</span>
+                          </div>
+                          <Server className="text-orange-300" size={20} />
+                        </div>
+                        <h6 className="text-orange-300 font-semibold mb-2">Processamento</h6>
+                        <p className="text-slate-400 text-xs">IIS processa requisições com alta performance</p>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-yellow-900/30 to-yellow-800/30 p-4 rounded-xl border border-yellow-600/30 hover:scale-105 transition-all duration-300">
+                        <div className="flex items-center space-x-3 mb-3">
+                          <div className="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
+                            <span className="text-white font-bold">03</span>
+                          </div>
+                          <Code className="text-yellow-300" size={20} />
+                        </div>
+                        <h6 className="text-yellow-300 font-semibold mb-2">Integração</h6>
+                        <p className="text-slate-400 text-xs">Service Layer conecta com SAP Business One</p>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-green-900/30 to-green-800/30 p-4 rounded-xl border border-green-600/30 hover:scale-105 transition-all duration-300">
+                        <div className="flex items-center space-x-3 mb-3">
+                          <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                            <span className="text-white font-bold">04</span>
+                          </div>
+                          <Database className="text-green-300" size={20} />
+                        </div>
+                        <h6 className="text-green-300 font-semibold mb-2">Persistência</h6>
+                        <p className="text-slate-400 text-xs">Dados seguros em HANA/SQL Server</p>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 text-center">
+                      <div className="inline-flex items-center space-x-2 bg-slate-800/70 px-4 py-2 rounded-full border border-slate-600/50">
+                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                        <p className="text-slate-300 text-sm font-medium">Sistema 100% integrado em tempo real</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </TooltipProvider>
