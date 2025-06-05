@@ -594,7 +594,60 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
 
   const downloadMaterial = (materialName: string) => {
     console.log('🔄 Iniciando download do material:', materialName);
-    
+
+    // Function to generate a DOCX file
+    const createDocx = async (title: string, content: string) => {
+      try {
+        const { Packer, Document, Paragraph, TextRun } = await import("docx");
+        
+        // Create document
+        const doc = new Document({
+          sections: [{
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: title,
+                    bold: true,
+                    size: "36pt",
+                  }),
+                ],
+              }),
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: content,
+                    size: "18pt",
+                  }),
+                ],
+              }),
+            ],
+          }],
+        });
+
+        // Generate the DOCX file
+        const buffer = await Packer.toBuffer(doc);
+
+        // Create a blob from the buffer
+        const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+        
+        // Create a URL for the blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Create a link to download the file
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.docx`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+      } catch (error) {
+        console.error("Error creating DOCX file:", error);
+      }
+    };
+
     // Create formatted PDF document
     const createPDF = (title: string, content: string) => {
       console.log('📄 Criando PDF para:', title);
@@ -604,7 +657,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           console.log('📦 jsPDF carregado com sucesso');
           const jsPDF = jsPDFModule.default || jsPDFModule.jsPDF || jsPDFModule;
           const doc = new jsPDF();
-          
+
           // Set document properties
           doc.setProperties({
             title: title,
@@ -616,13 +669,13 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           // Header
           doc.setFillColor(51, 102, 204); // Blue header
           doc.rect(0, 0, 210, 30, 'F');
-          
+
           // Company logo/name
           doc.setTextColor(255, 255, 255);
           doc.setFontSize(16);
           doc.setFont('helvetica', 'bold');
           doc.text('DWU IT Solutions', 20, 15);
-          
+
           doc.setFontSize(12);
           doc.setFont('helvetica', 'normal');
           doc.text('Sistema de Treinamento CRM One', 20, 22);
@@ -649,7 +702,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
               doc.addPage();
               yPosition = 20;
             }
-            
+
             // Format headers and important text
             if (line.includes('========') || line.includes('CONFIGURACOES')) {
               doc.setFont('helvetica', 'bold');
@@ -657,7 +710,8 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
               doc.setTextColor(51, 102, 204);
             } else if (line.startsWith('[') && line.includes(']')) {
               doc.setFont('helvetica', 'bold');
-              doc.setFontSize(10);
+              doc.setFontSize(1```typescript
+0);
               doc.setTextColor(0, 102, 51);
             } else if (line.includes('Descricao:') || line.includes('Formato:') || line.includes('Valores:')) {
               doc.setFont('helvetica', 'normal');
@@ -668,7 +722,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
               doc.setFontSize(10);
               doc.setTextColor(0, 0, 0);
             }
-            
+
             doc.text(line, 20, yPosition);
             yPosition += lineHeight;
           });
@@ -679,7 +733,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
             doc.setPage(i);
             doc.setFillColor(240, 240, 240);
             doc.rect(0, 287, 210, 10, 'F');
-            
+
             doc.setTextColor(102, 102, 102);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'normal');
@@ -900,12 +954,20 @@ DIFERENCIAIS COMPETITIVOS:
       'Manual-Integracao': {
         title: 'Manual de Integração - CRM One',
         content: 'Guia de integração com SAP Business One e APIs.'
+      },
+      'Especializacao-Tecnica': {
+        title: 'Especialização Técnica - CRM One',
+        content: 'Conteúdo especializado para técnicos do CRM One.'
       }
     };
 
     const material = materialContent[materialName as keyof typeof materialContent];
     if (material) {
-      createPDF(material.title, material.content);
+      if (materialName === 'Especializacao-Tecnica') {
+        createDocx(material.title, material.content);
+      } else {
+        createPDF(material.title, material.content);
+      }
     } else {
       console.error('Material não encontrado:', materialName);
     }
@@ -1326,8 +1388,7 @@ DIFERENCIAIS COMPETITIVOS:
 
                 <div className="bg-slate-900 p-6 rounded-lg border border-slate-600">
                   <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mb-4">
-                    <Ticket className="text-white" size={24} />
-                  </div>
+                    <Ticket className="text-white" size={24} />                  </div>
                   <h5 className="font-semibold mb-2">Jira & Help Desk</h5>
                   <p className="text-slate-400 text-sm">Gestão de chamados e tickets de suporte</p>
                 </div>
@@ -1932,8 +1993,7 @@ DIFERENCIAIS COMPETITIVOS:
                           <p className="font-semibold">Integração SAP</p>
                           <p className="text-sm text-slate-400">Setup e configuração de APIs</p>
                         </div>
-                        <Button size="sm" variant="outline">
-                          ▶ Assistir
+                        <Button size="sm" variant="outline">▶ Assistir
                         </Button>
                       </div>
                     </div>
