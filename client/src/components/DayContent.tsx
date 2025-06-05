@@ -737,8 +737,8 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
             doc.setTextColor(102, 102, 102);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'normal');
-            doc.text(`Página ${i} de ${totalPages}`, 20, 292);
-            doc.text(`Gerado em: ${new Date().toLocaleString('pt-BR')}`, 120, 292);
+            doc.text('Página ' + i + ' de ' + totalPages, 20, 292);
+            doc.text('Gerado em: ' + new Date().toLocaleString('pt-BR'), 120, 292);
           }
 
           // Save the PDF
