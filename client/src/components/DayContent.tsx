@@ -597,8 +597,28 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
     
     // Create actual PDF content for different materials
     const createPDF = (title: string, content: string) => {
-      // Formatar conteúdo para PDF com quebras de linha
-      const formattedContent = content.replace(/\n/g, '\\n').substring(0, 800);
+      // Split content into lines for better formatting
+      const lines = content.split('\n').filter(line => line.trim() !== '');
+      let pdfText = '';
+      let yPosition = 750;
+      const lineHeight = 14;
+      const pageHeight = 792;
+      const leftMargin = 50;
+      
+      // Build PDF text commands
+      let textCommands = `BT\n/F1 16 Tf\n${leftMargin} ${yPosition} Td\n(${title.replace(/[()\\]/g, '')}) Tj\nET\n`;
+      yPosition -= 30;
+      
+      lines.forEach(line => {
+        if (yPosition < 50) {
+          yPosition = 750; // New page would be needed, but for simplicity keep on same page
+        }
+        
+        // Clean line text and split if too long
+        const cleanLine = line.replace(/[()\\]/g, '').substring(0, 80);
+        textCommands += `BT\n/F1 10 Tf\n${leftMargin} ${yPosition} Td\n(${cleanLine}) Tj\nET\n`;
+        yPosition -= lineHeight;
+      });
       
       const pdfContent = `%PDF-1.4
 1 0 obj
@@ -632,17 +652,10 @@ endobj
 
 4 0 obj
 <<
-/Length ${formattedContent.length + title.length + 50}
+/Length ${textCommands.length}
 >>
 stream
-BT
-/F1 14 Tf
-50 750 Td
-(${title}) Tj
-0 -30 Td
-/F1 10 Tf
-(${formattedContent}) Tj
-ET
+${textCommands}
 endstream
 endobj
 
@@ -661,14 +674,14 @@ xref
 0000000079 00000 n 
 0000000173 00000 n 
 0000000301 00000 n 
-0000000480 00000 n 
+${(textCommands.length + 400).toString().padStart(10, '0')} 00000 n 
 trailer
 <<
 /Size 6
 /Root 1 0 R
 >>
 startxref
-556
+${textCommands.length + 460}
 %%EOF`;
       
       try {
@@ -722,38 +735,56 @@ INTEGRAÇÃO SAP:
       },
       'Config-Balancers': {
         title: 'Configurações de Balancers - CRM One',
-        content: `
-CONFIGURAÇÕES OBRIGATÓRIAS (XXXXXXX):
+        content: `CONFIGURAÇÕES OBRIGATÓRIAS (XXXXXXX):
 
 appServer - Servidor de licenças do SAP, deve ser pego pelo Service Manager
+
 appServerSQL - Servidor de banco de dados do SAP, deve ser pego pela tela de login do SAP
+
+appServerSQLHANA - Servidor de licença para HANA 2.0, geralmente HDB@
+
 appBancoSQL - Banco de dados do SAP
+
 appTipoBanco - Tipo de banco de dados
+
 appUsuarioBanco - Usuário banco de dados, SA ou SYSTEM
+
 appSenhaBanco - Senha do banco de dados
+
 EnderecoWSDL - Endereço do site do B1WS criado, geralmente localhost/b1ws
+
 EnderecoSL - Endereço para uso da Service Layer
 
 CONFIGURAÇÕES OPCIONAIS (XXXXXXX):
 
-appServerSQLHANA - Servidor de licença para HANA 2.0, geralmente HDB@
 CarregaDadosMemoria - Carregar dados iniciais em memória do IIS, true ou false
-    Caso seja true, sempre que alterar alguma config no CRM One (add-on) 
-    deve ser reiniciado o pool da aplicação dos balancers
+Caso seja true, sempre que alterar alguma config no CRM One (add-on) deve ser reiniciado o pool da aplicação dos balancers
+
 SessaoFixa - Para manter sessão fixa na DI Server, true ou false
+
 GetPNQuery - Fazer getbykey de PN via query, true ou false
+
 GetCVQuery - Fazer getbykey de CV via query, true ou false
+
 GetPVQuery - Fazer getbykey de PV via query, true ou false
+
 GetATDQuery - Fazer getbykey de ATD via query, true ou false
+
 PreviewSL - Fazer preview de documentos pela Service Layer, true ou false
+
 AddCotacaoSL - Adicionar cotação de venda pela Service Layer, true ou false
+
 AddPedidoSL - Adicionar pedido de venda pela Service Layer, true ou false
+
 UpdateCotacaoSL - Atualiza cotação de venda pela Service Layer, true ou false
+
 UpdatePedidoSL - Atualiza pedido de venda pela Service Layer, true ou false
+
 CalculaDocTotal - Informar doctotal ao atualizar documento, true ou false
+
 RemoveFilialPreview - Remover filial quando faz o preview de documentos, true ou false
-UsuariosSimultaneos - Lista de usuários simultâneos (logins), criptografado e separado por ponto e vírgula
-        `
+
+UsuariosSimultaneos - Lista de usuários simultâneos (logins), criptografado e separado por ponto e vírgula`
       },
       'Comparativo-CRM-One': {
         title: 'Comparativo CRM One vs Concorrência',
