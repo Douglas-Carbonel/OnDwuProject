@@ -735,57 +735,110 @@ INTEGRAÇÃO SAP:
       },
       'Config-Balancers': {
         title: 'Configuracoes de Balancers - CRM One',
-        content: `CONFIGURACOES OBRIGATORIAS (XXXXXXX):
+        content: `========================================
+       CONFIGURACOES OBRIGATORIAS
+========================================
 
-appServer - Servidor de licencas do SAP, deve ser pego pelo Service Manager
+[appServer]
+Descricao: Servidor de licencas do SAP
+Origem: Service Manager
+Exemplo: SERVIDOR-SAP:30015
 
-appServerSQL - Servidor de banco de dados do SAP, deve ser pego pela tela de login do SAP
+[appServerSQL] 
+Descricao: Servidor de banco de dados do SAP
+Origem: Tela de login do SAP
+Exemplo: SERVIDOR-SQL:1433
 
-appServerSQLHANA - Servidor de licenca para HANA 2.0, geralmente HDB@
+[appServerSQLHANA]
+Descricao: Servidor de licenca para HANA 2.0
+Formato: Geralmente HDB@SERVIDOR
 
-appBancoSQL - Banco de dados do SAP
+[appBancoSQL]
+Descricao: Nome do banco de dados do SAP
+Exemplo: SBODemoUS
 
-appTipoBanco - Tipo de banco de dados
+[appTipoBanco]
+Descricao: Tipo de banco de dados
+Valores: SQL Server / HANA
 
-appUsuarioBanco - Usuario banco de dados, SA ou SYSTEM
+[appUsuarioBanco]
+Descricao: Usuario do banco de dados
+Valores: SA (SQL Server) / SYSTEM (HANA)
 
-appSenhaBanco - Senha do banco de dados
+[appSenhaBanco]
+Descricao: Senha do banco de dados
+Seguranca: Manter confidencial
 
-EnderecoWSDL - Endereco do site do B1WS criado, geralmente localhost/b1ws
+[EnderecoWSDL]
+Descricao: Endereco do site B1WS criado
+Formato: http://localhost/b1ws ou https://servidor/b1ws
 
-EnderecoSL - Endereco para uso da Service Layer
+[EnderecoSL]
+Descricao: Endereco para uso da Service Layer
+Formato: http://servidor:50000/b1s/v1
 
 
-CONFIGURACOES OPCIONAIS (XXXXXXX):
+========================================
+       CONFIGURACOES OPCIONAIS
+========================================
 
-CarregaDadosMemoria - Carregar dados iniciais em memoria do IIS, true ou false
-Caso seja true, sempre que alterar alguma config no CRM One (add-on) deve ser reiniciado o pool da aplicacao dos balancers
+[CarregaDadosMemoria]
+Descricao: Carregar dados iniciais em memoria do IIS
+Valores: true / false
+IMPORTANTE: Se true, reiniciar pool da aplicacao sempre que alterar configs do CRM One
 
-SessaoFixa - Para manter sessao fixa na DI Server, true ou false
+[SessaoFixa]
+Descricao: Manter sessao fixa na DI Server
+Valores: true / false
 
-GetPNQuery - Fazer getbykey de PN via query, true ou false
+[GetPNQuery]
+Descricao: Fazer getbykey de Parceiro de Negocio via query
+Valores: true / false
 
-GetCVQuery - Fazer getbykey de CV via query, true ou false
+[GetCVQuery]
+Descricao: Fazer getbykey de Cotacao de Venda via query
+Valores: true / false
 
-GetPVQuery - Fazer getbykey de PV via query, true ou false
+[GetPVQuery]
+Descricao: Fazer getbykey de Pedido de Venda via query
+Valores: true / false
 
-GetATDQuery - Fazer getbykey de ATD via query, true ou false
+[GetATDQuery]
+Descricao: Fazer getbykey de Atividade via query
+Valores: true / false
 
-PreviewSL - Fazer preview de documentos pela Service Layer, true ou false
+[PreviewSL]
+Descricao: Preview de documentos pela Service Layer
+Valores: true / false
 
-AddCotacaoSL - Adicionar cotacao de venda pela Service Layer, true ou false
+[AddCotacaoSL]
+Descricao: Adicionar cotacao de venda pela Service Layer
+Valores: true / false
 
-AddPedidoSL - Adicionar pedido de venda pela Service Layer, true ou false
+[AddPedidoSL]
+Descricao: Adicionar pedido de venda pela Service Layer
+Valores: true / false
 
-UpdateCotacaoSL - Atualiza cotacao de venda pela Service Layer, true ou false
+[UpdateCotacaoSL]
+Descricao: Atualizar cotacao de venda pela Service Layer
+Valores: true / false
 
-UpdatePedidoSL - Atualiza pedido de venda pela Service Layer, true ou false
+[UpdatePedidoSL]
+Descricao: Atualizar pedido de venda pela Service Layer
+Valores: true / false
 
-CalculaDocTotal - Informar doctotal ao atualizar documento, true ou false
+[CalculaDocTotal]
+Descricao: Informar doctotal ao atualizar documento
+Valores: true / false
 
-RemoveFilialPreview - Remover filial quando faz o preview de documentos, true ou false
+[RemoveFilialPreview]
+Descricao: Remover filial no preview de documentos
+Valores: true / false
 
-UsuariosSimultaneos - Lista de usuarios simultaneos (logins), criptografado e separado por ponto e virgula`
+[UsuariosSimultaneos]
+Descricao: Lista de usuarios simultaneos (logins)
+Formato: Criptografado, separado por ponto e virgula
+Exemplo: user1;user2;user3`
       },
       'Comparativo-CRM-One': {
         title: 'Comparativo CRM One vs Concorrência',
