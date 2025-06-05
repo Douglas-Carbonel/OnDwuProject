@@ -717,7 +717,7 @@ export default function ModuleEvaluation({
   const [loading, setLoading] = useState(false);
   const [location, setLocation] = useLocation();
   const [attemptStatus, setAttemptStatus] = useState<AttemptStatus>({ canAttempt: true });
-  const [isCheckingAttempts, setIsCheckingAttempts] = useState(isCheckingAttempts);
+  const [isCheckingAttempts, setIsCheckingAttempts] = useState(false);
   const { user } = useAuth();
   const { progress: userProgress, updateProgress } = useProgress();
 

@@ -593,11 +593,208 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
   };
 
   const downloadMaterial = (materialName: string) => {
-    // Create a mock PDF download
-    const link = document.createElement('a');
-    link.href = '#';
-    link.download = `${materialName}.pdf`;
-    link.click();
+    // Create actual PDF content for different materials
+    const createPDF = (title: string, content: string) => {
+      const pdfContent = `%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 4 0 R
+/Resources <<
+/Font <<
+/F1 5 0 R
+>>
+>>
+>>
+endobj
+
+4 0 obj
+<<
+/Length 200
+>>
+stream
+BT
+/F1 12 Tf
+50 750 Td
+(${title}) Tj
+0 -20 Td
+(${content}) Tj
+ET
+endstream
+endobj
+
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+
+xref
+0 6
+0000000000 65535 f 
+0000000010 00000 n 
+0000000079 00000 n 
+0000000173 00000 n 
+0000000301 00000 n 
+0000000380 00000 n 
+trailer
+<<
+/Size 6
+/Root 1 0 R
+>>
+startxref
+456
+%%EOF`;
+      
+      const blob = new Blob([pdfContent], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${materialName}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    };
+
+    // Define content for each material type
+    const materialContent = {
+      'Requisitos-Hardware': {
+        title: 'Requisitos de Hardware - CRM One',
+        content: `
+REQUISITOS MÍNIMOS:
+- Processador: Intel Core i5 ou equivalente
+- Memória RAM: 8GB
+- Armazenamento: 100GB SSD
+- Sistema Operacional: Windows Server 2016+
+- .NET Framework 4.8+
+- SQL Server 2016+
+
+REQUISITOS RECOMENDADOS:
+- Processador: Intel Core i7 ou equivalente
+- Memória RAM: 16GB
+- Armazenamento: 500GB SSD
+- Sistema Operacional: Windows Server 2019+
+- SQL Server 2019+
+- Load Balancer configurado
+
+REDE:
+- Conexão estável de internet
+- Portas 80, 443, 1433 abertas
+- SSL/TLS configurado
+
+INTEGRAÇÃO SAP:
+- SAP Business One 9.3+
+- DI-Server configurado
+- Service Layer ativo
+        `
+      },
+      'Config-Balancers': {
+        title: 'Configurações de Balancers - CRM One',
+        content: `
+CONFIGURAÇÃO DE LOAD BALANCER:
+
+{
+  "balancer": {
+    "enabled": true,
+    "type": "round-robin",
+    "servers": [
+      {
+        "host": "server1.crm-one.local",
+        "port": 80,
+        "weight": 1
+      },
+      {
+        "host": "server2.crm-one.local", 
+        "port": 80,
+        "weight": 1
+      }
+    ]
+  },
+  "health_check": {
+    "interval": 30,
+    "timeout": 5,
+    "path": "/health"
+  },
+  "ssl": {
+    "enabled": true,
+    "cert_path": "/ssl/cert.pem",
+    "key_path": "/ssl/key.pem"
+  }
+}
+
+VARIÁVEIS DE AMBIENTE:
+- CRM_DB_CONNECTION: String de conexão
+- SAP_SERVICE_LAYER_URL: URL do Service Layer
+- DI_SERVER_HOST: Host do DI Server
+- LOAD_BALANCER_ENABLED: true/false
+        `
+      },
+      'Comparativo-CRM-One': {
+        title: 'Comparativo CRM One vs Concorrência',
+        content: `
+DIFERENCIAIS COMPETITIVOS:
+
+1. INTEGRAÇÃO NATIVA SAP:
+   - CRM One: 100% integrado
+   - Concorrentes: Integração limitada
+
+2. PERFORMANCE:
+   - CRM One: 99.9% uptime
+   - Concorrentes: 95-98% uptime
+
+3. CUSTOMIZAÇÃO:
+   - CRM One: Sem código
+   - Concorrentes: Requer programação
+
+4. ROI:
+   - CRM One: 6 meses
+   - Concorrentes: 12-18 meses
+
+5. SUPORTE:
+   - CRM One: 24/7 especializado
+   - Concorrentes: Horário comercial
+        `
+      },
+      'Manual-Usuario': {
+        title: 'Manual do Usuário - CRM One',
+        content: 'Guia completo para utilização do CRM One com instruções passo a passo.'
+      },
+      'Manual-Tecnico': {
+        title: 'Manual Técnico - CRM One', 
+        content: 'Documentação técnica completa para configuração e manutenção.'
+      },
+      'Manual-Integracao': {
+        title: 'Manual de Integração - CRM One',
+        content: 'Guia de integração com SAP Business One e APIs.'
+      }
+    };
+
+    const material = materialContent[materialName as keyof typeof materialContent];
+    if (material) {
+      createPDF(material.title, material.content);
+    } else {
+      console.error('Material não encontrado:', materialName);
+    }
   };
 
   if (!dayData) return null;
@@ -1166,13 +1363,24 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                       <FileText className="mr-3" size={24} />
                       Requisitos de Hardware
                     </h5>
-                    <div className="bg-slate-800 p-4 rounded border border-red-600/30">
-                      <p className="text-slate-300 mb-3">
-                        <strong>Especificações Técnicas</strong>
-                      </p>
-                      <Button size="sm" onClick={() => downloadMaterial('Requisitos-Hardware')}>
+                    <div className="bg-slate-800 p-4 rounded border border-red-600/30 space-y-3">
+                      <div>
+                        <p className="text-slate-300 mb-2"><strong>Resumo Técnico:</strong></p>
+                        <ul className="text-sm text-slate-400 space-y-1">
+                          <li>• CPU: Intel Core i5+ (i7 recomendado)</li>
+                          <li>• RAM: 8GB mínimo (16GB recomendado)</li>
+                          <li>• Storage: 100GB SSD (500GB recomendado)</li>
+                          <li>• OS: Windows Server 2016+</li>
+                          <li>• .NET Framework 4.8+</li>
+                        </ul>
+                      </div>
+                      <Button 
+                        size="sm" 
+                        onClick={() => downloadMaterial('Requisitos-Hardware')}
+                        className="w-full bg-red-600 hover:bg-red-700"
+                      >
                         <Download className="mr-2" size={14} />
-                        Download Requisitos
+                        Download Completo (PDF)
                       </Button>
                     </div>
                   </div>
@@ -1190,71 +1398,113 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
               </h4>
 
               <div className="bg-slate-900 p-6 rounded-lg border border-slate-600">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  {/* CRM Web */}
-                  <div className="group relative">
-                    <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-4 rounded-lg text-center cursor-pointer hover:scale-105 transition-all duration-300">
-                      <Globe className="mx-auto mb-2" size={32} />
-                      <h6 className="font-bold">CRM Web</h6>
-                      <p className="text-xs opacity-80">Interface do usuário</p>
-                    </div>
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-slate-800 p-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-blue-500/30">
-                      <h6 className="font-semibold text-blue-300 mb-1">CRM Web</h6>
-                      <p className="text-xs text-slate-400">Frontend da aplicação onde os usuários interagem com o sistema</p>
-                    </div>
-                  </div>
-
-                  {/* API CRM (Balancer) */}
-                  <div className="group relative">
-                    <div className="bg-gradient-to-br from-green-600 to-green-700 p-4 rounded-lg text-center cursor-pointer hover:scale-105 transition-all duration-300">
-                      <Server className="mx-auto mb-2" size={32} />
-                      <h6 className="font-bold">API CRM</h6>
-                      <p className="text-xs opacity-80">Load Balancer</p>
-                    </div>
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-slate-800 p-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-green-500/30">
-                      <h6 className="font-semibold text-green-300 mb-1">API CRM (Balancer)</h6>
-                      <p className="text-xs text-slate-400">Distribui requisições e gerencia comunicação entre CRM e SAP</p>
+                {/* Fluxo Hierárquico */}
+                <div className="space-y-8">
+                  {/* Nível 1: Frontend */}
+                  <div className="flex justify-center">
+                    <div className="group relative">
+                      <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-6 rounded-xl text-center cursor-pointer hover:scale-105 transition-all duration-300 shadow-lg">
+                        <Globe className="mx-auto mb-3" size={40} />
+                        <h6 className="font-bold text-lg">CRM Web Interface</h6>
+                        <p className="text-sm opacity-80">Frontend da Aplicação</p>
+                      </div>
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-slate-800 p-4 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-blue-500/30">
+                        <h6 className="font-semibold text-blue-300 mb-2">Interface Web do Usuario</h6>
+                        <p className="text-sm text-slate-400">Frontend React onde os usuários interagem com o sistema CRM. Hospedado no IIS com certificado SSL.</p>
+                      </div>
                     </div>
                   </div>
 
-                  {/* DI Server */}
-                  <div className="group relative">
-                    <div className="bg-gradient-to-br from-purple-600 to-purple-700 p-4 rounded-lg text-center cursor-pointer hover:scale-105 transition-all duration-300">
-                      <Database className="mx-auto mb-2" size={32} />
-                      <h6 className="font-bold">DI Server</h6>
-                      <p className="text-xs opacity-80">Data Interface</p>
+                  {/* Seta para baixo */}
+                  <div className="flex justify-center">
+                    <ArrowRight className="text-slate-400 rotate-90" size={32} />
+                  </div>
+
+                  {/* Nível 2: API Layer */}
+                  <div className="flex justify-center">
+                    <div className="group relative">
+                      <div className="bg-gradient-to-br from-green-600 to-green-700 p-6 rounded-xl text-center cursor-pointer hover:scale-105 transition-all duration-300 shadow-lg">
+                        <Server className="mx-auto mb-3" size={40} />
+                        <h6 className="font-bold text-lg">API CRM + Load Balancer</h6>
+                        <p className="text-sm opacity-80">Camada de Distribuição</p>
+                      </div>
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-slate-800 p-4 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-green-500/30">
+                        <h6 className="font-semibold text-green-300 mb-2">API + Load Balancer</h6>
+                        <p className="text-sm text-slate-400">Gerencia requisições, distribui carga entre servidores e controla comunicação com SAP. Configurável via JSON.</p>
+                      </div>
                     </div>
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-slate-800 p-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-purple-500/30">
-                      <h6 className="font-semibold text-purple-300 mb-1">DI Server</h6>
-                      <p className="text-xs text-slate-400">Interface de dados que conecta diretamente com o SAP Business One</p>
+                  </div>
+
+                  {/* Seta para baixo */}
+                  <div className="flex justify-center">
+                    <ArrowRight className="text-slate-400 rotate-90" size={32} />
+                  </div>
+
+                  {/* Nível 3: Interfaces SAP */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* DI Server */}
+                    <div className="group relative">
+                      <div className="bg-gradient-to-br from-purple-600 to-purple-700 p-6 rounded-xl text-center cursor-pointer hover:scale-105 transition-all duration-300 shadow-lg">
+                        <Database className="mx-auto mb-3" size={40} />
+                        <h6 className="font-bold text-lg">DI Server</h6>
+                        <p className="text-sm opacity-80">Data Interface</p>
+                      </div>
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-slate-800 p-4 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-purple-500/30">
+                        <h6 className="font-semibold text-purple-300 mb-2">DI Server (Data Interface)</h6>
+                        <p className="text-sm text-slate-400">Interface nativa do SAP para operações em tempo real. Conecta diretamente ao banco SAP Business One.</p>
+                      </div>
+                    </div>
+
+                    {/* B1WS */}
+                    <div className="group relative">
+                      <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-6 rounded-xl text-center cursor-pointer hover:scale-105 transition-all duration-300 shadow-lg">
+                        <Code className="mx-auto mb-3" size={40} />
+                        <h6 className="font-bold text-lg">B1WS</h6>
+                        <p className="text-sm opacity-80">Web Services</p>
+                      </div>
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-slate-800 p-4 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-orange-500/30">
+                        <h6 className="font-semibold text-orange-300 mb-2">B1WS (Web Services)</h6>
+                        <p className="text-sm text-slate-400">Comunicação via XML para operações específicas do SAP. Service Layer para APIs REST.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Setas convergindo */}
+                  <div className="flex justify-center space-x-16">
+                    <ArrowRight className="text-slate-400 rotate-45" size={24} />
+                    <ArrowRight className="text-slate-400 -rotate-45" size={24} />
+                  </div>
+
+                  {/* Nível 4: SAP Business One */}
+                  <div className="flex justify-center">
+                    <div className="group relative">
+                      <div className="bg-gradient-to-br from-cyan-600 to-cyan-700 p-8 rounded-xl text-center cursor-pointer hover:scale-105 transition-all duration-300 shadow-lg border-2 border-cyan-400/30">
+                        <BarChart className="mx-auto mb-3" size={48} />
+                        <h6 className="font-bold text-xl">SAP Business One</h6>
+                        <p className="text-sm opacity-80">ERP Principal</p>
+                        <div className="mt-2 flex justify-center space-x-2">
+                          <Badge variant="secondary" className="bg-cyan-800/50 text-cyan-200">SQL Server</Badge>
+                          <Badge variant="secondary" className="bg-cyan-800/50 text-cyan-200">SAP HANA</Badge>
+                        </div>
+                      </div>
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-96 bg-slate-800 p-4 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-cyan-500/30">
+                        <h6 className="font-semibold text-cyan-300 mb-2">SAP Business One</h6>
+                        <p className="text-sm text-slate-400">Sistema ERP principal. Suporta SQL Server (2016-2022) e SAP HANA. Versão mínima: 9.3+. Armazena todos os dados empresariais.</p>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* B1WS */}
-                  <div className="group relative">
-                    <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-4 rounded-lg text-center cursor-pointer hover:scale-105 transition-all duration-300">
-                      <Code className="mx-auto mb-2" size={32} />
-                      <h6 className="font-bold">B1WS</h6>
-                      <p className="text-xs opacity-80">Web Services</p>
+                <div className="mt-8 bg-slate-800/50 rounded-lg p-4">
+                  <h6 className="text-center text-slate-300 font-semibold mb-3">Fluxo de Comunicação</h6>
+                  <div className="grid md:grid-cols-2 gap-4 text-sm text-slate-400">
+                    <div>
+                      <p className="mb-2"><strong className="text-blue-300">Tempo Real:</strong> CRM Web → API → DI Server → SAP</p>
+                      <p className="mb-2"><strong className="text-green-300">Background:</strong> Fila de Sincronização → B1WS → SAP</p>
                     </div>
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-slate-800 p-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-orange-500/30">
-                      <h6 className="font-semibold text-orange-300 mb-1">B1WS (Web Services)</h6>
-                      <p className="text-xs text-slate-400">Comunicação via XML para operações específicas do SAP</p>
-                    </div>
-                  </div>
-
-                  {/* SAP Business One */}
-                  <div className="group relative">
-                    <div className="bg-gradient-to-br from-cyan-600 to-cyan-700 p-4 rounded-lg text-center cursor-pointer hover:scale-105 transition-all duration-300">
-                      <BarChart className="mx-auto mb-2" size={32} />
-                      <h6 className="font-bold">SAP Business One</h6>
-                      <p className="text-xs opacity-80">ERP</p>
-                    </div>
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-slate-800 p-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-cyan-500/30">
-                      <h6 className="font-semibold text-cyan-300 mb-1">SAP Business One</h6>
-                      <p className="text-xs text-slate-400">Sistema ERP principal onde ficam armazenados todos os dados empresariais</p>
+                    <div>
+                      <p className="mb-2"><strong className="text-purple-300">Multi-tenant:</strong> Suporte a múltiplos clientes</p>
+                      <p className="mb-2"><strong className="text-orange-300">SSL/TLS:</strong> Comunicação criptografada</p>
                     </div>
                   </div>
                 </div>
@@ -1262,7 +1512,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                 <div className="mt-6 text-center">
                   <p className="text-slate-400 text-sm">
                     <Info className="inline mr-2" size={16} />
-                    Passe o mouse sobre cada componente para ver detalhes
+                    Passe o mouse sobre cada componente para ver detalhes técnicos
                   </p>
                 </div>
               </div>
