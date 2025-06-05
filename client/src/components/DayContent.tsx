@@ -742,7 +742,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           }
 
           // Save the PDF
-          const fileName = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
+          const fileName = materialName.replace(/[^a-zA-Z0-9]/g, '-') + '.pdf';
           console.log('💾 Salvando arquivo:', fileName);
           doc.save(fileName);
           console.log('✅ Download concluído:', materialName);
