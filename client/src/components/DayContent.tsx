@@ -1487,13 +1487,14 @@ DIFERENCIAIS COMPETITIVOS:
                       <li>• OS: Windows Server 2016+</li>
                       <li>• .NET Framework 4.8+</li>
                     </ul>
-                    <button 
+                    <Button 
+                      size="sm" 
                       onClick={() => downloadMaterial('Requisitos-Hardware')}
-                      className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2"
+                      className="cursor-pointer hover:bg-red-700 transition-colors"
                     >
-                      <Download size={16} />
-                      Download PDF Completo
-                    </button>
+                      <Download className="mr-2" size={14} />
+                      Ver Requisitos Completos
+                    </Button>
                   </div>
                 </div>
               </div>
