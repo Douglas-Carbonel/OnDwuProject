@@ -595,21 +595,104 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
   const downloadMaterial = (materialName: string) => {
     console.log('🔄 Iniciando download do material:', materialName);
     
-    // Create simple text file instead of complex PDF
-    const createTextFile = (title: string, content: string) => {
-      // Clean and format content for better readability
-      const formattedContent = `${title}
-${'='.repeat(title.length)}
-
-${content}
-
----
-Documento gerado automaticamente pelo sistema DWU IT Solutions
-Data: ${new Date().toLocaleString('pt-BR')}
-`;
-      
+    // Create formatted PDF document
+    const createPDF = (title: string, content: string) => {
       try {
-        const blob = new Blob([formattedContent], { type: 'text/plain;charset=utf-8' });
+        // Import jsPDF dynamically
+        import('jspdf').then((jsPDFModule) => {
+          const { jsPDF } = jsPDFModule;
+          const doc = new jsPDF();
+          
+          // Set document properties
+          doc.setProperties({
+            title: title,
+            subject: 'Material DWU IT Solutions',
+            author: 'DWU IT Solutions',
+            creator: 'CRM One Training System'
+          });
+
+          // Header
+          doc.setFillColor(51, 102, 204); // Blue header
+          doc.rect(0, 0, 210, 30, 'F');
+          
+          // Company logo/name
+          doc.setTextColor(255, 255, 255);
+          doc.setFontSize(16);
+          doc.setFont('helvetica', 'bold');
+          doc.text('DWU IT Solutions', 20, 15);
+          
+          doc.setFontSize(12);
+          doc.setFont('helvetica', 'normal');
+          doc.text('Sistema de Treinamento CRM One', 20, 22);
+
+          // Title
+          doc.setTextColor(51, 102, 204);
+          doc.setFontSize(18);
+          doc.setFont('helvetica', 'bold');
+          doc.text(title, 20, 45);
+
+          // Content
+          doc.setTextColor(0, 0, 0);
+          doc.setFontSize(10);
+          doc.setFont('helvetica', 'normal');
+
+          // Split content into lines that fit the page width
+          const splitContent = doc.splitTextToSize(content, 170);
+          let yPosition = 60;
+          const lineHeight = 6;
+          const pageHeight = 280;
+
+          splitContent.forEach((line: string) => {
+            if (yPosition > pageHeight - 20) {
+              doc.addPage();
+              yPosition = 20;
+            }
+            
+            // Format headers and important text
+            if (line.includes('========') || line.includes('CONFIGURACOES')) {
+              doc.setFont('helvetica', 'bold');
+              doc.setFontSize(12);
+              doc.setTextColor(51, 102, 204);
+            } else if (line.startsWith('[') && line.includes(']')) {
+              doc.setFont('helvetica', 'bold');
+              doc.setFontSize(10);
+              doc.setTextColor(0, 102, 51);
+            } else if (line.includes('Descricao:') || line.includes('Formato:') || line.includes('Valores:')) {
+              doc.setFont('helvetica', 'normal');
+              doc.setFontSize(9);
+              doc.setTextColor(102, 102, 102);
+            } else {
+              doc.setFont('helvetica', 'normal');
+              doc.setFontSize(10);
+              doc.setTextColor(0, 0, 0);
+            }
+            
+            doc.text(line, 20, yPosition);
+            yPosition += lineHeight;
+          });
+
+          // Footer
+          const totalPages = doc.getNumberOfPages();
+          for (let i = 1; i <= totalPages; i++) {
+            doc.setPage(i);
+            doc.setFillColor(240, 240, 240);
+            doc.rect(0, 287, 210, 10, 'F');
+            
+            doc.setTextColor(102, 102, 102);
+            doc.setFontSize(8);
+            doc.setFont('helvetica', 'normal');
+            doc.text(`Página ${i} de ${totalPages}`, 20, 292);
+            doc.text(`Gerado em: ${new Date().toLocaleString('pt-BR')}`, 120, 292);
+          }
+
+          // Save the PDF
+          doc.save(`${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`);
+          console.log('✅ Download concluído:', materialName);
+        });
+      } catch (error) {
+        console.error('❌ Erro no download:', error);
+        // Fallback to text file if PDF generation fails
+        const blob = new Blob([`${title}\n\n${content}`], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -619,9 +702,6 @@ Data: ${new Date().toLocaleString('pt-BR')}
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-        console.log('✅ Download concluído:', materialName);
-      } catch (error) {
-        console.error('❌ Erro no download:', error);
       }
     };
 
@@ -806,7 +886,7 @@ DIFERENCIAIS COMPETITIVOS:
 
     const material = materialContent[materialName as keyof typeof materialContent];
     if (material) {
-      createTextFile(material.title, material.content);
+      createPDF(material.title, material.content);
     } else {
       console.error('Material não encontrado:', materialName);
     }
