@@ -597,9 +597,11 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
     
     // Create formatted PDF document
     const createPDF = (title: string, content: string) => {
+      console.log('📄 Criando PDF para:', title);
       try {
         // Import jsPDF dynamically
         import('jspdf').then((jsPDFModule) => {
+          console.log('📦 jsPDF carregado com sucesso');
           const jsPDF = jsPDFModule.default || jsPDFModule.jsPDF || jsPDFModule;
           const doc = new jsPDF();
           
@@ -686,10 +688,13 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           }
 
           // Save the PDF
-          doc.save(`${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`);
+          const fileName = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
+          console.log('💾 Salvando arquivo:', fileName);
+          doc.save(fileName);
           console.log('✅ Download concluído:', materialName);
         }).catch((error) => {
           console.error('❌ Erro ao importar jsPDF:', error);
+          console.log('🔄 Fallback para arquivo TXT');
           // Fallback to text file if PDF generation fails
           const blob = new Blob([`${title}\n\n${content}`], { type: 'text/plain;charset=utf-8' });
           const url = URL.createObjectURL(blob);
@@ -701,6 +706,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           link.click();
           document.body.removeChild(link);
           URL.revokeObjectURL(url);
+          console.log('✅ Fallback TXT concluído');
         });
       } catch (error) {
         console.error('❌ Erro geral no download:', error);
@@ -1484,8 +1490,14 @@ DIFERENCIAIS COMPETITIVOS:
                       </div>
                       <Button 
                         size="sm" 
-                        onClick={() => downloadMaterial('Requisitos-Hardware')}
-                        className="w-full bg-red-600 hover:bg-red-700 cursor-pointer transition-all duration-200 hover:scale-105"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          console.log('🔄 Botão clicado! Iniciando download de Requisitos-Hardware');
+                          downloadMaterial('Requisitos-Hardware');
+                        }}
+                        className="w-full bg-red-600 hover:bg-red-700 cursor-pointer transition-all duration-200 hover:scale-105 border-0 outline-none focus:ring-2 focus:ring-red-500"
+                        type="button"
                       >
                         <Download className="mr-2" size={14} />
                         Download Completo (PDF)
