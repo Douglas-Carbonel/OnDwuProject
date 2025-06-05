@@ -712,7 +712,8 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
               doc.setFont('helvetica', 'bold');
               doc.setFontSize(10);
               doc.setTextColor(0, 102, 51);
-            } else if (line.includes('Descricao:') || line.includes('Formato:') || line.includes('Valores:')) {
+            ```text
+             } else if (line.includes('Descricao:') || line.includes('Formato:') || line.includes('Valores:')) {
               doc.setFont('helvetica', 'normal');
               doc.setFontSize(9);
               doc.setTextColor(102, 102, 102);
@@ -1229,6 +1230,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                 <div className="bg-slate-900 p-6 rounded-lg border border-slate-600">
                   <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mb-4">
                     <BarChart className="text-white" size={24} />
+                  ```text
                   </div>
                   <h5 className="font-semibold mb-2">SAP Business One</h5>
                   <p className="text-slate-400 text-sm">ERP integrado para gestão empresarial completa</p>
