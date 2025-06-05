@@ -1535,8 +1535,9 @@ DIFERENCIAIS COMPETITIVOS:
                       Requisitos de Hardware
                     </h5>
                     <div className="space-y-4">
-                      <div className="bg-slate-800 p-4 rounded border border-red-600/30">
-                        <p className="text-slate-300 mb-3">
+                      <div className="bg-slate-900 p-4 rounded border border-red-600/30">
+                        <h6 className="font-semibold text-red-200 mb-2">Especificações & Documentação</h6>
+                        <p className="text-slate-400 text-sm mb-3">
                           Especificações mínimas e recomendadas para instalação do CRM One.
                         </p>
                         <ul className="text-sm text-slate-400 space-y-1 mb-3">
@@ -1548,10 +1549,7 @@ DIFERENCIAIS COMPETITIVOS:
                         </ul>
                         <Button 
                           size="sm" 
-                          onClick={() => {
-                            console.log('🖱️ BOTÃO CLICADO - Requisitos Técnicos');
-                            downloadMaterial('Requisitos-Tecnicos-Completos');
-                          }}
+                          onClick={() => downloadMaterial('Requisitos-Tecnicos-Completos')}
                           className="cursor-pointer hover:bg-red-700 transition-colors"
                         >
                           <Download className="mr-2" size={14} />
