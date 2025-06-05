@@ -1829,7 +1829,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                       </div>
                       <div className="flex justify-between items-center">
                         <div>
-                          <p className="font-semibold">Módulo Financeiro</p
+                          <p className="font-semibold">Módulo Financeiro</p>
                           <p className="text-sm text-slate-400">Controle financeiro e relatórios</p>
                         </div>
                         <Button size="sm" variant="outline">
