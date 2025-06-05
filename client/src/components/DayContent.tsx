@@ -734,34 +734,34 @@ INTEGRAÇÃO SAP:
         `
       },
       'Config-Balancers': {
-        title: 'Configurações de Balancers - CRM One',
-        content: `CONFIGURAÇÕES OBRIGATÓRIAS (XXXXXXX):
+        title: 'Configuracoes de Balancers - CRM One',
+        content: `CONFIGURACOES OBRIGATORIAS (XXXXXXX):
 
-appServer - Servidor de licenças do SAP, deve ser pego pelo Service Manager
+appServer - Servidor de licencas do SAP, deve ser pego pelo Service Manager
 
 appServerSQL - Servidor de banco de dados do SAP, deve ser pego pela tela de login do SAP
 
-appServerSQLHANA - Servidor de licença para HANA 2.0, geralmente HDB@
+appServerSQLHANA - Servidor de licenca para HANA 2.0, geralmente HDB@
 
 appBancoSQL - Banco de dados do SAP
 
 appTipoBanco - Tipo de banco de dados
 
-appUsuarioBanco - Usuário banco de dados, SA ou SYSTEM
+appUsuarioBanco - Usuario banco de dados, SA ou SYSTEM
 
 appSenhaBanco - Senha do banco de dados
 
-EnderecoWSDL - Endereço do site do B1WS criado, geralmente localhost/b1ws
+EnderecoWSDL - Endereco do site do B1WS criado, geralmente localhost/b1ws
 
-EnderecoSL - Endereço para uso da Service Layer
+EnderecoSL - Endereco para uso da Service Layer
 
 
-CONFIGURAÇÕES OPCIONAIS (XXXXXXX):
+CONFIGURACOES OPCIONAIS (XXXXXXX):
 
-CarregaDadosMemoria - Carregar dados iniciais em memória do IIS, true ou false
-Caso seja true, sempre que alterar alguma config no CRM One (add-on) deve ser reiniciado o pool da aplicação dos balancers
+CarregaDadosMemoria - Carregar dados iniciais em memoria do IIS, true ou false
+Caso seja true, sempre que alterar alguma config no CRM One (add-on) deve ser reiniciado o pool da aplicacao dos balancers
 
-SessaoFixa - Para manter sessão fixa na DI Server, true ou false
+SessaoFixa - Para manter sessao fixa na DI Server, true ou false
 
 GetPNQuery - Fazer getbykey de PN via query, true ou false
 
@@ -773,11 +773,11 @@ GetATDQuery - Fazer getbykey de ATD via query, true ou false
 
 PreviewSL - Fazer preview de documentos pela Service Layer, true ou false
 
-AddCotacaoSL - Adicionar cotação de venda pela Service Layer, true ou false
+AddCotacaoSL - Adicionar cotacao de venda pela Service Layer, true ou false
 
 AddPedidoSL - Adicionar pedido de venda pela Service Layer, true ou false
 
-UpdateCotacaoSL - Atualiza cotação de venda pela Service Layer, true ou false
+UpdateCotacaoSL - Atualiza cotacao de venda pela Service Layer, true ou false
 
 UpdatePedidoSL - Atualiza pedido de venda pela Service Layer, true ou false
 
@@ -785,7 +785,7 @@ CalculaDocTotal - Informar doctotal ao atualizar documento, true ou false
 
 RemoveFilialPreview - Remover filial quando faz o preview de documentos, true ou false
 
-UsuariosSimultaneos - Lista de usuários simultâneos (logins), criptografado e separado por ponto e vírgula`
+UsuariosSimultaneos - Lista de usuarios simultaneos (logins), criptografado e separado por ponto e virgula`
       },
       'Comparativo-CRM-One': {
         title: 'Comparativo CRM One vs Concorrência',
