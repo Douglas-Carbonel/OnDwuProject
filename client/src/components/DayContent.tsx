@@ -595,101 +595,25 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
   const downloadMaterial = (materialName: string) => {
     console.log('🔄 Iniciando download do material:', materialName);
     
-    // Create actual PDF content for different materials
-    const createPDF = (title: string, content: string) => {
-      // Split content into lines for better formatting
-      const lines = content.split('\n').filter(line => line.trim() !== '');
-      let pdfText = '';
-      let yPosition = 750;
-      const lineHeight = 14;
-      const pageHeight = 792;
-      const leftMargin = 50;
-      
-      // Build PDF text commands
-      let textCommands = `BT\n/F1 16 Tf\n${leftMargin} ${yPosition} Td\n(${title.replace(/[()\\]/g, '')}) Tj\nET\n`;
-      yPosition -= 30;
-      
-      lines.forEach(line => {
-        if (yPosition < 50) {
-          yPosition = 750; // New page would be needed, but for simplicity keep on same page
-        }
-        
-        // Clean line text and split if too long
-        const cleanLine = line.replace(/[()\\]/g, '').substring(0, 80);
-        textCommands += `BT\n/F1 10 Tf\n${leftMargin} ${yPosition} Td\n(${cleanLine}) Tj\nET\n`;
-        yPosition -= lineHeight;
-      });
-      
-      const pdfContent = `%PDF-1.4
-1 0 obj
-<<
-/Type /Catalog
-/Pages 2 0 R
->>
-endobj
+    // Create simple text file instead of complex PDF
+    const createTextFile = (title: string, content: string) => {
+      // Clean and format content for better readability
+      const formattedContent = `${title}
+${'='.repeat(title.length)}
 
-2 0 obj
-<<
-/Type /Pages
-/Kids [3 0 R]
-/Count 1
->>
-endobj
+${content}
 
-3 0 obj
-<<
-/Type /Page
-/Parent 2 0 R
-/MediaBox [0 0 612 792]
-/Contents 4 0 R
-/Resources <<
-/Font <<
-/F1 5 0 R
->>
->>
->>
-endobj
-
-4 0 obj
-<<
-/Length ${textCommands.length}
->>
-stream
-${textCommands}
-endstream
-endobj
-
-5 0 obj
-<<
-/Type /Font
-/Subtype /Type1
-/BaseFont /Helvetica
->>
-endobj
-
-xref
-0 6
-0000000000 65535 f 
-0000000010 00000 n 
-0000000079 00000 n 
-0000000173 00000 n 
-0000000301 00000 n 
-${(textCommands.length + 400).toString().padStart(10, '0')} 00000 n 
-trailer
-<<
-/Size 6
-/Root 1 0 R
->>
-startxref
-${textCommands.length + 460}
-%%EOF`;
+---
+Documento gerado automaticamente pelo sistema DWU IT Solutions
+Data: ${new Date().toLocaleString('pt-BR')}
+`;
       
       try {
-        const blob = new Blob([pdfContent], { type: 'application/pdf' });
+        const blob = new Blob([formattedContent], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
+        link.download = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.txt`;
         link.style.display = 'none';
         document.body.appendChild(link);
         link.click();
@@ -882,7 +806,7 @@ DIFERENCIAIS COMPETITIVOS:
 
     const material = materialContent[materialName as keyof typeof materialContent];
     if (material) {
-      createPDF(material.title, material.content);
+      createTextFile(material.title, material.content);
     } else {
       console.error('Material não encontrado:', materialName);
     }
