@@ -1564,98 +1564,151 @@ DIFERENCIAIS COMPETITIVOS:
               </h4>
 
               <div className="bg-slate-900 p-6 rounded-lg border border-slate-600">
-                {/* Fluxo Hierárquico */}
+                {/* Arquitetura de Servidores seguindo o fluxo da imagem */}
                 <div className="space-y-8">
-                  {/* Nível 1: Frontend */}
+                  {/* Server_1 */}
                   <div className="flex justify-center">
-                    <div className="group relative">
-                      <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-6 rounded-xl text-center cursor-pointer hover:scale-105 transition-all duration-300 shadow-lg">
-                        <Globe className="mx-auto mb-3" size={40} />
-                        <h6 className="font-bold text-lg">CRM Web Interface</h6>
-                        <p className="text-sm opacity-80">Frontend da Aplicação</p>
+                    <div className="bg-yellow-500/10 border-2 border-yellow-400/30 rounded-2xl p-6 w-80">
+                      <div className="text-center mb-4">
+                        <h6 className="font-bold text-yellow-300 text-lg">Server_1</h6>
                       </div>
-                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-slate-800 p-4 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-blue-500/30">
-                        <h6 className="font-semibold text-blue-300 mb-2">Interface Web do Usuario</h6>
-                        <p className="text-sm text-slate-400">Frontend React onde os usuários interagem com o sistema CRM. Hospedado no IIS com certificado SSL.</p>
+
+                      {/* CRM */}
+                      <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 p-4 rounded-xl border border-blue-400/30 mb-4 group">
+                        <div className="text-center">
+                          <div className="w-14 h-14 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <Monitor className="text-white" size={28} />
+                          </div>
+                          <h6 className="font-semibold text-blue-300">CRM</h6>
+                          <p className="text-xs text-blue-200/70">Interface Web</p>
+                        </div>
+                      </div>
+
+                      {/* Arrow down */}
+                      <div className="flex justify-center mb-4">
+                        <ArrowDown className="text-slate-400" size={24} />
+                      </div>
+
+                      {/* IIS */}
+                      <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 p-4 rounded-xl border border-purple-400/30 mb-4 group">
+                        <div className="text-center">
+                          <div className="w-14 h-14 bg-purple-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <Server className="text-white" size={28} />
+                          </div>
+                          <h6 className="font-semibold text-purple-300">IIS</h6>
+                          <p className="text-xs text-purple-200/70">Web Server</p>
+                        </div>
+                      </div>
+
+                      {/* Arrow down */}
+                      <div className="flex justify-center mb-4">
+                        <ArrowDown className="text-slate-400" size={24} />
+                      </div>
+
+                      {/* API DWU */}
+                      <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 p-4 rounded-xl border border-green-400/30 mb-4 group">
+                        <div className="text-center">
+                          <div className="w-14 h-14 bg-green-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <Globe className="text-white" size={28} />
+                          </div>
+                          <h6 className="font-semibold text-green-300">API DWU</h6>
+                          <p className="text-xs text-green-200/70">Load Balancer</p>
+                        </div>
+                      </div>
+
+                      {/* Arrow down */}
+                      <div className="flex justify-center mb-4">
+                        <ArrowDown className="text-slate-400" size={24} />
+                      </div>
+
+                      {/* DI Server */}
+                      <div className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 p-4 rounded-xl border border-orange-400/30">
+                        <div className="text-center">
+                          <div className="w-14 h-14 bg-orange-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <Database className="text-white" size={28} />
+                          </div>
+                          <h6 className="font-semibold text-orange-300">DI Server</h6>
+                          <p className="text-xs text-orange-200/70">Data Interface</p>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Seta para baixo */}
-                  <div className="flex justify-center">
-                    <ArrowRight className="text-slate-400 rotate-90" size={32} />
-                  </div>
+                  {/* Conexões para Server_2 e Server_3 */}
+                  <div className="flex justify-center items-center gap-8">
+                    {/* Linha de conexão esquerda */}
+                    <div className="flex flex-col items-center">
+                      <div className="w-px h-16 bg-slate-400"></div>
+                      <ArrowRight className="text-slate-400 rotate-45" size={24} />
+                    </div>
 
-                  {/* Nível 2: API Layer */}
-                  <div className="flex justify-center">
-                    <div className="group relative">
-                      <div className="bg-gradient-to-br from-green-600 to-green-700 p-6 rounded-xl text-center cursor-pointer hover:scale-105 transition-all duration-300 shadow-lg">
-                        <Server className="mx-auto mb-3" size={40} />
-                        <h6 className="font-bold text-lg">API CRM + Load Balancer</h6>
-                        <p className="text-sm opacity-80">Camada de Distribuição</p>
-                      </div>
-                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-slate-800 p-4 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-green-500/30">
-                        <h6 className="font-semibold text-green-300 mb-2">API + Load Balancer</h6>
-                        <p className="text-sm text-slate-400">Gerencia requisições, distribui carga entre servidores e controla comunicação com SAP. Configurável via JSON.</p>
-                      </div>
+                    {/* Linha de conexão direita */}
+                    <div className="flex flex-col items-center">
+                      <div className="w-px h-16 bg-slate-400"></div>
+                      <ArrowRight className="text-slate-400 -rotate-45" size={24} />
                     </div>
                   </div>
 
-                  {/* Seta para baixo */}
-                  <div className="flex justify-center">
-                    <ArrowRight className="text-slate-400 rotate-90" size={32} />
-                  </div>
-
-                  {/* Nível 3: Interfaces SAP */}
+                  {/* Server_2 e Server_3 */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {/* DI Server */}
-                    <div className="group relative">
-                      <div className="bg-gradient-to-br from-purple-600 to-purple-700 p-6 rounded-xl text-center cursor-pointer hover:scale-105 transition-all duration-300 shadow-lg">
-                        <Database className="mx-auto mb-3" size={40} />
-                        <h6 className="font-bold text-lg">DI Server</h6>
-                        <p className="text-sm opacity-80">Data Interface</p>
+                    {/* Server_2 */}
+                    <div className="bg-yellow-500/10 border-2 border-yellow-400/30 rounded-2xl p-6">
+                      <div className="text-center mb-4">
+                        <h6 className="font-bold text-yellow-300 text-lg">Server_2</h6>
                       </div>
-                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-slate-800 p-4 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-purple-500/30">
-                        <h6 className="font-semibold text-purple-300 mb-2">DI Server (Data Interface)</h6>
-                        <p className="text-sm text-slate-400">Interface nativa do SAP para operações em tempo real. Conecta diretamente ao banco SAP Business One.</p>
+
+                      {/* Service Layer */}
+                      <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 p-4 rounded-xl border border-cyan-400/30">
+                        <div className="text-center">
+                          <div className="w-14 h-14 bg-cyan-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <Code className="text-white" size={28} />
+                          </div>
+                          <h6 className="font-semibold text-cyan-300">Service Layer</h6>
+                          <p className="text-xs text-cyan-200/70">B1WS API</p>
+                        </div>
                       </div>
                     </div>
 
-                    {/* B1WS */}
-                    <div className="group relative">
-                      <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-6 rounded-xl text-center cursor-pointer hover:scale-105 transition-all duration-300 shadow-lg">
-                        <Code className="mx-auto mb-3" size={40} />
-                        <h6 className="font-bold text-lg">B1WS</h6>
-                        <p className="text-sm opacity-80">Web Services</p>
+                    {/* Server_3 */}
+                    <div className="bg-yellow-500/10 border-2 border-yellow-400/30 rounded-2xl p-6">
+                      <div className="text-center mb-4">
+                        <h6 className="font-bold text-yellow-300 text-lg">Server_3</h6>
                       </div>
-                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-slate-800 p-4 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-orange-500/30">
-                        <h6 className="font-semibold text-orange-300 mb-2">B1WS (Web Services)</h6>
-                        <p className="text-sm text-slate-400">Comunicação via XML para operações específicas do SAP. Service Layer para APIs REST.</p>
+
+                      {/* SAP Client */}
+                      <div className="bg-gradient-to-br from-indigo-500/20 to-indigo-600/20 p-4 rounded-xl border border-indigo-400/30">
+                        <div className="text-center">
+                          <div className="w-14 h-14 bg-indigo-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <Building className="text-white" size={28} />
+                          </div>
+                          <h6 className="font-semibold text-indigo-300">SAP Client</h6>
+                          <p className="text-xs text-indigo-200/70">Business One</p>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Setas convergindo */}
-                  <div className="flex justify-center space-x-16">
+                  {/* Conexões convergindo para o banco */}
+                  <div className="flex justify-center items-center gap-8">
                     <ArrowRight className="text-slate-400 rotate-45" size={24} />
                     <ArrowRight className="text-slate-400 -rotate-45" size={24} />
                   </div>
 
-                  {/* Nível 4: SAP Business One */}
+                  {/* Banco de Dados */}
                   <div className="flex justify-center">
-                    <div className="group relative">
-                      <div className="bg-gradient-to-br from-cyan-600 to-cyan-700 p-8 rounded-xl text-center cursor-pointer hover:scale-105 transition-all duration-300 shadow-lg border-2 border-cyan-400/30">
-                        <BarChart className="mx-auto mb-3" size={48} />
-                        <h6 className="font-bold text-xl">SAP Business One</h6>
-                        <p className="text-sm opacity-80">ERP Principal</p>
-                        <div className="mt-2 flex justify-center space-x-2">
-                          <Badge variant="secondary" className="bg-cyan-800/50 text-cyan-200">SQL Server</Badge>
-                          <Badge variant="secondary" className="bg-cyan-800/50 text-cyan-200">SAP HANA</Badge>
+                    <div className="bg-yellow-500/10 border-2 border-yellow-400/30 rounded-2xl p-6 w-80">
+                      <div className="bg-gradient-to-br from-red-500/20 to-red-600/20 p-6 rounded-xl border border-red-400/30">
+                        <div className="text-center">
+                          <div className="w-16 h-16 bg-red-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <Database className="text-white" size={32} />
+                          </div>
+                          <h6 className="font-semibold text-red-300 text-lg">Banco HANA/SQL</h6>
+                          <p className="text-sm text-red-200/70">Dados do SAP Business One</p>
+                          <div className="mt-3 flex justify-center space-x-2">
+                            <Badge variant="secondary" className="bg-red-800/50 text-red-200 text-xs">SQL Server</Badge>
+                            <Badge variant="secondary" className="bg-red-800/50 text-red-200 text-xs">SAP HANA</Badge>
+                          </div>
                         </div>
-                      </div>
-                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-96 bg-slate-800 p-4 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 border border-cyan-500/30">
-                        <h6 className="font-semibold text-cyan-300 mb-2">SAP Business One</h6>
-                        <p className="text-sm text-slate-400">Sistema ERP principal. Suporta SQL Server (2016-2022) e SAP HANA. Versão mínima: 9.3+. Armazena todos os dados empresariais.</p>
                       </div>
                     </div>
                   </div>
@@ -1665,12 +1718,12 @@ DIFERENCIAIS COMPETITIVOS:
                   <h6 className="text-center text-slate-300 font-semibold mb-3">Fluxo de Comunicação</h6>
                   <div className="grid md:grid-cols-2 gap-4 text-sm text-slate-400">
                     <div>
-                      <p className="mb-2"><strong className="text-blue-300">Tempo Real:</strong> CRM Web → API → DI Server → SAP</p>
-                      <p className="mb-2"><strong className="text-green-300">Background:</strong> Fila de Sincronização → B1WS → SAP</p>
+                      <p className="mb-2"><strong className="text-blue-300">Server_1:</strong> CRM → IIS → API DWU → DI Server</p>
+                      <p className="mb-2"><strong className="text-cyan-300">Server_2:</strong> Service Layer (B1WS)</p>
                     </div>
                     <div>
-                      <p className="mb-2"><strong className="text-purple-300">Multi-tenant:</strong> Suporte a múltiplos clientes</p>
-                      <p className="mb-2"><strong className="text-orange-300">SSL/TLS:</strong> Comunicação criptografada</p>
+                      <p className="mb-2"><strong className="text-indigo-300">Server_3:</strong> SAP Client</p>
+                      <p className="mb-2"><strong className="text-red-300">Banco:</strong> HANA/SQL Server</p>
                     </div>
                   </div>
                 </div>
@@ -1678,7 +1731,7 @@ DIFERENCIAIS COMPETITIVOS:
                 <div className="mt-6 text-center">
                   <p className="text-slate-400 text-sm">
                     <Info className="inline mr-2" size={16} />
-                    Passe o mouse sobre cada componente para ver detalhes técnicos
+                    Arquitetura distribuída em 3 servidores conforme especificação técnica
                   </p>
                 </div>
               </div>
