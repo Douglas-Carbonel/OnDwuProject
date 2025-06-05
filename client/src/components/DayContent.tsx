@@ -1232,6 +1232,8 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                     <BarChart className="text-white" size={24} />
                   ```text
                   </div>
+                  Analysis: The code change involves removing the download button from the hardware requirements card.
+
                   <h5 className="font-semibold mb-2">SAP Business One</h5>
                   <p className="text-slate-400 text-sm">ERP integrado para gestão empresarial completa</p>
                 </div>
@@ -1383,7 +1385,8 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-br from-red-900/30 to-red-800/30 p-6 rounded-lg tech-border">
+                  <Card className="bg-slate-800 border-slate-700">
+                  <CardContent className="p-6">
                     <h5 className="text-xl font-bold mb-4 text-red-300 flex items-center">
                       <FileText className="mr-3" size={24} />
                       Requisitos de Hardware
@@ -1391,22 +1394,15 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                     <p className="text-slate-300 mb-4">
                       Especificações mínimas e recomendadas para instalação do CRM One.
                     </p>
-                    <ul className="text-sm text-slate-400 space-y-1 mb-4">
+                    <ul className="text-sm text-slate-400 space-y-1">
                       <li>• CPU: Intel Core i5+ (i7 recomendado)</li>
                       <li>• RAM: 8GB mínimo (16GB recomendado)</li>
                       <li>• Storage: 100GB SSD (500GB recomendado)</li>
                       <li>• OS: Windows Server 2016+</li>
                       <li>• .NET Framework 4.8+</li>
                     </ul>
-                    <Button 
-                      size="sm" 
-                      onClick={() => downloadMaterial('Requisitos-Hardware')}
-                      className="cursor-pointer hover:bg-red-700 transition-colors"
-                    >
-                      <Download className="mr-2" size={14} />
-                      Ver Requisitos Completos
-                    </Button>
-                  </div>
+                  </CardContent>
+                </Card>
                 </div>
               </div>
             </CardContent>
