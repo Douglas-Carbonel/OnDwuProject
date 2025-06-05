@@ -1768,6 +1768,96 @@ DIFERENCIAIS COMPETITIVOS:
               </CardContent>
             </Card>
           </div>
+
+          {/* Downloads Section */}
+          <Card className="mb-8 bg-gradient-to-r from-slate-900/80 to-slate-800/80 border-slate-600">
+            <CardContent className="p-8">
+              <h4 className="text-2xl font-bold mb-6 text-center gradient-text flex items-center justify-center">
+                <Download className="mr-3" size={28} />
+                Downloads de Materiais Técnicos
+              </h4>
+              <p className="text-center text-slate-300 mb-8">
+                Acesse documentos técnicos completos para implementação e configuração do CRM One
+              </p>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="bg-slate-800 p-6 rounded-lg border border-red-600/30 hover:border-red-500/50 transition-all duration-300 group">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                      <FileText className="text-white" size={24} />
+                    </div>
+                    <div>
+                      <h6 className="font-bold text-red-300">Requisitos Técnicos</h6>
+                      <p className="text-xs text-slate-400">Documento completo</p>
+                    </div>
+                  </div>
+                  <p className="text-slate-400 text-sm mb-4">
+                    Pré-requisitos técnicos completos de hardware e software para instalação do CRM One.
+                  </p>
+                  <Button 
+                    onClick={() => downloadMaterial('Requisitos-Tecnicos-Completos')}
+                    className="w-full bg-red-600 hover:bg-red-700 transition-colors"
+                  >
+                    <Download className="mr-2" size={16} />
+                    Download PDF
+                  </Button>
+                </div>
+
+                <div className="bg-slate-800 p-6 rounded-lg border border-yellow-600/30 hover:border-yellow-500/50 transition-all duration-300 group">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-yellow-600 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                      <Settings className="text-white" size={24} />
+                    </div>
+                    <div>
+                      <h6 className="font-bold text-yellow-300">Configurações</h6>
+                      <p className="text-xs text-slate-400">Balancers & Variáveis</p>
+                    </div>
+                  </div>
+                  <p className="text-slate-400 text-sm mb-4">
+                    Guia completo de configuração de balanceadores e variáveis de sistema.
+                  </p>
+                  <Button 
+                    onClick={() => downloadMaterial('Config-Balancers')}
+                    className="w-full bg-yellow-600 hover:bg-yellow-700 transition-colors"
+                  >
+                    <Download className="mr-2" size={16} />
+                    Download PDF
+                  </Button>
+                </div>
+
+                <div className="bg-slate-800 p-6 rounded-lg border border-green-600/30 hover:border-green-500/50 transition-all duration-300 group">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                      <Database className="text-white" size={24} />
+                    </div>
+                    <div>
+                      <h6 className="font-bold text-green-300">Manual de Integração</h6>
+                      <p className="text-xs text-slate-400">SAP Business One</p>
+                    </div>
+                  </div>
+                  <p className="text-slate-400 text-sm mb-4">
+                    Documentação para integração com SAP Business One e configuração de APIs.
+                  </p>
+                  <Button 
+                    onClick={() => downloadMaterial('Manual-Integracao')}
+                    className="w-full bg-green-600 hover:bg-green-700 transition-colors"
+                  >
+                    <Download className="mr-2" size={16} />
+                    Download PDF
+                  </Button>
+                </div>
+              </div>
+
+              <div className="mt-8 text-center">
+                <div className="bg-slate-800/50 p-4 rounded-lg border border-slate-600/30">
+                  <p className="text-slate-400 text-sm">
+                    <Info className="inline mr-2" size={16} />
+                    Todos os documentos são gerados automaticamente em formato PDF com as informações mais atualizadas
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </>
       )}
 
