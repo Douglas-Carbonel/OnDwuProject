@@ -750,11 +750,11 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           console.error('❌ Erro ao importar jsPDF:', error);
           console.log('🔄 Fallback para arquivo TXT');
           // Fallback to text file if PDF generation fails
-          const blob = new Blob([`${title}\n\n${content}`], { type: 'text/plain;charset=utf-8' });
+          const blob = new Blob([title + '\n\n' + content], { type: 'text/plain;charset=utf-8' });
           const url = URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = url;
-          link.download = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.txt`;
+          link.download = materialName.replace(/[^a-zA-Z0-9]/g, '-') + '.txt';
           link.style.display = 'none';
           document.body.appendChild(link);
           link.click();
@@ -765,11 +765,11 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
       } catch (error) {
         console.error('❌ Erro geral no download:', error);
         // Fallback to text file if PDF generation fails
-        const blob = new Blob([`${title}\n\n${content}`], { type: 'text/plain;charset=utf-8' });
+        const blob = new Blob([title + '\n\n' + content], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.txt`;
+        link.download = materialName.replace(/[^a-zA-Z0-9]/g, '-') + '.txt';
         link.style.display = 'none';
         document.body.appendChild(link);
         link.click();
