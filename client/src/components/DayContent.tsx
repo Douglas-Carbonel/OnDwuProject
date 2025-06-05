@@ -11,7 +11,7 @@ import {
   CheckCircle, Clock, Headset, Download, Trophy, Users,
   FileText, TriangleAlert, Search, Gamepad, Info, ArrowUp, ArrowRight, UserCircle, Presentation,
   Target, Lightbulb, Zap, Shield, Eye, Rocket, Brain, Handshake, TrendingUp, Settings,
-  Server, Code, Network
+  Server, Code, Network, ArrowDown, Monitor
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -594,7 +594,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
 
   const downloadMaterial = (materialName: string) => {
     console.log('🔄 Iniciando download do material:', materialName);
-    
+
     // Create formatted PDF document
     const createPDF = (title: string, content: string) => {
       console.log('📄 Criando PDF para:', title);
@@ -604,7 +604,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           console.log('📦 jsPDF carregado com sucesso');
           const jsPDF = jsPDFModule.default || jsPDFModule.jsPDF || jsPDFModule;
           const doc = new jsPDF();
-          
+
           // Set document properties
           doc.setProperties({
             title: title,
@@ -616,13 +616,13 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           // Header
           doc.setFillColor(51, 102, 204); // Blue header
           doc.rect(0, 0, 210, 30, 'F');
-          
+
           // Company logo/name
           doc.setTextColor(255, 255, 255);
           doc.setFontSize(16);
           doc.setFont('helvetica', 'bold');
           doc.text('DWU IT Solutions', 20, 15);
-          
+
           doc.setFontSize(12);
           doc.setFont('helvetica', 'normal');
           doc.text('Sistema de Treinamento CRM One', 20, 22);
@@ -649,7 +649,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
               doc.addPage();
               yPosition = 20;
             }
-            
+
             // Format headers and important text
             if (line.includes('========') || line.includes('CONFIGURACOES')) {
               doc.setFont('helvetica', 'bold');
@@ -668,7 +668,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
               doc.setFontSize(10);
               doc.setTextColor(0, 0, 0);
             }
-            
+
             doc.text(line, 20, yPosition);
             yPosition += lineHeight;
           });
@@ -679,7 +679,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
             doc.setPage(i);
             doc.setFillColor(240, 240, 240);
             doc.rect(0, 287, 210, 10, 'F');
-            
+
             doc.setTextColor(102, 102, 102);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'normal');
@@ -1684,6 +1684,124 @@ DIFERENCIAIS COMPETITIVOS:
               </div>
             </CardContent>
           </Card>
+          {/* Server Architecture Diagram */}
+              <div className="mb-8">
+                <h6 className="text-center text-slate-300 font-semibold mb-6">Arquitetura de Servidores</h6>
+
+                {/* Server 1 */}
+                <div className="flex justify-center mb-8">
+                  <div className="bg-yellow-500/10 border-2 border-yellow-400/30 rounded-2xl p-6 w-64">
+                    <div className="text-center mb-3">
+                      <h6 className="font-bold text-yellow-300 mb-4">Server_1</h6>
+                    </div>
+
+                    {/* CRM */}
+                    <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 p-4 rounded-xl border border-blue-400/30 mb-4">
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                          <Monitor className="text-white" size={24} />
+                        </div>
+                        <h6 className="font-semibold text-blue-300 text-sm">CRM</h6>
+                      </div>
+                    </div>
+
+                    {/* Arrow down */}
+                    <div className="flex justify-center mb-4">
+                      <ArrowDown className="text-slate-400" size={20} />
+                    </div>
+
+                    {/* IIS */}
+                    <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 p-4 rounded-xl border border-purple-400/30 mb-4">
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                          <Server className="text-white" size={24} />
+                        </div>
+                        <h6 className="font-semibold text-purple-300 text-sm">IIS</h6>
+                      </div>
+                    </div>
+
+                    {/* Arrow down */}
+                    <div className="flex justify-center mb-4">
+                      <ArrowDown className="text-slate-400" size={20} />
+                    </div>
+
+                    {/* API DWU */}
+                    <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 p-4 rounded-xl border border-green-400/30 mb-4">
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                          <Globe className="text-white" size={24} />
+                        </div>
+                        <h6 className="font-semibold text-green-300 text-sm">API DWU</h6>
+                      </div>
+                    </div>
+
+                    {/* Arrow down */}
+                    <div className="flex justify-center mb-4">
+                      <ArrowDown className="text-slate-400" size={20} />
+                    </div>
+
+                    {/* DI Server */}
+                    <div className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 p-4 rounded-xl border border-orange-400/30">
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                          <Database className="text-white" size={24} />
+                        </div>
+                        <h6 className="font-semibold text-orange-300 text-sm">DI Server</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Connection Flow */}
+                <div className="flex justify-center items-center gap-8 mb-8">
+                  {/* Server 2 */}
+                  <div className="bg-yellow-500/10 border-2 border-yellow-400/30 rounded-2xl p-6 w-64">
+                    <div className="text-center mb-3">
+                      <h6 className="font-bold text-yellow-300 mb-4">Server_2</h6>
+                    </div>
+
+                    {/* Service Layer */}
+                    <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 p-4 rounded-xl border border-cyan-400/30">
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-cyan-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                          <Server className="text-white" size={24} />
+                        </div>
+                        <h6 className="font-semibold text-cyan-300 text-sm">Service Layer</h6>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Server 3 */}
+                  <div className="bg-yellow-500/10 border-2 border-yellow-400/30 rounded-2xl p-6 w-64">
+                    <div className="text-center mb-3">
+                      <h6 className="font-bold text-yellow-300 mb-4">Server_3</h6>
+                    </div>
+
+                    {/* SAP Client */}
+                    <div className="bg-gradient-to-br from-indigo-500/20 to-indigo-600/20 p-4 rounded-xl border border-indigo-400/30">
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-indigo-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                          <Building className="text-white" size={24} />
+                        </div>
+                        <h6 className="font-semibold text-indigo-300 text-sm">SAP Client</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Database */}
+                <div className="flex justify-center">
+                  <div className="bg-yellow-500/10 border-2 border-yellow-400/30 rounded-2xl p-6 w-64">
+                    <div className="bg-gradient-to-br from-red-500/20 to-red-600/20 p-4 rounded-xl border border-red-400/30">
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                          <Database className="text-white" size={24} />
+                        </div>
+                        <h6 className="font-semibold text-red-300 text-sm">Banco HANA/SQL</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div></div>
 
           {/* Configurações e Domínios */}
           <div className="grid md:grid-cols-2 gap-6 mb-8">
