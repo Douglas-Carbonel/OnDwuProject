@@ -1534,24 +1534,31 @@ DIFERENCIAIS COMPETITIVOS:
                       <FileText className="mr-3" size={24} />
                       Requisitos de Hardware
                     </h5>
-                    <p className="text-slate-300 mb-4">
-                      Especificações mínimas e recomendadas para instalação do CRM One.
-                    </p>
-                    <ul className="text-sm text-slate-400 space-y-1 mb-4">
-                      <li>• CPU: Intel Core i5+ (i7 recomendado)</li>
-                      <li>• RAM: 8GB mínimo (16GB recomendado)</li>
-                      <li>• Storage: 100GB SSD (500GB recomendado)</li>
-                      <li>• OS: Windows Server 2016+</li>
-                      <li>• .NET Framework 4.8+</li>
-                    </ul>
-                    <Button 
-                      size="sm" 
-                      onClick={() => downloadMaterial('Requisitos-Tecnicos-Completos')}
-                      className="cursor-pointer hover:bg-red-700 transition-colors"
-                    >
-                      <Download className="mr-2" size={14} />
-                      Ver Requisitos Completos
-                    </Button>
+                    <div className="space-y-4">
+                      <div className="bg-slate-800 p-4 rounded border border-red-600/30">
+                        <p className="text-slate-300 mb-3">
+                          Especificações mínimas e recomendadas para instalação do CRM One.
+                        </p>
+                        <ul className="text-sm text-slate-400 space-y-1 mb-3">
+                          <li>• CPU: Intel Core i5+ (i7 recomendado)</li>
+                          <li>• RAM: 8GB mínimo (16GB recomendado)</li>
+                          <li>• Storage: 100GB SSD (500GB recomendado)</li>
+                          <li>• OS: Windows Server 2016+</li>
+                          <li>• .NET Framework 4.8+</li>
+                        </ul>
+                        <Button 
+                          size="sm" 
+                          onClick={() => {
+                            console.log('🖱️ BOTÃO CLICADO - Requisitos Técnicos');
+                            downloadMaterial('Requisitos-Tecnicos-Completos');
+                          }}
+                          className="cursor-pointer hover:bg-red-700 transition-colors"
+                        >
+                          <Download className="mr-2" size={14} />
+                          Ver Requisitos Completos
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
