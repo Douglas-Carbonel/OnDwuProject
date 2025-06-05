@@ -1477,30 +1477,23 @@ DIFERENCIAIS COMPETITIVOS:
                       <FileText className="mr-3" size={24} />
                       Requisitos de Hardware
                     </h5>
-                    <div className="space-y-4">
-                      <div className="bg-slate-800 p-4 rounded border border-red-600/30">
-                        <h6 className="font-semibold text-red-200 mb-2">Especificações Técnicas</h6>
-                        <p className="text-slate-400 text-sm mb-3">
-                          Requisitos mínimos e recomendados para instalação e operação 
-                          do CRM One integrado ao SAP Business One.
-                        </p>
-                        <ul className="text-sm text-slate-400 space-y-1 mb-4">
-                          <li>• CPU: Intel Core i5+ (i7 recomendado)</li>
-                          <li>• RAM: 8GB mínimo (16GB recomendado)</li>
-                          <li>• Storage: 100GB SSD (500GB recomendado)</li>
-                          <li>• OS: Windows Server 2016+</li>
-                          <li>• .NET Framework 4.8+</li>
-                        </ul>
-                        <Button 
-                          size="sm" 
-                          onClick={() => downloadMaterial('Requisitos-Hardware')}
-                          className="cursor-pointer hover:bg-red-700 transition-colors w-full"
-                        >
-                          <Download className="mr-2" size={14} />
-                          Ver Requisitos Completos
-                        </Button>
-                      </div>
-                    </div>
+                    <p className="text-slate-300 mb-4">
+                      Especificações mínimas e recomendadas para instalação do CRM One.
+                    </p>
+                    <ul className="text-sm text-slate-400 space-y-1 mb-4">
+                      <li>• CPU: Intel Core i5+ (i7 recomendado)</li>
+                      <li>• RAM: 8GB mínimo (16GB recomendado)</li>
+                      <li>• Storage: 100GB SSD (500GB recomendado)</li>
+                      <li>• OS: Windows Server 2016+</li>
+                      <li>• .NET Framework 4.8+</li>
+                    </ul>
+                    <button 
+                      onClick={() => downloadMaterial('Requisitos-Hardware')}
+                      className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Download size={16} />
+                      Download PDF Completo
+                    </button>
                   </div>
                 </div>
               </div>
