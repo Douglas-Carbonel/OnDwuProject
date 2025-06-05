@@ -755,6 +755,7 @@ EnderecoWSDL - Endereço do site do B1WS criado, geralmente localhost/b1ws
 
 EnderecoSL - Endereço para uso da Service Layer
 
+
 CONFIGURAÇÕES OPCIONAIS (XXXXXXX):
 
 CarregaDadosMemoria - Carregar dados iniciais em memória do IIS, true ou false
