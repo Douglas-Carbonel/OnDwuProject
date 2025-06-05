@@ -1,0 +1,80 @@
+Configuracoes de Balancers - CRM One
+========================================
+ CONFIGURACOES OBRIGATORIAS
+========================================
+[appServer]
+Descricao: Servidor de licencas do SAP
+Origem: Service Manager
+Exemplo: SERVIDOR-SAP:30015
+[appServerSQL]
+Descricao: Servidor de banco de dados do SAP
+Origem: Tela de login do SAP
+Exemplo: SERVIDOR-SQL:1433
+[appServerSQLHANA]
+Descricao: Servidor de licenca para HANA 2.0
+Formato: Geralmente HDB@SERVIDOR
+[appBancoSQL]
+Descricao: Nome do banco de dados do SAP
+Exemplo: SBODemoUS
+[appTipoBanco]
+Descricao: Tipo de banco de dados
+Valores: SQL Server / HANA
+[appUsuarioBanco]
+Descricao: Usuario do banco de dados
+Valores: SA SQL Server / SYSTEM HANA
+[appSenhaBanco]
+Descricao: Senha do banco de dados
+Seguranca: Manter confidencial
+[EnderecoWSDL]
+Descricao: Endereco do site B1WS criado
+Formato: http://localhost/b1ws ou https://servidor/b1ws
+[EnderecoSL]
+Descricao: Endereco para uso da Service Layer
+Formato: http://servidor:50000/b1s/v1
+========================================
+ CONFIGURACOES OPCIONAIS
+========================================
+[CarregaDadosMemoria]
+Descricao: Carregar dados iniciais em memoria do IIS
+Valores: true / false
+IMPORTANTE: Se true, reiniciar pool da aplicacao sempre que alterar configs do C
+[SessaoFixa]
+Descricao: Manter sessao fixa na DI Server
+Valores: true / false
+[GetPNQuery]
+Descricao: Fazer getbykey de Parceiro de Negocio via query
+Valores: true / false
+[GetCVQuery]
+Descricao: Fazer getbykey de Cotacao de Venda via query
+Valores: true / false
+[GetPVQuery]
+Descricao: Fazer getbykey de Pedido de Venda via query
+Valores: true / false
+[GetATDQuery]
+Descricao: Fazer getbykey de Atividade via query
+Valores: true / false
+[PreviewSL]
+Descricao: Preview de documentos pela Service Layer
+Valores: true / false
+[AddCotacaoSL]
+Descricao: Adicionar cotacao de venda pela Service Layer
+Valores: true / false
+[AddPedidoSL]
+Descricao: Adicionar pedido de venda pela Service Layer
+Valores: true / false
+[UpdateCotacaoSL]
+Descricao: Atualizar cotacao de venda pela Service Layer
+Valores: true / false
+[UpdatePedidoSL]
+Descricao: Atualizar pedido de venda pela Service Layer
+Valores: true / false
+[CalculaDocTotal]
+Descricao: Informar doctotal ao atualizar documento
+Valores: true / false
+[RemoveFilialPreview]
+Descricao: Remover filial no preview de documentos
+Valores: true / false
+[UsuariosSimultaneos]
+Descricao: Lista de usuarios simultaneos logins
+Formato: Criptografado, separado por ponto e virgula
+Exemplo: user1;user2;user3
