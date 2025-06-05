@@ -594,60 +594,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
 
   const downloadMaterial = (materialName: string) => {
     console.log('🔄 Iniciando download do material:', materialName);
-
-    // Function to generate a DOCX file
-    const createDocx = async (title: string, content: string) => {
-      try {
-        const { Packer, Document, Paragraph, TextRun } = await import("docx");
-
-        // Create document
-        const doc = new Document({
-          sections: [{
-            children: [
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: title,
-                    bold: true,
-                    size: "36pt",
-                  }),
-                ],
-              }),
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: content,
-                    size: "18pt",
-                  }),
-                ],
-              }),
-            ],
-          }],
-        });
-
-        // Generate the DOCX file
-        const buffer = await Packer.toBuffer(doc);
-
-        // Create a blob from the buffer
-        const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
-
-        // Create a URL for the blob
-        const url = window.URL.createObjectURL(blob);
-
-        // Create a link to download the file
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.docx`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-
-      } catch (error) {
-        console.error("Error creating DOCX file:", error);
-      }
-    };
-
+    
     // Create formatted PDF document
     const createPDF = (title: string, content: string) => {
       console.log('📄 Criando PDF para:', title);
@@ -657,7 +604,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           console.log('📦 jsPDF carregado com sucesso');
           const jsPDF = jsPDFModule.default || jsPDFModule.jsPDF || jsPDFModule;
           const doc = new jsPDF();
-
+          
           // Set document properties
           doc.setProperties({
             title: title,
@@ -669,13 +616,13 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           // Header
           doc.setFillColor(51, 102, 204); // Blue header
           doc.rect(0, 0, 210, 30, 'F');
-
+          
           // Company logo/name
           doc.setTextColor(255, 255, 255);
           doc.setFontSize(16);
           doc.setFont('helvetica', 'bold');
           doc.text('DWU IT Solutions', 20, 15);
-
+          
           doc.setFontSize(12);
           doc.setFont('helvetica', 'normal');
           doc.text('Sistema de Treinamento CRM One', 20, 22);
@@ -702,7 +649,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
               doc.addPage();
               yPosition = 20;
             }
-
+            
             // Format headers and important text
             if (line.includes('========') || line.includes('CONFIGURACOES')) {
               doc.setFont('helvetica', 'bold');
@@ -712,8 +659,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
               doc.setFont('helvetica', 'bold');
               doc.setFontSize(10);
               doc.setTextColor(0, 102, 51);
-            ```text
-             } else if (line.includes('Descricao:') || line.includes('Formato:') || line.includes('Valores:')) {
+            } else if (line.includes('Descricao:') || line.includes('Formato:') || line.includes('Valores:')) {
               doc.setFont('helvetica', 'normal');
               doc.setFontSize(9);
               doc.setTextColor(102, 102, 102);
@@ -722,7 +668,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
               doc.setFontSize(10);
               doc.setTextColor(0, 0, 0);
             }
-
+            
             doc.text(line, 20, yPosition);
             yPosition += lineHeight;
           });
@@ -733,16 +679,16 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
             doc.setPage(i);
             doc.setFillColor(240, 240, 240);
             doc.rect(0, 287, 210, 10, 'F');
-
+            
             doc.setTextColor(102, 102, 102);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'normal');
-            doc.text('Página ' + i + ' de ' + totalPages, 20, 292);
-            doc.text('Gerado em: ' + new Date().toLocaleString('pt-BR'), 120, 292);
+            doc.text(`Página ${i} de ${totalPages}`, 20, 292);
+            doc.text(`Gerado em: ${new Date().toLocaleString('pt-BR')}`, 120, 292);
           }
 
           // Save the PDF
-          const fileName = materialName.replace(/[^a-zA-Z0-9]/g, '-') + '.pdf';
+          const fileName = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
           console.log('💾 Salvando arquivo:', fileName);
           doc.save(fileName);
           console.log('✅ Download concluído:', materialName);
@@ -750,11 +696,11 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           console.error('❌ Erro ao importar jsPDF:', error);
           console.log('🔄 Fallback para arquivo TXT');
           // Fallback to text file if PDF generation fails
-          const blob = new Blob([title + '\n\n' + content], { type: 'text/plain;charset=utf-8' });
+          const blob = new Blob([`${title}\n\n${content}`], { type: 'text/plain;charset=utf-8' });
           const url = URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = url;
-          link.download = materialName.replace(/[^a-zA-Z0-9]/g, '-') + '.txt';
+          link.download = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.txt`;
           link.style.display = 'none';
           document.body.appendChild(link);
           link.click();
@@ -765,11 +711,11 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
       } catch (error) {
         console.error('❌ Erro geral no download:', error);
         // Fallback to text file if PDF generation fails
-        const blob = new Blob([title + '\n\n' + content], { type: 'text/plain;charset=utf-8' });
+        const blob = new Blob([`${title}\n\n${content}`], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = materialName.replace(/[^a-zA-Z0-9]/g, '-') + '.txt';
+        link.download = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.txt`;
         link.style.display = 'none';
         document.body.appendChild(link);
         link.click();
@@ -782,15 +728,166 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
     const materialContent = {
       'Requisitos-Hardware': {
         title: 'Requisitos de Hardware - CRM One',
-        content: 'REQUISITOS MÍNIMOS:\n- Processador: Intel Core i5 ou equivalente\n- Memória RAM: 8GB\n- Armazenamento: 100GB SSD\n- Sistema Operacional: Windows Server 2016+\n- .NET Framework 4.8+\n- SQL Server 2016+\n\nREQUISITOS RECOMENDADOS:\n- Processador: Intel Core i7 ou equivalente\n- Memória RAM: 16GB\n- Armazenamento: 500GB SSD\n- Sistema Operacional: Windows Server 2019+\n- SQL Server 2019+\n- Load Balancer configurado\n\nREDE:\n- Conexão estável de internet\n- Portas 80, 443, 1433 abertas\n- SSL/TLS configurado\n\nINTEGRAÇÃO SAP:\n- SAP Business One 9.3+\n- DI-Server configurado\n- Service Layer ativo'
+        content: `
+REQUISITOS MÍNIMOS:
+- Processador: Intel Core i5 ou equivalente
+- Memória RAM: 8GB
+- Armazenamento: 100GB SSD
+- Sistema Operacional: Windows Server 2016+
+- .NET Framework 4.8+
+- SQL Server 2016+
+
+REQUISITOS RECOMENDADOS:
+- Processador: Intel Core i7 ou equivalente
+- Memória RAM: 16GB
+- Armazenamento: 500GB SSD
+- Sistema Operacional: Windows Server 2019+
+- SQL Server 2019+
+- Load Balancer configurado
+
+REDE:
+- Conexão estável de internet
+- Portas 80, 443, 1433 abertas
+- SSL/TLS configurado
+
+INTEGRAÇÃO SAP:
+- SAP Business One 9.3+
+- DI-Server configurado
+- Service Layer ativo
+        `
       },
       'Config-Balancers': {
         title: 'Configuracoes de Balancers - CRM One',
-        content: '========================================\n       CONFIGURACOES OBRIGATORIAS\n========================================\n\n[appServer]\nDescricao: Servidor de licencas do SAP\nOrigem: Service Manager\nExemplo: SERVIDOR-SAP:30015\n\n[appServerSQL]\nDescricao: Servidor de banco de dados do SAP\nOrigem: Tela de login do SAP\nExemplo: SERVIDOR-SQL:1433\n\n[appServerSQLHANA]\nDescricao: Servidor de licenca para HANA 2.0\nFormato: Geralmente HDB@SERVIDOR\n\n[appBancoSQL]\nDescricao: Nome do banco de dados do SAP\nExemplo: SBODemoUS\n\n[appTipoBanco]\nDescricao: Tipo de banco de dados\nValores: SQL Server / HANA\n\n[appUsuarioBanco]\nDescricao: Usuario do banco de dados\nValores: SA (SQL Server) / SYSTEM (HANA)\n\n[appSenhaBanco]\nDescricao: Senha do banco de dados\nSeguranca: Manter confidencial\n\n[EnderecoWSDL]\nDescricao: Endereco do site B1WS criado\nFormato: http://localhost/b1ws ou https://servidor/b1ws\n\n[EnderecoSL]\nDescricao: Endereco para uso da Service Layer\nFormato: http://servidor:50000/b1s/v1\n\n\n========================================\n       CONFIGURACOES OPCIONAIS\n========================================\n\n[CarregaDadosMemoria]\nDescricao: Carregar dados iniciais em memoria do IIS\nValores: true / false\nIMPORTANTE: Se true, reiniciar pool da aplicacao sempre que alterar configs do CRM One\n\n[SessaoFixa]\nDescricao: Manter sessao fixa na DI Server\nValores: true / false\n\n[GetPNQuery]\nDescricao: Fazer getbykey de Parceiro de Negocio via query\nValores: true / false\n\n[GetCVQuery]\nDescricao: Fazer getbykey de Cotacao de Venda via query\nValores: true / false\n\n[GetPVQuery]\nDescricao: Fazer getbykey de Pedido de Venda via query\nValores: true / false\n\n[GetATDQuery]\nDescricao: Fazer getbykey de Atividade via query\nValores: true / false\n\n[PreviewSL]\nDescricao: Preview de documentos pela Service Layer\nValores: true / false\n\n[AddCotacaoSL]\nDescricao: Adicionar cotacao de venda pela Service Layer\nValores: true / false\n\n[AddPedidoSL]\nDescricao: Adicionar pedido de venda pela Service Layer\nValores: true / false\n\n[UpdateCotacaoSL]\nDescricao: Atualizar cotacao de venda pela Service Layer\nValores: true / false\n\n[UpdatePedidoSL]\nDescricao: Atualizar pedido de venda pela Service Layer\nValores: true / false\n\n[CalculaDocTotal]\nDescricao: Informar doctotal ao atualizar documento\nValores: true / false\n\n[RemoveFilialPreview]\nDescricao: Remover filial no preview de documentos\nValores: true / false\n\n[UsuariosSimultaneos]\nDescricao: Lista de usuarios simultaneos (logins)\nFormato: Criptografado, separado por ponto e virgula\nExemplo: user1;user2;user3'
+        content: `========================================
+       CONFIGURACOES OBRIGATORIAS
+========================================
+
+[appServer]
+Descricao: Servidor de licencas do SAP
+Origem: Service Manager
+Exemplo: SERVIDOR-SAP:30015
+
+[appServerSQL] 
+Descricao: Servidor de banco de dados do SAP
+Origem: Tela de login do SAP
+Exemplo: SERVIDOR-SQL:1433
+
+[appServerSQLHANA]
+Descricao: Servidor de licenca para HANA 2.0
+Formato: Geralmente HDB@SERVIDOR
+
+[appBancoSQL]
+Descricao: Nome do banco de dados do SAP
+Exemplo: SBODemoUS
+
+[appTipoBanco]
+Descricao: Tipo de banco de dados
+Valores: SQL Server / HANA
+
+[appUsuarioBanco]
+Descricao: Usuario do banco de dados
+Valores: SA (SQL Server) / SYSTEM (HANA)
+
+[appSenhaBanco]
+Descricao: Senha do banco de dados
+Seguranca: Manter confidencial
+
+[EnderecoWSDL]
+Descricao: Endereco do site B1WS criado
+Formato: http://localhost/b1ws ou https://servidor/b1ws
+
+[EnderecoSL]
+Descricao: Endereco para uso da Service Layer
+Formato: http://servidor:50000/b1s/v1
+
+
+========================================
+       CONFIGURACOES OPCIONAIS
+========================================
+
+[CarregaDadosMemoria]
+Descricao: Carregar dados iniciais em memoria do IIS
+Valores: true / false
+IMPORTANTE: Se true, reiniciar pool da aplicacao sempre que alterar configs do CRM One
+
+[SessaoFixa]
+Descricao: Manter sessao fixa na DI Server
+Valores: true / false
+
+[GetPNQuery]
+Descricao: Fazer getbykey de Parceiro de Negocio via query
+Valores: true / false
+
+[GetCVQuery]
+Descricao: Fazer getbykey de Cotacao de Venda via query
+Valores: true / false
+
+[GetPVQuery]
+Descricao: Fazer getbykey de Pedido de Venda via query
+Valores: true / false
+
+[GetATDQuery]
+Descricao: Fazer getbykey de Atividade via query
+Valores: true / false
+
+[PreviewSL]
+Descricao: Preview de documentos pela Service Layer
+Valores: true / false
+
+[AddCotacaoSL]
+Descricao: Adicionar cotacao de venda pela Service Layer
+Valores: true / false
+
+[AddPedidoSL]
+Descricao: Adicionar pedido de venda pela Service Layer
+Valores: true / false
+
+[UpdateCotacaoSL]
+Descricao: Atualizar cotacao de venda pela Service Layer
+Valores: true / false
+
+[UpdatePedidoSL]
+Descricao: Atualizar pedido de venda pela Service Layer
+Valores: true / false
+
+[CalculaDocTotal]
+Descricao: Informar doctotal ao atualizar documento
+Valores: true / false
+
+[RemoveFilialPreview]
+Descricao: Remover filial no preview de documentos
+Valores: true / false
+
+[UsuariosSimultaneos]
+Descricao: Lista de usuarios simultaneos (logins)
+Formato: Criptografado, separado por ponto e virgula
+Exemplo: user1;user2;user3`
       },
       'Comparativo-CRM-One': {
         title: 'Comparativo CRM One vs Concorrência',
-        content: 'DIFERENCIAIS COMPETITIVOS:\n\n1. INTEGRAÇÃO NATIVA SAP:\n   - CRM One: 100% integrado\n   - Concorrentes: Integração limitada\n\n2. PERFORMANCE:\n   - CRM One: 99.9% uptime\n   - Concorrentes: 95-98% uptime\n\n3. CUSTOMIZAÇÃO:\n   - CRM One: Sem código\n   - Concorrentes: Requer programação\n\n4. ROI:\n   - CRM One: 6 meses\n   - Concorrentes: 12-18 meses\n\n5. SUPORTE:\n   - CRM One: 24/7 especializado\n   - Concorrentes: Horário comercial'
+        content: `
+DIFERENCIAIS COMPETITIVOS:
+
+1. INTEGRAÇÃO NATIVA SAP:
+   - CRM One: 100% integrado
+   - Concorrentes: Integração limitada
+
+2. PERFORMANCE:
+   - CRM One: 99.9% uptime
+   - Concorrentes: 95-98% uptime
+
+3. CUSTOMIZAÇÃO:
+   - CRM One: Sem código
+   - Concorrentes: Requer programação
+
+4. ROI:
+   - CRM One: 6 meses
+   - Concorrentes: 12-18 meses
+
+5. SUPORTE:
+   - CRM One: 24/7 especializado
+   - Concorrentes: Horário comercial
+        `
       },
       'Manual-Usuario': {
         title: 'Manual do Usuário - CRM One',
@@ -803,20 +900,12 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
       'Manual-Integracao': {
         title: 'Manual de Integração - CRM One',
         content: 'Guia de integração com SAP Business One e APIs.'
-      },
-      'Especializacao-Tecnica': {
-        title: 'Especialização Técnica - CRM One',
-        content: 'Conteúdo especializado para técnicos do CRM One.'
       }
     };
 
     const material = materialContent[materialName as keyof typeof materialContent];
     if (material) {
-      if (materialName === 'Especializacao-Tecnica') {
-        createDocx(material.title, material.content);
-      } else {
-        createPDF(material.title, material.content);
-      }
+      createPDF(material.title, material.content);
     } else {
       console.error('Material não encontrado:', materialName);
     }
@@ -907,15 +996,15 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                         className="flex items-start space-x-4 p-4 rounded-lg bg-slate-800/30 border border-slate-700/50 hover:bg-slate-800/50 transition-colors"
                       >
                         <Checkbox
-                          id={'item-' + index}
-                          checked={completedItems['item-' + index] || false}
-                          onCheckedChange={(checked) => handleItemCheck('item-' + index, checked as boolean)}
+                          id={`item-${index}`}
+                          checked={completedItems[index] || false}
+                          onCheckedChange={(checked) => handleItemCheck(index, checked as boolean)}
                           className="mt-1"
                         />
                         <label
-                          htmlFor={'item-' + index}
+                          htmlFor={`item-${index}`}
                           className={`text-sm leading-relaxed cursor-pointer flex-1 ${
-                            completedItems['item-' + index] ? 'text-slate-400 line-through' : 'text-slate-300'
+                            completedItems[index] ? 'text-slate-400 line-through' : 'text-slate-300'
                           }`}
                         >
                           {item}
@@ -1230,17 +1319,15 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                 <div className="bg-slate-900 p-6 rounded-lg border border-slate-600">
                   <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mb-4">
                     <BarChart className="text-white" size={24} />
-                  ```text
                   </div>
-                  Analysis: The code change involves removing the download button from the hardware requirements card.
-
                   <h5 className="font-semibold mb-2">SAP Business One</h5>
                   <p className="text-slate-400 text-sm">ERP integrado para gestão empresarial completa</p>
                 </div>
 
                 <div className="bg-slate-900 p-6 rounded-lg border border-slate-600">
                   <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mb-4">
-                    <Ticket className="text-white" size={24} />                  </div>
+                    <Ticket className="text-white" size={24} />
+                  </div>
                   <h5 className="font-semibold mb-2">Jira & Help Desk</h5>
                   <p className="text-slate-400 text-sm">Gestão de chamados e tickets de suporte</p>
                 </div>
@@ -1385,8 +1472,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                     </div>
                   </div>
 
-                  <Card className="bg-slate-800 border-slate-700">
-                  <CardContent className="p-6">
+                  <div className="bg-gradient-to-br from-red-900/30 to-red-800/30 p-6 rounded-lg tech-border">
                     <h5 className="text-xl font-bold mb-4 text-red-300 flex items-center">
                       <FileText className="mr-3" size={24} />
                       Requisitos de Hardware
@@ -1394,15 +1480,22 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                     <p className="text-slate-300 mb-4">
                       Especificações mínimas e recomendadas para instalação do CRM One.
                     </p>
-                    <ul className="text-sm text-slate-400 space-y-1">
+                    <ul className="text-sm text-slate-400 space-y-1 mb-4">
                       <li>• CPU: Intel Core i5+ (i7 recomendado)</li>
                       <li>• RAM: 8GB mínimo (16GB recomendado)</li>
                       <li>• Storage: 100GB SSD (500GB recomendado)</li>
                       <li>• OS: Windows Server 2016+</li>
                       <li>• .NET Framework 4.8+</li>
                     </ul>
-                  </CardContent>
-                </Card>
+                    <Button 
+                      size="sm" 
+                      onClick={() => downloadMaterial('Requisitos-Hardware')}
+                      className="cursor-pointer hover:bg-red-700 transition-colors"
+                    >
+                      <Download className="mr-2" size={14} />
+                      Ver Requisitos Completos
+                    </Button>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -1839,7 +1932,8 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                           <p className="font-semibold">Integração SAP</p>
                           <p className="text-sm text-slate-400">Setup e configuração de APIs</p>
                         </div>
-                        <Button size="sm" variant="outline">▶ Assistir
+                        <Button size="sm" variant="outline">
+                          ▶ Assistir
                         </Button>
                       </div>
                     </div>
@@ -1907,6 +2001,8 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
         </>
       )}
 
+
+
       {/* Checklist */}
       <Card className="bg-slate-800 border-slate-700">
         <CardContent className="p-6">
@@ -1917,8 +2013,8 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
             {dayData.checklist.map((item, index) => (
               <label key={index} className="flex items-center cursor-pointer">
                 <Checkbox
-                  checked={checkedItems['item-' + index] || false}
-                  onCheckedChange={(checked) => handleCheckboxChange('item-' + index, checked as boolean)}
+                  checked={checkedItems[`item-${index}`] || false}
+                  onCheckedChange={(checked) => handleCheckboxChange(`item-${index}`, checked as boolean)}
                   className="mr-3"
                 />
                 <span>{item}</span>
