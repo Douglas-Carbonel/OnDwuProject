@@ -756,6 +756,63 @@ INTEGRAÇÃO SAP:
 - Service Layer ativo
         `
       },
+      'Requisitos-Tecnicos-Completos': {
+        title: 'Pré-requisitos técnicos CRM One - 2025',
+        content: `REQUISITOS TÉCNICOS
+
+Introdução
+Este documento tem o objetivo de padronizar os ambientes em que o CRM One será instalado e utilizado pelos clientes.
+Todas as informações devem ser revisadas para o correto funcionamento do ambiente e para garantia do suporte ao produto.
+
+Pré-requisitos técnicos de hardware (Servidor WEB)
+É imprescindível que o CRM One tenha um servidor ou máquina virtual dedicado exclusivamente ao portal WEB, à API de integração do APP Mobile e ao Motor de e-mails, com as seguintes características mínimas:
+
+• Processador Intel Xeon E3 ou equivalente com 1x CORE/vCPU a cada 5 usuários
+• 8 GB de memória RAM para SERVIDOR e SO
+• 250MB de memória RAM por usuário contratado
+• 50GB de espaço em disco
+• Conexão de rede LOCAL (conexões GIGABIT) com servidor SAP e Banco de dados
+
+Pré-requisitos técnicos de software (Servidor WEB)
+• SAP Business One deverá estar na versão 10 FP2111 ou superior
+• ServerTools apenas com o módulo DI-SERVER instalado e funcional
+• SERVICE LAYER deve ter disponível 1 NODE a cada 5 usuários do CRM One
+• Conexão disponível do servidor WEB para o banco de dados SQL/HANA
+• Microsoft .NET Framework 3.5, 4.0 e 4.5
+• Google chrome (navegador)
+
+Pré-requisitos CRM One DESKTOP (add-on)
+• Processador Core i3 ou equivalente
+• 1GB de espaço em disco livre
+• 300 MB de memória RAM para o CRM One (por usuário)
+
+Premissas de instalação:
+1. Informações de Licença (Hardware Key, Install Number, System Number)
+2. Instalação do Add-on do CRM One (PRD e TST)
+3. DI-Server (instalação no servidor IIS)
+4. Licenças DI-Server (mínimo 10 licenças)
+5. Usuário SAP (CRMOne com senha SAPB1Admin)
+6. Acesso à internet para validações e atualizações
+7. Liberação de portas (8099, 8098, 8052, 8053)
+8. Driver Hana 32 bits (para ambientes HANA)
+9. Usuário Administrador – IIS
+10. B1SiteUser para Servertools
+11. Usuário TS com permissões de administrador
+12. Usuário banco de dados (SA/SYSTEM)
+13. Dados SMTP para envio de e-mails
+
+Acesso DWU ao ambiente para instalação:
+• Team Viewer para acesso remoto
+• Usuário com privilégios de administrador
+• Dados de acesso ao SAP Business One
+• Dados de acesso ao SQL Server/HANA
+• Acompanhamento durante todo o acesso
+
+Suporte:
+Telefone: (51) 3023.8393
+E-mail: suporte@dwu.com.br
+Portal: www.dwu.com.br/suporte`
+      },
       'Config-Balancers': {
         title: 'Configuracoes de Balancers - CRM One',
         content: `========================================
@@ -1480,13 +1537,21 @@ DIFERENCIAIS COMPETITIVOS:
                     <p className="text-slate-300 mb-4">
                       Especificações mínimas e recomendadas para instalação do CRM One.
                     </p>
-                    <ul className="text-sm text-slate-400 space-y-1">
+                    <ul className="text-sm text-slate-400 space-y-1 mb-4">
                       <li>• CPU: Intel Core i5+ (i7 recomendado)</li>
                       <li>• RAM: 8GB mínimo (16GB recomendado)</li>
                       <li>• Storage: 100GB SSD (500GB recomendado)</li>
                       <li>• OS: Windows Server 2016+</li>
                       <li>• .NET Framework 4.8+</li>
                     </ul>
+                    <Button 
+                      size="sm" 
+                      onClick={() => downloadMaterial('Requisitos-Tecnicos-Completos')}
+                      className="cursor-pointer hover:bg-red-700 transition-colors"
+                    >
+                      <Download className="mr-2" size={14} />
+                      Ver Requisitos Completos
+                    </Button>
                   </div>
                 </div>
               </div>
