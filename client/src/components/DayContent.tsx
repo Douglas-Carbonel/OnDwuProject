@@ -593,8 +593,13 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
   };
 
   const downloadMaterial = (materialName: string) => {
+    console.log('🔄 Iniciando download do material:', materialName);
+    
     // Create actual PDF content for different materials
     const createPDF = (title: string, content: string) => {
+      // Formatar conteúdo para PDF com quebras de linha
+      const formattedContent = content.replace(/\n/g, '\\n').substring(0, 800);
+      
       const pdfContent = `%PDF-1.4
 1 0 obj
 <<
@@ -627,15 +632,16 @@ endobj
 
 4 0 obj
 <<
-/Length 200
+/Length ${formattedContent.length + title.length + 50}
 >>
 stream
 BT
-/F1 12 Tf
+/F1 14 Tf
 50 750 Td
 (${title}) Tj
-0 -20 Td
-(${content}) Tj
+0 -30 Td
+/F1 10 Tf
+(${formattedContent}) Tj
 ET
 endstream
 endobj
@@ -655,25 +661,31 @@ xref
 0000000079 00000 n 
 0000000173 00000 n 
 0000000301 00000 n 
-0000000380 00000 n 
+0000000480 00000 n 
 trailer
 <<
 /Size 6
 /Root 1 0 R
 >>
 startxref
-456
+556
 %%EOF`;
       
-      const blob = new Blob([pdfContent], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${materialName}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      try {
+        const blob = new Blob([pdfContent], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        console.log('✅ Download concluído:', materialName);
+      } catch (error) {
+        console.error('❌ Erro no download:', error);
+      }
     };
 
     // Define content for each material type
@@ -711,42 +723,36 @@ INTEGRAÇÃO SAP:
       'Config-Balancers': {
         title: 'Configurações de Balancers - CRM One',
         content: `
-CONFIGURAÇÃO DE LOAD BALANCER:
+CONFIGURAÇÕES OBRIGATÓRIAS (XXXXXXX):
 
-{
-  "balancer": {
-    "enabled": true,
-    "type": "round-robin",
-    "servers": [
-      {
-        "host": "server1.crm-one.local",
-        "port": 80,
-        "weight": 1
-      },
-      {
-        "host": "server2.crm-one.local", 
-        "port": 80,
-        "weight": 1
-      }
-    ]
-  },
-  "health_check": {
-    "interval": 30,
-    "timeout": 5,
-    "path": "/health"
-  },
-  "ssl": {
-    "enabled": true,
-    "cert_path": "/ssl/cert.pem",
-    "key_path": "/ssl/key.pem"
-  }
-}
+appServer - Servidor de licenças do SAP, deve ser pego pelo Service Manager
+appServerSQL - Servidor de banco de dados do SAP, deve ser pego pela tela de login do SAP
+appBancoSQL - Banco de dados do SAP
+appTipoBanco - Tipo de banco de dados
+appUsuarioBanco - Usuário banco de dados, SA ou SYSTEM
+appSenhaBanco - Senha do banco de dados
+EnderecoWSDL - Endereço do site do B1WS criado, geralmente localhost/b1ws
+EnderecoSL - Endereço para uso da Service Layer
 
-VARIÁVEIS DE AMBIENTE:
-- CRM_DB_CONNECTION: String de conexão
-- SAP_SERVICE_LAYER_URL: URL do Service Layer
-- DI_SERVER_HOST: Host do DI Server
-- LOAD_BALANCER_ENABLED: true/false
+CONFIGURAÇÕES OPCIONAIS (XXXXXXX):
+
+appServerSQLHANA - Servidor de licença para HANA 2.0, geralmente HDB@
+CarregaDadosMemoria - Carregar dados iniciais em memória do IIS, true ou false
+    Caso seja true, sempre que alterar alguma config no CRM One (add-on) 
+    deve ser reiniciado o pool da aplicação dos balancers
+SessaoFixa - Para manter sessão fixa na DI Server, true ou false
+GetPNQuery - Fazer getbykey de PN via query, true ou false
+GetCVQuery - Fazer getbykey de CV via query, true ou false
+GetPVQuery - Fazer getbykey de PV via query, true ou false
+GetATDQuery - Fazer getbykey de ATD via query, true ou false
+PreviewSL - Fazer preview de documentos pela Service Layer, true ou false
+AddCotacaoSL - Adicionar cotação de venda pela Service Layer, true ou false
+AddPedidoSL - Adicionar pedido de venda pela Service Layer, true ou false
+UpdateCotacaoSL - Atualiza cotação de venda pela Service Layer, true ou false
+UpdatePedidoSL - Atualiza pedido de venda pela Service Layer, true ou false
+CalculaDocTotal - Informar doctotal ao atualizar documento, true ou false
+RemoveFilialPreview - Remover filial quando faz o preview de documentos, true ou false
+UsuariosSimultaneos - Lista de usuários simultâneos (logins), criptografado e separado por ponto e vírgula
         `
       },
       'Comparativo-CRM-One': {
@@ -1377,7 +1383,7 @@ DIFERENCIAIS COMPETITIVOS:
                       <Button 
                         size="sm" 
                         onClick={() => downloadMaterial('Requisitos-Hardware')}
-                        className="w-full bg-red-600 hover:bg-red-700"
+                        className="w-full bg-red-600 hover:bg-red-700 cursor-pointer transition-all duration-200 hover:scale-105"
                       >
                         <Download className="mr-2" size={14} />
                         Download Completo (PDF)
@@ -1535,7 +1541,11 @@ DIFERENCIAIS COMPETITIVOS:
                       Através de arquivos de configuração JSON, é possível definir N configurações 
                       para uso de APIs específicas, conexões de banco, e parâmetros de integração.
                     </p>
-                    <Button size="sm" onClick={() => downloadMaterial('Config-Balancers')}>
+                    <Button 
+                      size="sm" 
+                      onClick={() => downloadMaterial('Config-Balancers')}
+                      className="cursor-pointer hover:bg-yellow-700 transition-colors"
+                    >
                       <Download className="mr-2" size={14} />
                       Ver Configurações
                     </Button>
@@ -1660,7 +1670,7 @@ DIFERENCIAIS COMPETITIVOS:
                     </p>
                     <Button 
                       onClick={() => downloadMaterial('Comparativo-CRM-One')}
-                      className="w-full bg-orange-600 hover:bg-orange-700"
+                      className="w-full bg-orange-600 hover:bg-orange-700 cursor-pointer transition-all duration-200 hover:scale-105"
                     >
                       <Download className="mr-2" size={16} />
                       Download PDF Comparativo
@@ -1722,7 +1732,11 @@ DIFERENCIAIS COMPETITIVOS:
                           <p className="font-semibold">Manual do Usuário</p>
                           <p className="text-sm text-slate-400">Guia completo de utilização</p>
                         </div>
-                        <Button size="sm" onClick={() => downloadMaterial('Manual-Usuario')}>
+                        <Button 
+                          size="sm" 
+                          onClick={() => downloadMaterial('Manual-Usuario')}
+                          className="cursor-pointer hover:bg-blue-700 transition-colors"
+                        >
                           <Download className="mr-2" size={14} />
                           Download
                         </Button>
@@ -1732,7 +1746,11 @@ DIFERENCIAIS COMPETITIVOS:
                           <p className="font-semibold">Manual Técnico</p>
                           <p className="text-sm text-slate-400">Configurações avançadas</p>
                         </div>
-                        <Button size="sm" onClick={() => downloadMaterial('Manual-Tecnico')}>
+                        <Button 
+                          size="sm" 
+                          onClick={() => downloadMaterial('Manual-Tecnico')}
+                          className="cursor-pointer hover:bg-blue-700 transition-colors"
+                        >
                           <Download className="mr-2" size={14} />
                           Download
                         </Button>
@@ -1742,7 +1760,11 @@ DIFERENCIAIS COMPETITIVOS:
                           <p className="font-semibold">Manual de Integração</p>
                           <p className="text-sm text-slate-400">APIs e conexões SAP</p>
                         </div>
-                        <Button size="sm" onClick={() => downloadMaterial('Manual-Integracao')}>
+                        <Button 
+                          size="sm" 
+                          onClick={() => downloadMaterial('Manual-Integracao')}
+                          className="cursor-pointer hover:bg-blue-700 transition-colors"
+                        >
                           <Download className="mr-2" size={14} />
                           Download
                         </Button>
