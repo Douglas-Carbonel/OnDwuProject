@@ -599,7 +599,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
     const createDocx = async (title: string, content: string) => {
       try {
         const { Packer, Document, Paragraph, TextRun } = await import("docx");
-        
+
         // Create document
         const doc = new Document({
           sections: [{
@@ -630,10 +630,10 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
 
         // Create a blob from the buffer
         const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
-        
+
         // Create a URL for the blob
         const url = window.URL.createObjectURL(blob);
-        
+
         // Create a link to download the file
         const link = document.createElement("a");
         link.href = url;
@@ -710,8 +710,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
               doc.setTextColor(51, 102, 204);
             } else if (line.startsWith('[') && line.includes(']')) {
               doc.setFont('helvetica', 'bold');
-              doc.setFontSize(1```typescript
-0);
+              doc.setFontSize(10);
               doc.setTextColor(0, 102, 51);
             } else if (line.includes('Descricao:') || line.includes('Formato:') || line.includes('Valores:')) {
               doc.setFont('helvetica', 'normal');
@@ -907,15 +906,15 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                         className="flex items-start space-x-4 p-4 rounded-lg bg-slate-800/30 border border-slate-700/50 hover:bg-slate-800/50 transition-colors"
                       >
                         <Checkbox
-                          id={`item-${index}`}
-                          checked={completedItems[index] || false}
-                          onCheckedChange={(checked) => handleItemCheck(index, checked as boolean)}
+                          id={'item-' + index}
+                          checked={completedItems['item-' + index] || false}
+                          onCheckedChange={(checked) => handleItemCheck('item-' + index, checked as boolean)}
                           className="mt-1"
                         />
                         <label
-                          htmlFor={`item-${index}`}
+                          htmlFor={'item-' + index}
                           className={`text-sm leading-relaxed cursor-pointer flex-1 ${
-                            completedItems[index] ? 'text-slate-400 line-through' : 'text-slate-300'
+                            completedItems['item-' + index] ? 'text-slate-400 line-through' : 'text-slate-300'
                           }`}
                         >
                           {item}
@@ -1830,7 +1829,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
                       </div>
                       <div className="flex justify-between items-center">
                         <div>
-                          <p className="font-semibold">Módulo Financeiro</p>
+                          <p className="font-semibold">Módulo Financeiro</p
                           <p className="text-sm text-slate-400">Controle financeiro e relatórios</p>
                         </div>
                         <Button size="sm" variant="outline">
@@ -1910,8 +1909,6 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
         </>
       )}
 
-
-
       {/* Checklist */}
       <Card className="bg-slate-800 border-slate-700">
         <CardContent className="p-6">
@@ -1922,8 +1919,8 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
             {dayData.checklist.map((item, index) => (
               <label key={index} className="flex items-center cursor-pointer">
                 <Checkbox
-                  checked={checkedItems[`item-${index}`] || false}
-                  onCheckedChange={(checked) => handleCheckboxChange(`item-${index}`, checked as boolean)}
+                  checked={checkedItems['item-' + index] || false}
+                  onCheckedChange={(checked) => handleCheckboxChange('item-' + index, checked as boolean)}
                   className="mr-3"
                 />
                 <span>{item}</span>
