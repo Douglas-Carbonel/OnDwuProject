@@ -594,7 +594,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
 
   const downloadMaterial = (materialName: string) => {
     console.log('🔄 Iniciando download do material:', materialName);
-
+    
     // Create formatted PDF document
     const createPDF = (title: string, content: string) => {
       console.log('📄 Criando PDF para:', title);
@@ -604,7 +604,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           console.log('📦 jsPDF carregado com sucesso');
           const jsPDF = jsPDFModule.default || jsPDFModule.jsPDF || jsPDFModule;
           const doc = new jsPDF();
-
+          
           // Set document properties
           doc.setProperties({
             title: title,
@@ -616,13 +616,13 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           // Header
           doc.setFillColor(51, 102, 204); // Blue header
           doc.rect(0, 0, 210, 30, 'F');
-
+          
           // Company logo/name
           doc.setTextColor(255, 255, 255);
           doc.setFontSize(16);
           doc.setFont('helvetica', 'bold');
           doc.text('DWU IT Solutions', 20, 15);
-
+          
           doc.setFontSize(12);
           doc.setFont('helvetica', 'normal');
           doc.text('Sistema de Treinamento CRM One', 20, 22);
@@ -649,7 +649,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
               doc.addPage();
               yPosition = 20;
             }
-
+            
             // Format headers and important text
             if (line.includes('========') || line.includes('CONFIGURACOES')) {
               doc.setFont('helvetica', 'bold');
@@ -668,7 +668,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
               doc.setFontSize(10);
               doc.setTextColor(0, 0, 0);
             }
-
+            
             doc.text(line, 20, yPosition);
             yPosition += lineHeight;
           });
@@ -679,7 +679,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
             doc.setPage(i);
             doc.setFillColor(240, 240, 240);
             doc.rect(0, 287, 210, 10, 'F');
-
+            
             doc.setTextColor(102, 102, 102);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'normal');
@@ -690,8 +690,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
           // Save the PDF
           const fileName = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
           console.log('💾 Salvando arquivo:', fileName);
-```text
-                    doc.save(fileName);
+          doc.save(fileName);
           console.log('✅ Download concluído:', materialName);
         }).catch((error) => {
           console.error('❌ Erro ao importar jsPDF:', error);
@@ -1367,7 +1366,7 @@ DIFERENCIAIS COMPETITIVOS:
                       </ul>
                     </div>
                     <div>
-                                            <h6 className="font-semibold mb-3 text-green-200">Ambiente de Integração</h6>
+                      <h6 className="font-semibold mb-3 text-green-200">Ambiente de Integração</h6>
                       <ul className="space-y-2 text-slate-300">
                         <li>• <strong>Multi-tenant:</strong> Suporte a múltiplos clientes</li>
                         <li>• <strong>Load Balancer:</strong> Distribuição inteligente de carga</li>
@@ -1473,37 +1472,30 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
                   </div>
 
-                  {/* Requisitos de Hardware */}
-                <div className="bg-gradient-to-br from-red-900/30 to-red-800/30 p-6 rounded-lg tech-border">
-                  <h5 className="text-xl font-bold mb-4 text-red-300 flex items-center">
-                    <FileText className="mr-3" size={24} />
-                    Requisitos de Hardware
-                  </h5>
-                  <p className="text-slate-300 mb-4">
-                    Especificações mínimas e recomendadas para instalação do CRM One.
-                  </p>
-                  <ul className="text-sm text-slate-400 space-y-1 mb-6">
-                    <li>• CPU: Intel Core i5+ (i7 recomendado)</li>
-                    <li>• RAM: 8GB mínimo (16GB recomendado)</li>
-                    <li>• Storage: 100GB SSD (500GB recomendado)</li>
-                    <li>• OS: Windows Server 2016+</li>
-                    <li>• .NET Framework 4.8+</li>
-                  </ul>
-                </div>
-
-                {/* Botão separado fora do grid */}
-                <div className="mt-4">
-                  <button 
-                    onClick={() => {
-                      console.log('Botão clicado!');
-                      downloadMaterial('Requisitos-Hardware');
-                    }}
-                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition-colors duration-200 cursor-pointer"
-                  >
-                    <Download size={16} />
-                    Download Requisitos Completos
-                  </button>
-                </div>
+                  <div className="bg-gradient-to-br from-red-900/30 to-red-800/30 p-6 rounded-lg tech-border">
+                    <h5 className="text-xl font-bold mb-4 text-red-300 flex items-center">
+                      <FileText className="mr-3" size={24} />
+                      Requisitos de Hardware
+                    </h5>
+                    <p className="text-slate-300 mb-4">
+                      Especificações mínimas e recomendadas para instalação do CRM One.
+                    </p>
+                    <ul className="text-sm text-slate-400 space-y-1 mb-4">
+                      <li>• CPU: Intel Core i5+ (i7 recomendado)</li>
+                      <li>• RAM: 8GB mínimo (16GB recomendado)</li>
+                      <li>• Storage: 100GB SSD (500GB recomendado)</li>
+                      <li>• OS: Windows Server 2016+</li>
+                      <li>• .NET Framework 4.8+</li>
+                    </ul>
+                    <Button 
+                      size="sm" 
+                      onClick={() => downloadMaterial('Requisitos-Hardware')}
+                      className="cursor-pointer hover:bg-red-700 transition-colors"
+                    >
+                      <Download className="mr-2" size={14} />
+                      Ver Requisitos Completos
+                    </Button>
+                  </div>
                 </div>
               </div>
             </CardContent>
