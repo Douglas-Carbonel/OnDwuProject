@@ -1672,22 +1672,22 @@ DIFERENCIAIS COMPETITIVOS:
                     <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4">
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="group cursor-pointer">
-                            <div className="relative">
-                              <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-yellow-500/50 transition-all duration-300"></div>
-                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
-                                <Code className="text-white" size={24} />
+                          <div className="group cursor-pointer hover:scale-105 transition-all duration-300">
+                            <div className="relative hover:rotate-12 transition-transform duration-300">
+                              <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-yellow-500/50 group-hover:shadow-2xl transition-all duration-300 cursor-pointer hover:from-yellow-400 hover:to-yellow-500"></div>
+                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 group-hover:scale-110 transition-transform duration-300">
+                                <Code className="text-white group-hover:text-yellow-100 transition-colors duration-300" size={24} />
                               </div>
-                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 transition-transform duration-300"></div>
+                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 group-hover:bg-yellow-400 transition-all duration-300"></div>
                             </div>
-                            <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-yellow-500/30 transition-all duration-300">
+                            <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-yellow-500/50 group-hover:shadow-2xl group-hover:from-yellow-400 group-hover:to-yellow-500 group-hover:scale-105 transition-all duration-300">
                               <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                                  <span className="text-sm font-bold">03</span>
+                                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+                                  <span className="text-sm font-bold group-hover:text-yellow-100 transition-colors duration-300">03</span>
                                 </div>
                                 <div className="text-left">
-                                  <p className="font-bold text-sm">Service Layer</p>
-                                  <p className="text-xs opacity-80">API RESTful SAP B1</p>
+                                  <p className="font-bold text-sm group-hover:text-yellow-100 transition-colors duration-300">Service Layer</p>
+                                  <p className="text-xs opacity-80 group-hover:opacity-100 group-hover:text-yellow-200 transition-all duration-300">API RESTful SAP B1</p>
                                 </div>
                               </div>
                             </div>
@@ -1706,22 +1706,22 @@ DIFERENCIAIS COMPETITIVOS:
                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-4">
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="group cursor-pointer">
-                            <div className="relative">
-                              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-green-500/50 transition-all duration-300"></div>
-                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
-                                <Database className="text-white" size={24} />
+                          <div className="group cursor-pointer hover:scale-105 transition-all duration-300">
+                            <div className="relative hover:rotate-12 transition-transform duration-300">
+                              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-green-500/50 group-hover:shadow-2xl transition-all duration-300 cursor-pointer hover:from-green-400 hover:to-green-500"></div>
+                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 group-hover:scale-110 transition-transform duration-300">
+                                <Database className="text-white group-hover:text-green-100 transition-colors duration-300" size={24} />
                               </div>
-                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 transition-transform duration-300"></div>
+                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 group-hover:bg-green-400 transition-all duration-300"></div>
                             </div>
-                            <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-green-500/30 transition-all duration-300">
+                            <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-green-500/50 group-hover:shadow-2xl group-hover:from-green-400 group-hover:to-green-500 group-hover:scale-105 transition-all duration-300">
                               <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                                  <span className="text-sm font-bold">04</span>
+                                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+                                  <span className="text-sm font-bold group-hover:text-green-100 transition-colors duration-300">04</span>
                                 </div>
                                 <div className="text-left">
-                                  <p className="font-bold text-sm">Database</p>
-                                  <p className="text-xs opacity-80">HANA/SQL Server</p>
+                                  <p className="font-bold text-sm group-hover:text-green-100 transition-colors duration-300">Database</p>
+                                  <p className="text-xs opacity-80 group-hover:opacity-100 group-hover:text-green-200 transition-all duration-300">HANA/SQL Server</p>
                                 </div>
                               </div>
                             </div>
