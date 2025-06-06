@@ -1566,7 +1566,7 @@ DIFERENCIAIS COMPETITIVOS:
                 Passe o mouse sobre os componentes para conhecer suas funcionalidades
               </p>
 
-              <TooltipProvider>
+              <TooltipProvider delayDuration={200} skipDelayDuration={100}>
                 <div className="bg-slate-900 p-8 rounded-lg border border-slate-600 relative">
                   {/* Container principal com layout circular */}
                   <div className="relative w-full h-[600px] flex items-center justify-center">
@@ -1585,10 +1585,20 @@ DIFERENCIAIS COMPETITIVOS:
                             </div>
                           </div>
                         </TooltipTrigger>
-                        <TooltipContent className="bg-slate-800 border-blue-500/50 max-w-xs">
-                          <div className="p-3">
-                            <h6 className="font-bold text-blue-300 mb-2">CRM One - Sistema Central</h6>
-                            <p className="text-sm text-slate-300">Núcleo do sistema que orquestra toda a comunicação entre os componentes. Interface moderna, APIs robustas e integrações em tempo real.</p>
+                        <TooltipContent 
+                          className="bg-slate-800/95 backdrop-blur-sm border-blue-500/50 max-w-xs shadow-2xl shadow-blue-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
+                          sideOffset={8}
+                        >
+                          <div className="p-4">
+                            <div className="flex items-center gap-2 mb-3">
+                              <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                              <h6 className="font-bold text-blue-300 text-sm">CRM One - Sistema Central</h6>
+                            </div>
+                            <p className="text-xs text-slate-300 leading-relaxed mb-3">Núcleo do sistema que orquestra toda a comunicação entre os componentes. Interface moderna, APIs robustas e integrações em tempo real.</p>
+                            <div className="flex items-center justify-between pt-2 border-t border-slate-700">
+                              <span className="text-xs text-slate-400">Status</span>
+                              <span className="text-xs text-green-400 font-medium">Ativo</span>
+                            </div>
                           </div>
                         </TooltipContent>
                       </Tooltip>
@@ -1625,10 +1635,26 @@ DIFERENCIAIS COMPETITIVOS:
                             </div>
                           </div>
                         </TooltipTrigger>
-                        <TooltipContent className="bg-slate-800 border-red-500/50 max-w-xs">
-                          <div className="p-3">
-                            <h6 className="font-bold text-red-300 mb-2">Interface CRM One</h6>
-                            <p className="text-sm text-slate-300">Interface web principal desenvolvida em React. Design moderno, responsivo e otimizado para produtividade máxima dos usuários.</p>
+                        <TooltipContent 
+                          className="bg-slate-800/95 backdrop-blur-sm border-red-500/50 max-w-xs shadow-2xl shadow-red-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
+                          sideOffset={8}
+                        >
+                          <div className="p-4">
+                            <div className="flex items-center gap-2 mb-3">
+                              <Monitor className="w-3 h-3 text-red-400" />
+                              <h6 className="font-bold text-red-300 text-sm">Interface CRM One</h6>
+                            </div>
+                            <p className="text-xs text-slate-300 leading-relaxed mb-3">Interface web principal desenvolvida em React. Design moderno, responsivo e otimizado para produtividade máxima dos usuários.</p>
+                            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700">
+                              <div>
+                                <span className="text-xs text-slate-400">Framework</span>
+                                <p className="text-xs text-blue-400 font-medium">React</p>
+                              </div>
+                              <div>
+                                <span className="text-xs text-slate-400">Status</span>
+                                <p className="text-xs text-green-400 font-medium">Online</p>
+                              </div>
+                            </div>
                           </div>
                         </TooltipContent>
                       </Tooltip>
@@ -1659,83 +1685,97 @@ DIFERENCIAIS COMPETITIVOS:
                             </div>
                           </div>
                         </TooltipTrigger>
-                        <TooltipContent className="bg-slate-800 border-orange-500/50 max-w-xs">
-                          <div className="p-3">
-                            <h6 className="font-bold text-orange-300 mb-2">Internet Information Services</h6>
-                            <p className="text-sm text-slate-300">Servidor web da Microsoft que hospeda a aplicação CRM One. Gerencia pools de aplicação, certificados SSL e balanceamento de carga.</p>
+                        <TooltipContent 
+                          className="bg-slate-800/95 backdrop-blur-sm border-orange-500/50 max-w-xs shadow-2xl shadow-orange-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
+                          sideOffset={8}
+                        >
+                          <div className="p-4">
+                            <div className="flex items-center gap-2 mb-3">
+                              <Server className="w-3 h-3 text-orange-400" />
+                              <h6 className="font-bold text-orange-300 text-sm">Internet Information Services</h6>
+                            </div>
+                            <p className="text-xs text-slate-300 leading-relaxed mb-3">Servidor web da Microsoft que hospeda a aplicação CRM One. Gerencia pools de aplicação, certificados SSL e balanceamento de carga.</p>
+                            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700">
+                              <div>
+                                <span className="text-xs text-slate-400">Versão</span>
+                                <p className="text-xs text-blue-400 font-medium">IIS 10</p>
+                              </div>
+                              <div>
+                                <span className="text-xs text-slate-400">SSL</span>
+                                <p className="text-xs text-green-400 font-medium">Ativo</p>
+                              </div>
+                            </div>
                           </div>
                         </TooltipContent>
                       </Tooltip>
                     </div>
 
-                    {/* Elemento 03 - Service Layer (Right) - Tooltip simplificado */}
+                    {/* Elemento 03 - Service Layer (Right) */}
                     <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4">
-                      <div className="group cursor-pointer relative">
-                        {/* Tooltip simplificado que aparece no hover - posicionado à esquerda para não sair da tela */}
-                        <div className="absolute -top-8 -left-40 bg-slate-800 border border-yellow-500/50 rounded-lg px-3 py-2 text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 whitespace-nowrap shadow-lg">
-                          <div className="font-bold text-yellow-300">SAP Service Layer</div>
-                          <div className="text-xs text-slate-300">API RESTful SAP Business One</div>
-                          {/* Pequena seta apontando para o elemento */}
-                          <div className="absolute top-1/2 -right-1 w-2 h-2 bg-slate-800 border-r border-b border-yellow-500/50 transform rotate-45 -translate-y-1/2"></div>
-                        </div>
-                        
-                        {/* Área expandida de hover invisível */}
-                        <div className="absolute -inset-4 z-10"></div>
-                        
-                        <div className="relative">
-                          <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-yellow-500/50 transition-all duration-300"></div>
-                          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
-                            <Code className="text-white" size={24} />
-                          </div>
-                          <div className="absolute -top-2 -left-2 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 transition-transform duration-300"></div>
-                        </div>
-                        <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-yellow-500/30 transition-all duration-300">
-                          <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                              <span className="text-sm font-bold">03</span>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="group cursor-pointer">
+                            <div className="relative">
+                              <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-yellow-500/50 transition-all duration-300"></div>
+                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
+                                <Code className="text-white" size={24} />
+                              </div>
+                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 transition-transform duration-300"></div>
                             </div>
-                            <div className="text-left">
-                              <p className="font-bold text-sm">Service Layer</p>
-                              <p className="text-xs opacity-80">API RESTful SAP B1</p>
+                            <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-yellow-500/30 transition-all duration-300">
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                                  <span className="text-sm font-bold">03</span>
+                                </div>
+                                <div className="text-left">
+                                  <p className="font-bold text-sm">Service Layer</p>
+                                  <p className="text-xs opacity-80">API RESTful SAP B1</p>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
+                        </TooltipTrigger>
+                        <TooltipContent side="left" className="bg-slate-800 border-yellow-500/50 max-w-xs">
+                          <div className="p-3">
+                            <h6 className="font-bold text-yellow-300 mb-2">SAP Service Layer</h6>
+                            <p className="text-sm text-slate-300">API RESTful moderna do SAP Business One. Permite integração via HTTP/HTTPS com autenticação OAuth e operações CRUD completas.</p>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
 
-                    {/* Elemento 04 - Database (Bottom) - Tooltip simplificado */}
+                    {/* Elemento 04 - Database (Bottom) */}
                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-4">
-                      <div className="group cursor-pointer relative">
-                        {/* Tooltip simplificado que aparece no hover - posicionado acima para não sair da tela */}
-                        <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 bg-slate-800 border border-green-500/50 rounded-lg px-3 py-2 text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 whitespace-nowrap shadow-lg">
-                          <div className="font-bold text-green-300">Banco de Dados SAP</div>
-                          <div className="text-xs text-slate-300">SQL Server / SAP HANA</div>
-                          {/* Pequena seta apontando para o elemento */}
-                          <div className="absolute -bottom-1 left-1/2 w-2 h-2 bg-slate-800 border-l border-b border-green-500/50 transform rotate-45 -translate-x-1/2"></div>
-                        </div>
-                        
-                        {/* Área expandida de hover invisível */}
-                        <div className="absolute -inset-4 z-10"></div>
-                        
-                        <div className="relative">
-                          <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-green-500/50 transition-all duration-300"></div>
-                          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
-                            <Database className="text-white" size={24} />
-                          </div>
-                          <div className="absolute -top-2 -left-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 transition-transform duration-300"></div>
-                        </div>
-                        <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-green-500/30 transition-all duration-300">
-                          <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                              <span className="text-sm font-bold">04</span>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="group cursor-pointer">
+                            <div className="relative">
+                              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-green-500/50 transition-all duration-300"></div>
+                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
+                                <Database className="text-white" size={24} />
+                              </div>
+                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 transition-transform duration-300"></div>
                             </div>
-                            <div className="text-left">
-                              <p className="font-bold text-sm">Database</p>
-                              <p className="text-xs opacity-80">HANA/SQL Server</p>
+                            <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-green-500/30 transition-all duration-300">
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                                  <span className="text-sm font-bold">04</span>
+                                </div>
+                                <div className="text-left">
+                                  <p className="font-bold text-sm">Database</p>
+                                  <p className="text-xs opacity-80">HANA/SQL Server</p>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="bg-slate-800 border-green-500/50 max-w-xs">
+                          <div className="p-3">
+                            <h6 className="font-bold text-green-300 mb-2">Banco de Dados SAP</h6>
+                            <p className="text-sm text-slate-300">Banco principal do SAP Business One. Suporta SQL Server e SAP HANA in-memory para performance superior e analytics em tempo real.</p>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
 
                     {/* Linhas de conexão animadas */}
