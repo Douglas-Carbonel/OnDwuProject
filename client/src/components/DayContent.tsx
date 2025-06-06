@@ -1673,12 +1673,12 @@ DIFERENCIAIS COMPETITIVOS:
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer">
-                            <div className="relative">
-                              <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-yellow-500/50 transition-all duration-300"></div>
-                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
-                                <Code className="text-white" size={24} />
+                            <div className="relative hover:rotate-12 transition-transform duration-300">
+                              <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-yellow-500/50 group-hover:shadow-2xl transition-all duration-300 cursor-pointer hover:from-yellow-400 hover:to-yellow-500"></div>
+                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 group-hover:scale-110 transition-transform duration-300">
+                                <Code className="text-white group-hover:text-yellow-100 transition-colors duration-300" size={24} />
                               </div>
-                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 transition-transform duration-300"></div>
+                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 group-hover:bg-yellow-400 transition-all duration-300"></div>
                             </div>
                             <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-yellow-500/30 transition-all duration-300">
                               <div className="flex items-center space-x-3">
@@ -1693,7 +1693,7 @@ DIFERENCIAIS COMPETITIVOS:
                             </div>
                           </div>
                         </TooltipTrigger>
-                        <TooltipContent className="bg-slate-800 border-yellow-500/50 max-w-xs">
+                        <TooltipContent side="left" className="bg-slate-800 border-yellow-500/50 max-w-xs">
                           <div className="p-3">
                             <h6 className="font-bold text-yellow-300 mb-2">SAP Service Layer</h6>
                             <p className="text-sm text-slate-300">API RESTful moderna do SAP Business One. Permite integração via HTTP/HTTPS com autenticação OAuth e operações CRUD completas.</p>
@@ -1707,12 +1707,12 @@ DIFERENCIAIS COMPETITIVOS:
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer">
-                            <div className="relative">
-                              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-green-500/50 transition-all duration-300"></div>
-                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
-                                <Database className="text-white" size={24} />
+                            <div className="relative hover:rotate-12 transition-transform duration-300">
+                              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-green-500/50 group-hover:shadow-2xl transition-all duration-300 cursor-pointer hover:from-green-400 hover:to-green-500"></div>
+                              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 group-hover:scale-110 transition-transform duration-300">
+                                <Database className="text-white group-hover:text-green-100 transition-colors duration-300" size={24} />
                               </div>
-                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 transition-transform duration-300"></div>
+                              <div className="absolute -top-2 -left-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg group-hover:scale-125 group-hover:bg-green-400 transition-all duration-300"></div>
                             </div>
                             <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2 rounded-full mt-4 shadow-lg group-hover:shadow-green-500/30 transition-all duration-300">
                               <div className="flex items-center space-x-3">
@@ -1727,7 +1727,7 @@ DIFERENCIAIS COMPETITIVOS:
                             </div>
                           </div>
                         </TooltipTrigger>
-                        <TooltipContent className="bg-slate-800 border-green-500/50 max-w-xs">
+                        <TooltipContent side="top" className="bg-slate-800 border-green-500/50 max-w-xs">
                           <div className="p-3">
                             <h6 className="font-bold text-green-300 mb-2">Banco de Dados SAP</h6>
                             <p className="text-sm text-slate-300">Banco principal do SAP Business One. Suporta SQL Server e SAP HANA in-memory para performance superior e analytics em tempo real.</p>
