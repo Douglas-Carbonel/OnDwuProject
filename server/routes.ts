@@ -169,10 +169,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { userId } = req.params;
       console.log("🐛 DEBUG: Verificando deadline para userId:", userId);
-      
+
       const numericUserId = parseInt(userId.replace('user-', ''));
       const user = await authService.getUserById(numericUserId);
-      
+
       if (!user) {
         return res.json({
           error: "Usuário não encontrado",
@@ -184,11 +184,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userCreationDate = new Date(user.created_at);
       const deadline = new Date(userCreationDate.getTime());
       deadline.setDate(deadline.getDate() + 15);
-      
+
       const now = new Date();
       const timeDifference = deadline.getTime() - now.getTime();
       const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-      
+
       res.json({
         user: {
           id: user.id,
@@ -483,64 +483,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const certificate = await storage.getCertificate(certificateId);
 
       if (!certificate) {
-        return res.status(404).json({ message: "Certificado não encontrado" });
+        return res.status(404).json({ error: "Certificate not found" });
       }
 
-      // Generate certificate HTML
-      const certificateHTML = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Certificado de Conclusão - DWU IT Solutions</title>
-          <style>
-            body { font-family: 'Arial', sans-serif; margin: 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-            .certificate { max-width: 800px; margin: 0 auto; background: white; padding: 60px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-            .header { text-align: center; margin-bottom: 40px; }
-            .logo { font-size: 32px; font-weight: bold; color: #667eea; margin-bottom: 10px; }
-            .title { font-size: 28px; color: #333; margin-bottom: 30px; }
-            .content { text-align: center; line-height: 2; }
-            .name { font-size: 32px; font-weight: bold; color: #667eea; margin: 20px 0; }
-            .course { font-size: 20px; color: #555; margin: 20px 0; }
-            .date { font-size: 16px; color: #777; margin-top: 40px; }
-            .certificate-id { font-size: 12px; color: #999; margin-top: 20px; }
-            .signature { margin-top: 60px; display: flex; justify-content: space-around; }
-            .signature-line { width: 200px; border-top: 2px solid #333; padding-top: 10px; text-align: center; }
-          </style>
-        </head>
-        <body>
-          <div class="certificate">
-            <div class="header">
-              <div class="logo">DWU IT Solutions</div>
-              <div class="title">CERTIFICADO DE CONCLUSÃO</div>
-            </div>
-            <div class="content">
-              <p>Certificamos que</p>
-              <div class="name">${certificate.user_name}</div>
-              <p>concluiu com êxito o</p>
-              <div class="course">${certificate.course_name}</div>
-              <p>demonstrando conhecimento e dedicação no programa de capacitação da equipe de suporte técnico.</p>
-              <div class="date">Concluído em: ${new Date(certificate.completion_date).toLocaleDateString('pt-BR')}</div>
-              <div class="certificate-id">Certificado ID: ${certificate.certificate_id}</div>
-            </div>
-            <div class="signature">
-              <div class="signature-line">
-                <div>Diretor de Treinamento</div>
-                <div>DWU IT Solutions</div>
-              </div>
-              <div class="signature-line">
-                <div>Coordenador Técnico</div>
-                <div>DWU IT Solutions</div>
-              </div>
-            </div>
-          </div>
-        </body>
-        </html>
-      `;
-
-      res.send(certificateHTML);
+      res.json(certificate);
     } catch (error) {
       console.error("Error getting certificate:", error);
-      res.status(500).json({ message: "Erro interno do servidor" });
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Achievements routes
+  app.get("/api/achievements/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      console.log("🏆 Verificando conquistas para usuário:", userId);
+
+      // Verificar e desbloquear novas conquistas
+      const newAchievements = await storage.checkAndUnlockAchievements(userId);
+
+      // Buscar todas as conquistas do usuário
+      const userAchievements = await storage.getUserAchievements(userId);
+
+      res.json({
+        achievements: userAchievements,
+        newAchievements: newAchievements,
+        success: true
+      });
+    } catch (error) {
+      console.error("❌ Erro ao buscar conquistas:", error);
+      res.status(500).json({ 
+        error: "Internal server error",
+        achievements: [],
+        newAchievements: []
+      });
     }
   });
 
@@ -1048,7 +1024,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Verificar e desbloquear novas conquistas
       const newAchievements = await storage.checkAndUnlockAchievements(userId);
-      
+
       // Buscar todas as conquistas do usuário
       const userAchievements = await storage.getUserAchievements(userId);
 

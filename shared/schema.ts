@@ -125,3 +125,4 @@ export type InsertModuleEvaluation = z.infer<typeof insertModuleEvaluationSchema
 export type DailyAttempt = typeof dailyAttempts.$inferSelect;
 export type Certificate = typeof certificates.$inferSelect;
 export type UserAchievement = typeof userAchievements.$inferSelect;
+export type UserAchievement = typeof userAchievements.$inferSelect;

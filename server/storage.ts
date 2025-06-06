@@ -1,4 +1,4 @@
-import { users, onboardingProgress, moduleEvaluations, avaliacao_user, dailyAttempts, certificates, type User, type InsertUser, type Certificate } from "@shared/schema";
+import { users, onboardingProgress, moduleEvaluations, avaliacao_user, dailyAttempts, certificates, userAchievements, type User, type InsertUser, type Certificate, type UserAchievement } from "@shared/schema";
 import { getDatabase } from "./database";
 import type { OnboardingProgress, InsertOnboardingProgress } from "@/hooks/useProgress";
 import { eq, and, desc, sql, gte } from "drizzle-orm";

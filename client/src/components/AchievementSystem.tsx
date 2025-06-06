@@ -30,7 +30,11 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
   // Buscar dados de avaliações e conquistas do usuário
   useEffect(() => {
     const fetchUserData = async () => {
-      if (!userProgress?.userId) return;
+      if (!userProgress?.userId) {
+        console.log("🏆 Sem userId, finalizando loading");
+        setLoading(false);
+        return;
+      }
 
       try {
         console.log("🏆 Buscando dados para conquistas do usuário:", userProgress.userId);
