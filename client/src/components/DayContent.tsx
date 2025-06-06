@@ -1672,7 +1672,7 @@ DIFERENCIAIS COMPETITIVOS:
                     <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4">
                       <div className="group cursor-pointer relative">
                         {/* Tooltip simplificado que aparece no hover */}
-                        <div className="absolute -top-16 right-0 bg-slate-800 border border-yellow-500/50 rounded-lg px-3 py-2 text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 whitespace-nowrap">
+                        <div className="absolute -top-16 -left-32 bg-slate-800 border border-yellow-500/50 rounded-lg px-3 py-2 text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 whitespace-nowrap">
                           <div className="font-bold text-yellow-300">SAP Service Layer</div>
                           <div className="text-xs text-slate-300">API RESTful SAP Business One</div>
                         </div>
