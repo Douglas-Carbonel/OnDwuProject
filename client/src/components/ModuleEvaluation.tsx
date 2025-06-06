@@ -52,31 +52,54 @@ const moduleQuestions: Record<number, Question[]> = {
     },
     {
       id: 2,
-      question: "Qual dos seguintes é um dos valores fundamentais da cultura DWU?",
-      options: ["Competição interna", "Paixão pelo que fazemos", "Individualismo", "Lucro acima de tudo"],
+      question:
+        "Qual dos seguintes é um dos valores fundamentais da cultura DWU?",
+      options: [
+        "Competição interna",
+        "Paixão pelo que fazemos",
+        "Individualismo",
+        "Lucro acima de tudo",
+      ],
       correctAnswer: 1,
     },
     {
       id: 3,
-      question: "A DWU IT Solutions possui quantos anos de experiência no mercado?",
-      options: ["Menos de 10 anos", "Mais de 15 anos", "Exatamente 10 anos", "Mais de 25 anos"],
+      question:
+        "A DWU IT Solutions possui quantos anos de experiência no mercado?",
+      options: [
+        "Menos de 10 anos",
+        "Mais de 15 anos",
+        "Exatamente 10 anos",
+        "Mais de 25 anos",
+      ],
       correctAnswer: 1,
     },
     {
       id: 4,
       question: "Qual é o principal produto da DWU IT Solutions?",
-      options: ["SAP Business One", "CRM One", "Oracle ERP", "Microsoft Dynamics"],
+      options: [
+        "SAP Business One",
+        "CRM One",
+        "Oracle ERP",
+        "Microsoft Dynamics",
+      ],
       correctAnswer: 1,
     },
     {
       id: 5,
       question: "Em qual contexto a DWU atua geograficamente?",
-      options: ["Apenas Brasil", "América do Sul", "Mais de 15 países", "Apenas região Sudeste"],
+      options: [
+        "Apenas Brasil",
+        "América do Sul",
+        "Mais de 15 países",
+        "Apenas região Sudeste",
+      ],
       correctAnswer: 2,
     },
     {
       id: 6,
-      question: "Qual é o SLA (Service Level Agreement) de uptime garantido pela DWU?",
+      question:
+        "Qual é o SLA (Service Level Agreement) de uptime garantido pela DWU?",
       options: ["95%", "98%", "99.9%", "100%"],
       correctAnswer: 2,
     },
@@ -106,7 +129,12 @@ const moduleQuestions: Record<number, Question[]> = {
     {
       id: 10,
       question: "Com qual ERP o CRM One possui integração nativa?",
-      options: ["Oracle ERP", "SAP Business One", "Totvs Protheus", "Microsoft Dynamics"],
+      options: [
+        "Oracle ERP",
+        "SAP Business One",
+        "Totvs Protheus",
+        "Microsoft Dynamics",
+      ],
       correctAnswer: 1,
     },
     {
@@ -134,19 +162,26 @@ const moduleQuestions: Record<number, Question[]> = {
     },
     {
       id: 14,
-      question: "Para acesso remoto aos sistemas dos clientes, qual ferramenta é utilizada?",
+      question:
+        "Para acesso remoto aos sistemas dos clientes, qual ferramenta é utilizada?",
       options: ["GLPI", "Notion", "TeamViewer", "Teams"],
       correctAnswer: 2,
     },
     {
       id: 15,
       question: "Qual equipe é responsável pelas implementações do CRM One?",
-      options: ["Equipe de Suporte", "Equipe de Desenvolvimento", "Equipe de Consultoria", "Equipe de Vendas"],
+      options: [
+        "Equipe de Suporte",
+        "Equipe de Desenvolvimento",
+        "Equipe de Consultoria",
+        "Equipe de Vendas",
+      ],
       correctAnswer: 2,
     },
     {
       id: 16,
-      question: "Aproximadamente quantas empresas de manufatura são clientes da DWU?",
+      question:
+        "Aproximadamente quantas empresas de manufatura são clientes da DWU?",
       options: ["Mais de 100", "Mais de 150", "Mais de 200", "Mais de 250"],
       correctAnswer: 0,
     },
@@ -158,13 +193,15 @@ const moduleQuestions: Record<number, Question[]> = {
     },
     {
       id: 18,
-      question: "Qual ferramenta é utilizada para manuais e comunicação interna?",
+      question:
+        "Qual ferramenta é utilizada para manuais e comunicação interna?",
       options: ["GLPI", "Notion", "TeamViewer", "Microsoft Teams"],
       correctAnswer: 3,
     },
     {
       id: 19,
-      question: "Na área da saúde, aproximadamente quantas clínicas são clientes?",
+      question:
+        "Na área da saúde, aproximadamente quantas clínicas são clientes?",
       options: ["Mais de 60", "Mais de 80", "Mais de 100", "Mais de 120"],
       correctAnswer: 1,
     },
@@ -198,7 +235,7 @@ const moduleQuestions: Record<number, Question[]> = {
       options: [
         "Apenas tempo real",
         "Apenas background",
-        "100% tempo real + processamento background",
+        "tempo real + processamento background",
         "Sincronização diária",
       ],
       correctAnswer: 2,
@@ -206,12 +243,7 @@ const moduleQuestions: Record<number, Question[]> = {
     {
       id: 3,
       question: "Quais versões do SQL Server são suportadas?",
-      options: [
-        "2012 a 2019",
-        "2016 a 2022",
-        "2014 a 2020",
-        "2018 a 2024",
-      ],
+      options: ["2012 a 2019", "2016 a 2022", "2014 a 2020", "2018 a 2024"],
       correctAnswer: 1,
     },
     {
@@ -222,18 +254,19 @@ const moduleQuestions: Record<number, Question[]> = {
     },
     {
       id: 5,
-      question: "O que é o DI-Server?",
+      question:
+        "Qual é uma limitação comum do DI-Server em relação ao Service Layer?",
       options: [
-        "Database Integration",
-        "Data Interface",
-        "Direct Integration",
-        "Dynamic Interface",
+        "Não funciona em rede local",
+        "Não permite autenticação",
+        "Possui performance inferior e usa tecnologia mais antiga",
+        "Não consegue acessar dados de clientes",
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
     },
     {
       id: 6,
-      question: "SAP HANA é utilizado como:",
+      question: "O banco SAP HANA é utilizado como:",
       options: [
         "Servidor web",
         "In-Memory Database",
@@ -244,7 +277,7 @@ const moduleQuestions: Record<number, Question[]> = {
     },
     {
       id: 7,
-      question: "Load Balancer serve para:",
+      question: "Load Balancer (balencers), servem para:",
       options: [
         "Backup de dados",
         "Distribuição inteligente de carga",
@@ -266,7 +299,7 @@ const moduleQuestions: Record<number, Question[]> = {
     },
     {
       id: 9,
-      question: "O processamento em background utiliza:",
+      question: "O processamento em segundo plano utiliza:",
       options: [
         "APIs síncronas",
         "Fila de sincronização",
@@ -277,24 +310,27 @@ const moduleQuestions: Record<number, Question[]> = {
     },
     {
       id: 10,
-      question: "Qual protocolo é usado na comunicação segura?",
-      options: ["HTTP", "FTP", "SSL/TLS", "SMTP"],
-      correctAnswer: 2,
+      question:
+        "Qual é o protocolo padrão utilizado por sites               hospedados no IIS?",
+      options: ["HTTP/HTTPS", "FTP", "SSL/TLS", "SMTP"],
+      correctAnswer: 0,
     },
     {
       id: 11,
-      question: "B1WS utiliza qual formato de comunicação?",
-      options: ["JSON", "XML", "CSV", "YAML"],
+      question:
+        "O B1WS (Business One Web Services) utiliza qual forma de comunicação?",
+      options: ["JSON", "SOAP com XML", "CSV", "YAML"],
       correctAnswer: 1,
     },
     {
       id: 12,
-      question: "O ambiente é configurado como:",
+      question:
+        "Qual item abaixo faz parte da arquitetura de comunicação com o SAP?:",
       options: [
-        "Single-tenant",
-        "Multi-tenant",
-        "Híbrido",
-        "Dedicated",
+        "Active Reports",
+        "Service Layer",
+        "SQL Viewers",
+        "Task Monito",
       ],
       correctAnswer: 1,
     },
@@ -312,12 +348,7 @@ const moduleQuestions: Record<number, Question[]> = {
     {
       id: 14,
       question: "O domínio receita.ws.com.br é usado para:",
-      options: [
-        "Consulta CEP",
-        "Consulta CNPJ",
-        "Autenticação",
-        "Logs",
-      ],
+      options: ["Consulta CEP", "Consulta CNPJ", "Autenticação", "Logs"],
       correctAnswer: 1,
     },
     {
@@ -334,12 +365,7 @@ const moduleQuestions: Record<number, Question[]> = {
     {
       id: 16,
       question: "Service Layer é uma API nativa do:",
-      options: [
-        "CRM One",
-        "SQL Server",
-        "SAP Business One",
-        "IIS",
-      ],
+      options: ["CRM One", "SQL Server", "SAP Business One", "IIS"],
       correctAnswer: 2,
     },
     {
@@ -358,7 +384,7 @@ const moduleQuestions: Record<number, Question[]> = {
       question: "dwu.com.br é necessário para:",
       options: [
         "Consultas externas",
-        "Serviços DWU",
+        "Autenficação de licença",
         "Backup",
         "Monitoramento",
       ],
@@ -366,24 +392,20 @@ const moduleQuestions: Record<number, Question[]> = {
     },
     {
       id: 19,
-      question: "O retry automático em falhas é feature do:",
+      question: "A estrutura do CRM One pode ser composta por:",
       options: [
-        "IIS",
-        "Processamento background",
-        "SQL Server",
-        "Load Balancer",
+        "Apenas banco de dados e scripts SQL",
+        "Interface web e relatórios em Excel",
+        "API Service e arquivos .bat",
+        "Serviços/Balancers",
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
     },
     {
       id: 20,
-      question: "O framework principal da aplicação é:",
-      options: [
-        "Java EE",
-        ".NET Framework",
-        "PHP Laravel",
-        "Node.js",
-      ],
+      question:
+        "Qual pasta geralmente abriga os arquivos de serviço da API no CRM One?:",
+      options: ["api_crm", "DWUAPIV2_Service", "ws_root", "crm_files"],
       correctAnswer: 1,
     },
   ],
@@ -716,7 +738,9 @@ export default function ModuleEvaluation({
   const [startTime, setStartTime] = useState<number>(Date.now());
   const [loading, setLoading] = useState(false);
   const [location, setLocation] = useLocation();
-  const [attemptStatus, setAttemptStatus] = useState<AttemptStatus>({ canAttempt: true });
+  const [attemptStatus, setAttemptStatus] = useState<AttemptStatus>({
+    canAttempt: true,
+  });
   const [isCheckingAttempts, setIsCheckingAttempts] = useState(false);
   const { user } = useAuth();
   const { progress: userProgress, updateProgress } = useProgress();
@@ -771,13 +795,20 @@ export default function ModuleEvaluation({
     }
   }, [currentQuestionIndex, answers, currentQuestion?.id]);
 
-    useEffect(() => {
+  useEffect(() => {
     const checkAttempts = async () => {
       setIsCheckingAttempts(true);
       try {
         if (user?.userId) {
-          console.log("🔍 Verificando tentativas para userId:", user.userId, "módulo:", moduleNumber);
-          const response = await fetch(`/api/evaluations/attempts?userId=${user.userId}&moduleId=${moduleNumber}`);
+          console.log(
+            "🔍 Verificando tentativas para userId:",
+            user.userId,
+            "módulo:",
+            moduleNumber,
+          );
+          const response = await fetch(
+            `/api/evaluations/attempts?userId=${user.userId}&moduleId=${moduleNumber}`,
+          );
           if (response.ok) {
             const data = await response.json();
             console.log("✅ Status de tentativas recebido:", data);
@@ -822,7 +853,7 @@ export default function ModuleEvaluation({
         try {
           if (user) {
             // Garantir que userId seja um número válido
-            const numericUserId = parseInt(user.userId.replace('user-', ''));
+            const numericUserId = parseInt(user.userId.replace("user-", ""));
             if (isNaN(numericUserId)) {
               throw new Error("ID de usuário inválido");
             }
@@ -836,7 +867,7 @@ export default function ModuleEvaluation({
               passed,
               answers: newAnswers,
               timeSpent,
-              completedAt: new Date().toISOString()
+              completedAt: new Date().toISOString(),
             };
 
             console.log("🎯 About to save evaluation:");
@@ -858,7 +889,9 @@ export default function ModuleEvaluation({
             if (!response.ok) {
               const errorText = await response.text();
               console.error("🎯 Response error:", errorText);
-              throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+              throw new Error(
+                `HTTP error! status: ${response.status} - ${errorText}`,
+              );
             }
 
             const result = await response.json();
@@ -868,10 +901,16 @@ export default function ModuleEvaluation({
               const completedModules = userProgress.completedModules || [];
               if (!completedModules.includes(moduleNumber)) {
                 const newCompletedModules = [...completedModules, moduleNumber];
-                const nextModule = moduleNumber < 4 ? moduleNumber + 1 : moduleNumber;
+                const nextModule =
+                  moduleNumber < 4 ? moduleNumber + 1 : moduleNumber;
 
-                console.log(`✅ Módulo ${moduleNumber} completado! Próximo módulo: ${nextModule}`);
-                console.log(`📊 Novos módulos completados:`, newCompletedModules);
+                console.log(
+                  `✅ Módulo ${moduleNumber} completado! Próximo módulo: ${nextModule}`,
+                );
+                console.log(
+                  `📊 Novos módulos completados:`,
+                  newCompletedModules,
+                );
 
                 await updateProgress({
                   completedModules: newCompletedModules,
@@ -882,7 +921,11 @@ export default function ModuleEvaluation({
                   },
                   moduleEvaluations: {
                     ...userProgress.moduleEvaluations,
-                    [moduleNumber]: { score: finalScore, passed, completedAt: new Date().toISOString() },
+                    [moduleNumber]: {
+                      score: finalScore,
+                      passed,
+                      completedAt: new Date().toISOString(),
+                    },
                   },
                 });
               }
@@ -932,7 +975,9 @@ export default function ModuleEvaluation({
   }
 
   if (!attemptStatus.canAttempt) {
-    const hoursRemaining = Math.ceil((attemptStatus.remainingTime || 0) / (1000 * 60 * 60));
+    const hoursRemaining = Math.ceil(
+      (attemptStatus.remainingTime || 0) / (1000 * 60 * 60),
+    );
 
     return (
       <div className="max-w-4xl mx-auto">
@@ -944,8 +989,12 @@ export default function ModuleEvaluation({
                 <Award className="text-white" size={24} />
               </div>
               <div>
-                <h1 className="text-2xl font-bold gradient-text">DWU IT Academy</h1>
-                <p className="text-sm text-slate-400">Centro de Excelência Técnica</p>
+                <h1 className="text-2xl font-bold gradient-text">
+                  DWU IT Academy
+                </h1>
+                <p className="text-sm text-slate-400">
+                  Centro de Excelência Técnica
+                </p>
               </div>
             </div>
             <h2 className="text-xl font-semibold text-blue-300">
@@ -983,31 +1032,48 @@ export default function ModuleEvaluation({
                     <Clock className="text-yellow-400" size={20} />
                   </div>
                   <div>
-                    <h4 className="text-white font-semibold">Status da Avaliação</h4>
-                    <p className="text-slate-400 text-sm">Informações sobre suas tentativas</p>
+                    <h4 className="text-white font-semibold">
+                      Status da Avaliação
+                    </h4>
+                    <p className="text-slate-400 text-sm">
+                      Informações sobre suas tentativas
+                    </p>
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div className="bg-slate-800/50 rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-yellow-400 mb-1">2/2</div>
-                  <div className="text-xs text-slate-400 uppercase tracking-wide">Tentativas Hoje</div>
+                  <div className="text-2xl font-bold text-yellow-400 mb-1">
+                    2/2
+                  </div>
+                  <div className="text-xs text-slate-400 uppercase tracking-wide">
+                    Tentativas Hoje
+                  </div>
                 </div>
                 <div className="bg-slate-800/50 rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-blue-400 mb-1">{hoursRemaining}h</div>
-                  <div className="text-xs text-slate-400 uppercase tracking-wide">Tempo Restante</div>
+                  <div className="text-2xl font-bold text-blue-400 mb-1">
+                    {hoursRemaining}h
+                  </div>
+                  <div className="text-xs text-slate-400 uppercase tracking-wide">
+                    Tempo Restante
+                  </div>
                 </div>
                 <div className="bg-slate-800/50 rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-green-400 mb-1">24h</div>
-                  <div className="text-xs text-slate-400 uppercase tracking-wide">Ciclo Reset</div>
+                  <div className="text-2xl font-bold text-green-400 mb-1">
+                    24h
+                  </div>
+                  <div className="text-xs text-slate-400 uppercase tracking-wide">
+                    Ciclo Reset
+                  </div>
                 </div>
               </div>
 
               {hoursRemaining > 0 && (
                 <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4 text-center">
                   <p className="text-yellow-300 font-medium">
-                    ⏰ Próxima tentativa disponível em <strong>{hoursRemaining} hora(s)</strong>
+                    ⏰ Próxima tentativa disponível em{" "}
+                    <strong>{hoursRemaining} hora(s)</strong>
                   </p>
                 </div>
               )}
@@ -1025,8 +1091,12 @@ export default function ModuleEvaluation({
                       <span className="text-blue-400 text-xl">📚</span>
                     </div>
                     <div>
-                      <h5 className="text-white font-semibold">Revisar Conteúdo</h5>
-                      <p className="text-slate-400 text-sm">Releia o material do módulo</p>
+                      <h5 className="text-white font-semibold">
+                        Revisar Conteúdo
+                      </h5>
+                      <p className="text-slate-400 text-sm">
+                        Releia o material do módulo
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -1037,8 +1107,12 @@ export default function ModuleEvaluation({
                       <span className="text-green-400 text-xl">🎥</span>
                     </div>
                     <div>
-                      <h5 className="text-white font-semibold">Assistir Vídeos</h5>
-                      <p className="text-slate-400 text-sm">Revise as explicações em vídeo</p>
+                      <h5 className="text-white font-semibold">
+                        Assistir Vídeos
+                      </h5>
+                      <p className="text-slate-400 text-sm">
+                        Revise as explicações em vídeo
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -1049,8 +1123,12 @@ export default function ModuleEvaluation({
                       <span className="text-purple-400 text-xl">📝</span>
                     </div>
                     <div>
-                      <h5 className="text-white font-semibold">Fazer Anotações</h5>
-                      <p className="text-slate-400 text-sm">Anote pontos importantes</p>
+                      <h5 className="text-white font-semibold">
+                        Fazer Anotações
+                      </h5>
+                      <p className="text-slate-400 text-sm">
+                        Anote pontos importantes
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -1061,8 +1139,12 @@ export default function ModuleEvaluation({
                       <span className="text-orange-400 text-xl">❓</span>
                     </div>
                     <div>
-                      <h5 className="text-white font-semibold">Tirar Dúvidas</h5>
-                      <p className="text-slate-400 text-sm">Esclareça pontos confusos</p>
+                      <h5 className="text-white font-semibold">
+                        Tirar Dúvidas
+                      </h5>
+                      <p className="text-slate-400 text-sm">
+                        Esclareça pontos confusos
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -1114,12 +1196,14 @@ export default function ModuleEvaluation({
             </div>
 
             <h3 className="text-2xl font-bold mb-4 text-white">
-              {passed ? "Parabéns! Você foi aprovado!" : "Você não foi aprovado desta vez"}
+              {passed
+                ? "Parabéns! Você foi aprovado!"
+                : "Você não foi aprovado desta vez"}
             </h3>
 
             <p className="text-slate-300 mb-8">
-              {passed 
-                ? "Você atingiu a nota mínima necessária para aprovação." 
+              {passed
+                ? "Você atingiu a nota mínima necessária para aprovação."
                 : "Continue estudando e tente novamente. Você precisa de pelo menos 90% de acertos para ser aprovado."}
             </p>
 
@@ -1151,8 +1235,12 @@ export default function ModuleEvaluation({
               <Award className="text-white" size={24} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold gradient-text">DWU IT Academy</h1>
-              <p className="text-sm text-slate-400">Centro de Excelência Técnica</p>
+              <h1 className="text-2xl font-bold gradient-text">
+                DWU IT Academy
+              </h1>
+              <p className="text-sm text-slate-400">
+                Centro de Excelência Técnica
+              </p>
             </div>
           </div>
           <h2 className="text-xl font-semibold text-blue-300">
@@ -1180,8 +1268,8 @@ export default function ModuleEvaluation({
               {currentQuestion?.question}
             </h4>
 
-            <RadioGroup 
-              value={selectedAnswer} 
+            <RadioGroup
+              value={selectedAnswer}
               onValueChange={setSelectedAnswer}
               className="space-y-3"
             >

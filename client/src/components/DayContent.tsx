@@ -1456,7 +1456,7 @@ DIFERENCIAIS COMPETITIVOS:
                       </div>
                     </div>
                     <div>
-                      <h6 className="font-semibold mb-3 text-orange-200">Processamento em Background</h6>
+                      <h6 className="font-semibold mb-3 text-orange-200">Processamento em segundo Plano</h6>
                       <div className="bg-slate-800 p-4 rounded border border-orange-600/30">
                         <p className="text-slate-300 mb-3">
                           <strong>Fila de Sincronização:</strong> Para operações complexas, o sistema utiliza 
@@ -1464,7 +1464,7 @@ DIFERENCIAIS COMPETITIVOS:
                         </p>
                         <ul className="space-y-1 text-slate-400 text-sm">
                           <li>✓ Processamento assíncrono</li>
-                          <li>✓ Retry automático em falhas</li>
+                          <li>✓ Relatório para controle falhas</li>
                           <li>✓ Logs detalhados de operações</li>
                         </ul>
                       </div>
@@ -1480,7 +1480,7 @@ DIFERENCIAIS COMPETITIVOS:
                   </h5>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h6 className="font-semibold mb-3 text-purple-200">SQL Server (Service Layer)</h6>
+                      <h6 className="font-semibold mb-3 text-purple-200">SQL Server</h6>
                       <div className="space-y-3">
                         <div className="bg-slate-800 p-3 rounded border border-purple-600/30">
                           <strong className="text-purple-300">Versões Suportadas:</strong>
@@ -1495,7 +1495,7 @@ DIFERENCIAIS COMPETITIVOS:
                       </div>
                     </div>
                     <div>
-                      <h6 className="font-semibold mb-3 text-cyan-200">SAP HANA</h6>
+                      <h6 className="font-semibold mb-3 text-cyan-200">Service Layer</h6>
                       <div className="bg-slate-800 p-3 rounded border border-cyan-600/30">
                         <p className="text-slate-300 mb-2">
                           <strong>In-Memory Database:</strong> Para clientes que utilizam SAP HANA como banco principal.
@@ -1660,7 +1660,7 @@ DIFERENCIAIS COMPETITIVOS:
                               <Monitor className="w-3 h-3 text-red-400" />
                               <h6 className="font-bold text-red-300 text-sm">Interface CRM One</h6>
                             </div>
-                            <p className="text-xs text-slate-300 leading-relaxed mb-3">Interface web principal desenvolvida em React. Design moderno, responsivo e otimizado para produtividade máxima dos usuários.</p>
+                            <p className="text-xs text-slate-300 leading-relaxed mb-3">Interface web principal. Design moderno, responsivo e otimizado para produtividade máxima dos usuários.</p>
                             <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700">
                               <div>
                                 <span className="text-xs text-slate-400">Framework</span>
@@ -1717,7 +1717,7 @@ DIFERENCIAIS COMPETITIVOS:
                               <Server className="w-3 h-3 text-orange-400" />
                               <h6 className="font-bold text-orange-300 text-sm">Internet Information Services</h6>
                             </div>
-                            <p className="text-xs text-slate-300 leading-relaxed mb-3">Servidor web da Microsoft que hospeda a aplicação CRM One. Gerencia pools de aplicação, certificados SSL e balanceamento de carga.</p>
+                            <p className="text-xs text-slate-300 leading-relaxed mb-3">Servidor web da Microsoft que hospeda a aplicação CRM One. Gerencia pools de aplicação e balanceamento de carga.</p>
                             <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700">
                               <div>
                                 <span className="text-xs text-slate-400">Versão</span>
@@ -1774,7 +1774,7 @@ DIFERENCIAIS COMPETITIVOS:
                               <Code className="w-3 h-3 text-yellow-400" />
                               <h6 className="font-bold text-yellow-300 text-sm">SAP Service Layer</h6>
                             </div>
-                            <p className="text-xs text-slate-300 leading-relaxed mb-3">API RESTful moderna do SAP Business One. Permite integração via HTTP/HTTPS com autenticação OAuth e operações CRUD completas.</p>
+                            <p className="text-xs text-slate-300 leading-relaxed mb-3">API moderna do SAP Business One. Permite integração via HTTP/HTTPS com autenticação OAuth e operações CRUD completas.</p>
                             <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700">
                               <div>
                                 <span className="text-xs text-slate-400">Protocolo</span>
