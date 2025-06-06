@@ -524,13 +524,15 @@ export class DatabaseStorage implements IStorage {
         return existingTodayLogin[0];
       }
 
-      // Registrar novo login
+      // Registrar novo login - usar NOW() do PostgreSQL para evitar problemas com Date objects
       const result = await this.db
         .insert(userLogins)
         .values({
           user_id: numericUserId,
-          ip_address: ipAddress,
-          user_agent: userAgent,
+          ip_address: ipAddress || null,
+          user_agent: userAgent || null,
+          login_date: sql`NOW()`,
+          created_at: sql`NOW()`
         })
         .returning();
 
