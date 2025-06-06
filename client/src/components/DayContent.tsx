@@ -1613,11 +1613,11 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Círculo decorativo */}
-                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-slate-600/40 animate-spin z-10" style={{ animation: 'spin 30s linear infinite' }}></div>
-                    <div className="absolute inset-8 rounded-full border border-slate-600/20 z-10"></div>
+                    <div className="absolute inset-16 rounded-full border-2 border-dashed border-slate-600/40 animate-spin z-10" style={{ animation: 'spin 30s linear infinite' }}></div>
+                    <div className="absolute inset-20 rounded-full border border-slate-600/20 z-10"></div>
 
                     {/* Elemento 01 - CRM Interface (Top) */}
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4 z-30">
+                    <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30">
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer p-4 hover:z-[100]">
@@ -1677,7 +1677,7 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Elemento 02 - IIS Server (Left) */}
-                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-30">
+                    <div className="absolute left-8 top-1/2 transform -translate-y-1/2 z-30">
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer p-4 hover:z-[100]">
@@ -1734,7 +1734,7 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Elemento 03 - Service Layer (Right) */}
-                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-30">
+                    <div className="absolute right-8 top-1/2 transform -translate-y-1/2 z-30">
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer p-4 hover:z-[100]">
@@ -1791,7 +1791,7 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Elemento 04 - Database (Bottom) */}
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-4 z-30">
+                    <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30">
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer p-4 hover:z-[100]">
