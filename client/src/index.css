@@ -217,3 +217,14 @@
     transform: scale(1);
   }
 }
+
+/* Força z-index máximo para tooltips */
+[data-radix-tooltip-content] {
+  z-index: 99999 !important;
+  position: relative !important;
+}
+
+/* Container dos tooltips */
+[data-radix-tooltip-provider] {
+  z-index: 99998 !important;
+}
