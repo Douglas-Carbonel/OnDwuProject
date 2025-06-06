@@ -886,7 +886,7 @@ export class DatabaseStorage implements IStorage {
             }
           } else {
             console.log(`❌ Módulo ${moduleId} não completado - Score: ${latestEvaluation.score}%, Passou: ${latestEvaluation.passed}`);
-          // If this module was not passed, stop here
+            // If this module was not passed, stop here
             break;
           }
         } else {
