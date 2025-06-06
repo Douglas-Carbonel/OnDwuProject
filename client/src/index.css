@@ -221,10 +221,17 @@
 /* Força z-index máximo para tooltips */
 [data-radix-tooltip-content] {
   z-index: 99999 !important;
-  position: relative !important;
+  position: fixed !important;
 }
 
 /* Container dos tooltips */
 [data-radix-tooltip-provider] {
   z-index: 99998 !important;
+}
+
+/* Força z-index alto no hover para elementos do diagrama */
+.group:hover {
+  z-index: 100 !important;
+  position: relative !important;
+}
 }

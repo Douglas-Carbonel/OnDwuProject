@@ -1617,10 +1617,10 @@ DIFERENCIAIS COMPETITIVOS:
                     <div className="absolute inset-8 rounded-full border border-slate-600/20 z-10"></div>
 
                     {/* Elemento 01 - CRM Interface (Top) */}
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4 z-40">
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4 z-30">
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="group cursor-pointer p-4">
+                          <div className="group cursor-pointer p-4 hover:z-[100]">
                             {/* Enhanced diamond with hover effects */}
                             <div className="relative">
                               <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-red-500/50 group-hover:shadow-xl transition-all duration-300 relative overflow-hidden">
@@ -1677,10 +1677,10 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Elemento 02 - IIS Server (Left) */}
-                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-40">
+                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-30">
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="group cursor-pointer p-4">
+                          <div className="group cursor-pointer p-4 hover:z-[100]">
                             <div className="relative">
                               <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-orange-500/50 group-hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -1734,10 +1734,10 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Elemento 03 - Service Layer (Right) */}
-                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-40">
+                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-30">
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="group cursor-pointer p-4">
+                          <div className="group cursor-pointer p-4 hover:z-[100]">
                             <div className="relative">
                               <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-yellow-500/50 group-hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -1791,10 +1791,10 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Elemento 04 - Database (Bottom) */}
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-4 z-40">
+                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-4 z-30">
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="group cursor-pointer p-4">
+                          <div className="group cursor-pointer p-4 hover:z-[100]">
                             <div className="relative">
                               <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-green-500/50 group-hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
