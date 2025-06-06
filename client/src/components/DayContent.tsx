@@ -1589,9 +1589,9 @@ DIFERENCIAIS COMPETITIVOS:
                           </div>
                         </TooltipTrigger>
                         <TooltipContent 
-                          className="bg-slate-800/95 backdrop-blur-sm border-blue-500/50 max-w-xs shadow-2xl shadow-blue-500/20 animate-in fade-in-0 zoom-in-95 duration-200 z-[9999]"
+                          className="bg-slate-800/95 backdrop-blur-sm border-blue-500/50 max-w-xs shadow-2xl shadow-blue-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
                           sideOffset={20}
-                          style={{ zIndex: 9999 }}
+                          style={{ zIndex: 99999, position: 'fixed' }}
                           side="top"
                           align="center"
                           avoidCollisions={true}
@@ -1647,9 +1647,9 @@ DIFERENCIAIS COMPETITIVOS:
                           </div>
                         </TooltipTrigger>
                         <TooltipContent 
-                          className="bg-slate-800/95 backdrop-blur-sm border-red-500/50 max-w-xs shadow-2xl shadow-red-500/20 animate-in fade-in-0 zoom-in-95 duration-200 z-[9999]"
+                          className="bg-slate-800/95 backdrop-blur-sm border-red-500/50 max-w-xs shadow-2xl shadow-red-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
                           sideOffset={20}
-                          style={{ zIndex: 9999 }}
+                          style={{ zIndex: 99999, position: 'fixed' }}
                           side="bottom"
                           align="center"
                           avoidCollisions={true}
@@ -1704,9 +1704,9 @@ DIFERENCIAIS COMPETITIVOS:
                           </div>
                         </TooltipTrigger>
                         <TooltipContent 
-                          className="bg-slate-800/95 backdrop-blur-sm border-orange-500/50 max-w-xs shadow-2xl shadow-orange-500/20 animate-in fade-in-0 zoom-in-95 duration-200 z-[9999]"
+                          className="bg-slate-800/95 backdrop-blur-sm border-orange-500/50 max-w-xs shadow-2xl shadow-orange-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
                           sideOffset={20}
-                          style={{ zIndex: 9999 }}
+                          style={{ zIndex: 99999, position: 'fixed' }}
                           side="right"
                           align="center"
                           avoidCollisions={true}
@@ -1761,9 +1761,9 @@ DIFERENCIAIS COMPETITIVOS:
                           </div>
                         </TooltipTrigger>
                         <TooltipContent 
-                          className="bg-slate-800/95 backdrop-blur-sm border-yellow-500/50 max-w-xs shadow-2xl shadow-yellow-500/20 animate-in fade-in-0 zoom-in-95 duration-200 z-[9999]"
+                          className="bg-slate-800/95 backdrop-blur-sm border-yellow-500/50 max-w-xs shadow-2xl shadow-yellow-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
                           sideOffset={20}
-                          style={{ zIndex: 9999 }}
+                          style={{ zIndex: 99999, position: 'fixed' }}
                           side="left"
                           align="center"
                           avoidCollisions={true}
@@ -1818,9 +1818,9 @@ DIFERENCIAIS COMPETITIVOS:
                           </div>
                         </TooltipTrigger>
                         <TooltipContent 
-                          className="bg-slate-800/95 backdrop-blur-sm border-green-500/50 max-w-xs shadow-2xl shadow-green-500/20 animate-in fade-in-0 zoom-in-95 duration-200 z-[9999]"
+                          className="bg-slate-800/95 backdrop-blur-sm border-green-500/50 max-w-xs shadow-2xl shadow-green-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
                           sideOffset={20}
-                          style={{ zIndex: 9999 }}
+                          style={{ zIndex: 99999, position: 'fixed' }}
                           side="top"
                           align="center"
                           avoidCollisions={true}
