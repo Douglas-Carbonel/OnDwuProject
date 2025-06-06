@@ -1575,7 +1575,9 @@ DIFERENCIAIS COMPETITIVOS:
                     <div className="absolute inset-0 flex items-center justify-center z-10">
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="w-48 h-48 rounded-full bg-gradient-to-br from-blue-500/30 via-purple-500/30 to-cyan-500/30 border-4 border-slate-500/50 flex items-center justify-center group hover:scale-110 hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-500 cursor-pointer backdrop-blur-sm">
+                          <div className="w-48 h-48 rounded-full bg-gradient-to-br from-blue-500/30 via-purple-500/30 to-cyan-500/30 border-4 border-slate-500/50 flex items-center justify-center group hover:scale-110 hover:shadow-2xl hover:shadow-blue-500/30 hover:border-blue-400/70 transition-all duration-500 cursor-pointer backdrop-blur-sm relative">
+                            {/* Pulse ring effect on hover */}
+                            <div className="absolute inset-0 rounded-full bg-blue-500/20 opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-opacity duration-300"></div>
                             <div className="text-center">
                               <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:rotate-12 transition-transform duration-300">
                                 <Globe className="text-white" size={32} />
@@ -1613,9 +1615,12 @@ DIFERENCIAIS COMPETITIVOS:
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer">
-                            {/* Hexágono estilo da imagem */}
+                            {/* Enhanced diamond with hover effects */}
                             <div className="relative">
-                              <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-red-500/50 transition-all duration-300"></div>
+                              <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-red-500/50 group-hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                                {/* Shimmer effect on hover */}
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                              </div>
                               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
                                 <Monitor className="text-white" size={24} />
                               </div>
@@ -1666,7 +1671,9 @@ DIFERENCIAIS COMPETITIVOS:
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer">
                             <div className="relative">
-                              <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-orange-500/50 transition-all duration-300"></div>
+                              <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-orange-500/50 group-hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                              </div>
                               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
                                 <Server className="text-white" size={24} />
                               </div>
@@ -1716,7 +1723,9 @@ DIFERENCIAIS COMPETITIVOS:
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer">
                             <div className="relative">
-                              <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-yellow-500/50 transition-all duration-300"></div>
+                              <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-yellow-500/50 group-hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                              </div>
                               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
                                 <Code className="text-white" size={24} />
                               </div>
@@ -1735,10 +1744,27 @@ DIFERENCIAIS COMPETITIVOS:
                             </div>
                           </div>
                         </TooltipTrigger>
-                        <TooltipContent side="left" className="bg-slate-800 border-yellow-500/50 max-w-xs">
-                          <div className="p-3">
-                            <h6 className="font-bold text-yellow-300 mb-2">SAP Service Layer</h6>
-                            <p className="text-sm text-slate-300">API RESTful moderna do SAP Business One. Permite integração via HTTP/HTTPS com autenticação OAuth e operações CRUD completas.</p>
+                        <TooltipContent 
+                          side="left" 
+                          className="bg-slate-800/95 backdrop-blur-sm border-yellow-500/50 max-w-xs shadow-2xl shadow-yellow-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
+                          sideOffset={8}
+                        >
+                          <div className="p-4">
+                            <div className="flex items-center gap-2 mb-3">
+                              <Code className="w-3 h-3 text-yellow-400" />
+                              <h6 className="font-bold text-yellow-300 text-sm">SAP Service Layer</h6>
+                            </div>
+                            <p className="text-xs text-slate-300 leading-relaxed mb-3">API RESTful moderna do SAP Business One. Permite integração via HTTP/HTTPS com autenticação OAuth e operações CRUD completas.</p>
+                            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700">
+                              <div>
+                                <span className="text-xs text-slate-400">Protocolo</span>
+                                <p className="text-xs text-blue-400 font-medium">HTTPS</p>
+                              </div>
+                              <div>
+                                <span className="text-xs text-slate-400">Auth</span>
+                                <p className="text-xs text-green-400 font-medium">OAuth</p>
+                              </div>
+                            </div>
                           </div>
                         </TooltipContent>
                       </Tooltip>
@@ -1750,7 +1776,9 @@ DIFERENCIAIS COMPETITIVOS:
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer">
                             <div className="relative">
-                              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-green-500/50 transition-all duration-300"></div>
+                              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-green-500/50 group-hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                              </div>
                               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45">
                                 <Database className="text-white" size={24} />
                               </div>
@@ -1769,10 +1797,27 @@ DIFERENCIAIS COMPETITIVOS:
                             </div>
                           </div>
                         </TooltipTrigger>
-                        <TooltipContent side="top" className="bg-slate-800 border-green-500/50 max-w-xs">
-                          <div className="p-3">
-                            <h6 className="font-bold text-green-300 mb-2">Banco de Dados SAP</h6>
-                            <p className="text-sm text-slate-300">Banco principal do SAP Business One. Suporta SQL Server e SAP HANA in-memory para performance superior e analytics em tempo real.</p>
+                        <TooltipContent 
+                          side="top" 
+                          className="bg-slate-800/95 backdrop-blur-sm border-green-500/50 max-w-xs shadow-2xl shadow-green-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
+                          sideOffset={8}
+                        >
+                          <div className="p-4">
+                            <div className="flex items-center gap-2 mb-3">
+                              <Database className="w-3 h-3 text-green-400" />
+                              <h6 className="font-bold text-green-300 text-sm">Banco de Dados SAP</h6>
+                            </div>
+                            <p className="text-xs text-slate-300 leading-relaxed mb-3">Banco principal do SAP Business One. Suporta SQL Server e SAP HANA in-memory para performance superior e analytics em tempo real.</p>
+                            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700">
+                              <div>
+                                <span className="text-xs text-slate-400">Engine</span>
+                                <p className="text-xs text-blue-400 font-medium">HANA</p>
+                              </div>
+                              <div>
+                                <span className="text-xs text-slate-400">Performance</span>
+                                <p className="text-xs text-green-400 font-medium">High</p>
+                              </div>
+                            </div>
                           </div>
                         </TooltipContent>
                       </Tooltip>
