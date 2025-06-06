@@ -1567,16 +1567,16 @@ DIFERENCIAIS COMPETITIVOS:
               </p>
 
               <TooltipProvider delayDuration={200} skipDelayDuration={100}>
-                <div className="bg-slate-900 p-8 rounded-lg border border-slate-600 relative overflow-hidden">
+                <div className="bg-slate-900 p-8 rounded-lg border border-slate-600 relative overflow-visible">
                   {/* Container principal com layout circular */}
-                  <div className="relative w-full h-[600px] flex items-center justify-center overflow-visible"
+                  <div className="relative w-full h-[600px] flex items-center justify-center"
                        style={{ zIndex: 1 }}>
                     
                     {/* Elemento central - Núcleo do Sistema */}
-                    <div className="absolute inset-0 flex items-center justify-center z-10">
+                    <div className="absolute inset-0 flex items-center justify-center z-20">
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="w-48 h-48 rounded-full bg-gradient-to-br from-blue-500/30 via-purple-500/30 to-cyan-500/30 border-4 border-slate-500/50 flex items-center justify-center group hover:scale-110 hover:shadow-2xl hover:shadow-blue-500/30 hover:border-blue-400/70 transition-all duration-500 cursor-pointer backdrop-blur-sm relative">
+                          <div className="w-48 h-48 rounded-full bg-gradient-to-br from-blue-500/30 via-purple-500/30 to-cyan-500/30 border-4 border-slate-500/50 flex items-center justify-center group hover:scale-110 hover:shadow-2xl hover:shadow-blue-500/30 hover:border-blue-400/70 transition-all duration-500 cursor-pointer backdrop-blur-sm relative p-4">
                             {/* Pulse ring effect on hover */}
                             <div className="absolute inset-0 rounded-full bg-blue-500/20 opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-opacity duration-300"></div>
                             <div className="text-center">
@@ -1590,12 +1590,12 @@ DIFERENCIAIS COMPETITIVOS:
                         </TooltipTrigger>
                         <TooltipContent 
                           className="bg-slate-800/95 backdrop-blur-sm border-blue-500/50 max-w-xs shadow-2xl shadow-blue-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
-                          sideOffset={8}
-                          style={{ zIndex: 9999 }}
+                          sideOffset={20}
+                          style={{ zIndex: 10000 }}
                           side="top"
                           align="center"
                           avoidCollisions={true}
-                          collisionPadding={20}
+                          collisionPadding={30}
                         >
                           <div className="p-4">
                             <div className="flex items-center gap-2 mb-3">
@@ -1613,14 +1613,14 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Círculo decorativo */}
-                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-slate-600/40 animate-spin" style={{ animation: 'spin 30s linear infinite' }}></div>
-                    <div className="absolute inset-8 rounded-full border border-slate-600/20"></div>
+                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-slate-600/40 animate-spin z-10" style={{ animation: 'spin 30s linear infinite' }}></div>
+                    <div className="absolute inset-8 rounded-full border border-slate-600/20 z-10"></div>
 
                     {/* Elemento 01 - CRM Interface (Top) */}
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4">
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4 z-30">
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="group cursor-pointer">
+                          <div className="group cursor-pointer p-4">
                             {/* Enhanced diamond with hover effects */}
                             <div className="relative">
                               <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-red-500/50 group-hover:shadow-xl transition-all duration-300 relative overflow-hidden">
@@ -1648,12 +1648,12 @@ DIFERENCIAIS COMPETITIVOS:
                         </TooltipTrigger>
                         <TooltipContent 
                           className="bg-slate-800/95 backdrop-blur-sm border-red-500/50 max-w-xs shadow-2xl shadow-red-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
-                          sideOffset={8}
-                          style={{ zIndex: 9999 }}
+                          sideOffset={20}
+                          style={{ zIndex: 10000 }}
                           side="bottom"
                           align="center"
                           avoidCollisions={true}
-                          collisionPadding={20}
+                          collisionPadding={30}
                         >
                           <div className="p-4">
                             <div className="flex items-center gap-2 mb-3">
@@ -1677,10 +1677,10 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Elemento 02 - IIS Server (Left) */}
-                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4">
+                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-30">
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="group cursor-pointer">
+                          <div className="group cursor-pointer p-4">
                             <div className="relative">
                               <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-orange-500/50 group-hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -1705,12 +1705,12 @@ DIFERENCIAIS COMPETITIVOS:
                         </TooltipTrigger>
                         <TooltipContent 
                           className="bg-slate-800/95 backdrop-blur-sm border-orange-500/50 max-w-xs shadow-2xl shadow-orange-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
-                          sideOffset={8}
-                          style={{ zIndex: 9999 }}
+                          sideOffset={20}
+                          style={{ zIndex: 10000 }}
                           side="right"
                           align="center"
                           avoidCollisions={true}
-                          collisionPadding={20}
+                          collisionPadding={30}
                         >
                           <div className="p-4">
                             <div className="flex items-center gap-2 mb-3">
@@ -1734,10 +1734,10 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Elemento 03 - Service Layer (Right) */}
-                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4">
+                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-30">
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="group cursor-pointer">
+                          <div className="group cursor-pointer p-4">
                             <div className="relative">
                               <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-yellow-500/50 group-hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -1762,12 +1762,12 @@ DIFERENCIAIS COMPETITIVOS:
                         </TooltipTrigger>
                         <TooltipContent 
                           className="bg-slate-800/95 backdrop-blur-sm border-yellow-500/50 max-w-xs shadow-2xl shadow-yellow-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
-                          sideOffset={8}
-                          style={{ zIndex: 9999 }}
+                          sideOffset={20}
+                          style={{ zIndex: 10000 }}
                           side="left"
                           align="center"
                           avoidCollisions={true}
-                          collisionPadding={20}
+                          collisionPadding={30}
                         >
                           <div className="p-4">
                             <div className="flex items-center gap-2 mb-3">
@@ -1791,10 +1791,10 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Elemento 04 - Database (Bottom) */}
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-4">
+                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-4 z-30">
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="group cursor-pointer">
+                          <div className="group cursor-pointer p-4">
                             <div className="relative">
                               <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-green-500/50 group-hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -1819,12 +1819,12 @@ DIFERENCIAIS COMPETITIVOS:
                         </TooltipTrigger>
                         <TooltipContent 
                           className="bg-slate-800/95 backdrop-blur-sm border-green-500/50 max-w-xs shadow-2xl shadow-green-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
-                          sideOffset={8}
-                          style={{ zIndex: 9999 }}
+                          sideOffset={20}
+                          style={{ zIndex: 10000 }}
                           side="top"
                           align="center"
                           avoidCollisions={true}
-                          collisionPadding={20}
+                          collisionPadding={30}
                         >
                           <div className="p-4">
                             <div className="flex items-center gap-2 mb-3">
@@ -1848,7 +1848,7 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Linhas de conexão animadas */}
-                    <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }}>
+                    <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 15 }}>
                       <defs>
                         <linearGradient id="connectionGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
                           <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.6"/>
