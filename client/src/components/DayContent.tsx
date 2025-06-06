@@ -1567,9 +1567,10 @@ DIFERENCIAIS COMPETITIVOS:
               </p>
 
               <TooltipProvider delayDuration={200} skipDelayDuration={100}>
-                <div className="bg-slate-900 p-8 rounded-lg border border-slate-600 relative">
+                <div className="bg-slate-900 p-8 rounded-lg border border-slate-600 relative overflow-hidden">
                   {/* Container principal com layout circular */}
-                  <div className="relative w-full h-[600px] flex items-center justify-center">
+                  <div className="relative w-full h-[600px] flex items-center justify-center overflow-visible"
+                       style={{ zIndex: 1 }}>
                     
                     {/* Elemento central - Núcleo do Sistema */}
                     <div className="absolute inset-0 flex items-center justify-center z-10">
@@ -1590,6 +1591,11 @@ DIFERENCIAIS COMPETITIVOS:
                         <TooltipContent 
                           className="bg-slate-800/95 backdrop-blur-sm border-blue-500/50 max-w-xs shadow-2xl shadow-blue-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
                           sideOffset={8}
+                          style={{ zIndex: 9999 }}
+                          side="top"
+                          align="center"
+                          avoidCollisions={true}
+                          collisionPadding={20}
                         >
                           <div className="p-4">
                             <div className="flex items-center gap-2 mb-3">
@@ -1643,6 +1649,11 @@ DIFERENCIAIS COMPETITIVOS:
                         <TooltipContent 
                           className="bg-slate-800/95 backdrop-blur-sm border-red-500/50 max-w-xs shadow-2xl shadow-red-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
                           sideOffset={8}
+                          style={{ zIndex: 9999 }}
+                          side="bottom"
+                          align="center"
+                          avoidCollisions={true}
+                          collisionPadding={20}
                         >
                           <div className="p-4">
                             <div className="flex items-center gap-2 mb-3">
@@ -1695,6 +1706,11 @@ DIFERENCIAIS COMPETITIVOS:
                         <TooltipContent 
                           className="bg-slate-800/95 backdrop-blur-sm border-orange-500/50 max-w-xs shadow-2xl shadow-orange-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
                           sideOffset={8}
+                          style={{ zIndex: 9999 }}
+                          side="right"
+                          align="center"
+                          avoidCollisions={true}
+                          collisionPadding={20}
                         >
                           <div className="p-4">
                             <div className="flex items-center gap-2 mb-3">
@@ -1745,9 +1761,13 @@ DIFERENCIAIS COMPETITIVOS:
                           </div>
                         </TooltipTrigger>
                         <TooltipContent 
-                          side="left" 
                           className="bg-slate-800/95 backdrop-blur-sm border-yellow-500/50 max-w-xs shadow-2xl shadow-yellow-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
                           sideOffset={8}
+                          style={{ zIndex: 9999 }}
+                          side="left"
+                          align="center"
+                          avoidCollisions={true}
+                          collisionPadding={20}
                         >
                           <div className="p-4">
                             <div className="flex items-center gap-2 mb-3">
@@ -1798,9 +1818,13 @@ DIFERENCIAIS COMPETITIVOS:
                           </div>
                         </TooltipTrigger>
                         <TooltipContent 
-                          side="top" 
                           className="bg-slate-800/95 backdrop-blur-sm border-green-500/50 max-w-xs shadow-2xl shadow-green-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
                           sideOffset={8}
+                          style={{ zIndex: 9999 }}
+                          side="top"
+                          align="center"
+                          avoidCollisions={true}
+                          collisionPadding={20}
                         >
                           <div className="p-4">
                             <div className="flex items-center gap-2 mb-3">
