@@ -74,16 +74,16 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
     });
 
     // Verificar pontuação perfeita (100%)
-    const perfectScores = userEvaluations.filter(eval => eval.score === 100);
+    const perfectScores = userEvaluations.filter(evaluation => evaluation.score === 100);
     const hasPerfectScore = perfectScores.length > 0;
 
     // Verificar velocidade (menos de 2 horas = 120 minutos = 7200 segundos)
-    const fastCompletions = userEvaluations.filter(eval => eval.time_spent && eval.time_spent < 7200);
+    const fastCompletions = userEvaluations.filter(evaluation => evaluation.time_spent && evaluation.time_spent < 7200);
     const hasSpeedLearning = fastCompletions.length > 0;
 
     // Calcular dias consecutivos de acesso (simulado por número de avaliações em dias diferentes)
     const uniqueDays = new Set(
-      userEvaluations.map(eval => new Date(eval.completed_at).toDateString())
+      userEvaluations.map(evaluation => new Date(evaluation.completed_at).toDateString())
     );
     const consecutiveDays = uniqueDays.size;
 
@@ -148,8 +148,8 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
         title: "Alto Desempenho",
         description: "Obtenha média superior a 90% em todas as avaliações",
         icon: "award",
-        unlocked: userEvaluations.length > 0 && userEvaluations.every(eval => eval.score >= 90),
-        progress: userEvaluations.filter(eval => eval.score >= 90).length,
+        unlocked: userEvaluations.length > 0 && userEvaluations.every(evaluation => evaluation.score >= 90),
+        progress: userEvaluations.filter(evaluation => evaluation.score >= 90).length,
         maxProgress: userEvaluations.length || 1,
         category: "performance",
         points: 300

@@ -436,15 +436,15 @@ export class DatabaseStorage implements IStorage {
       }
 
       // Verificar "Perfeccionista"
-      const perfectScores = evaluations.evaluations?.filter(eval => eval.score === 100) || [];
+      const perfectScores = evaluations.evaluations?.filter(evaluation => evaluation.score === 100) || [];
       if (perfectScores.length > 0) {
         const unlocked = await this.unlockAchievement(userId, "perfectionist");
         if (unlocked) newAchievements.push("perfectionist");
       }
 
       // Verificar "Aprendiz Veloz"
-      const fastCompletions = evaluations.evaluations?.filter(eval => 
-        eval.time_spent && eval.time_spent < 7200
+      const fastCompletions = evaluations.evaluations?.filter(evaluation => 
+        evaluation.time_spent && evaluation.time_spent < 7200
       ) || [];
       if (fastCompletions.length > 0) {
         const unlocked = await this.unlockAchievement(userId, "speed_learner");
@@ -459,7 +459,7 @@ export class DatabaseStorage implements IStorage {
 
       // Verificar "Alto Desempenho"
       if (evaluations.evaluations && evaluations.evaluations.length > 0) {
-        const allHighScores = evaluations.evaluations.every(eval => eval.score >= 90);
+        const allHighScores = evaluations.evaluations.every(evaluation => evaluation.score >= 90);
         if (allHighScores) {
           const unlocked = await this.unlockAchievement(userId, "high_achiever");
           if (unlocked) newAchievements.push("high_achiever");
