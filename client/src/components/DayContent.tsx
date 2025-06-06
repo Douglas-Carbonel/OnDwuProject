@@ -1671,11 +1671,16 @@ DIFERENCIAIS COMPETITIVOS:
                     {/* Elemento 03 - Service Layer (Right) - Tooltip simplificado */}
                     <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4">
                       <div className="group cursor-pointer relative">
-                        {/* Tooltip simplificado que aparece no hover */}
-                        <div className="absolute -top-16 -left-32 bg-slate-800 border border-yellow-500/50 rounded-lg px-3 py-2 text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 whitespace-nowrap">
+                        {/* Tooltip simplificado que aparece no hover - posicionado à esquerda para não sair da tela */}
+                        <div className="absolute -top-8 -left-40 bg-slate-800 border border-yellow-500/50 rounded-lg px-3 py-2 text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 whitespace-nowrap shadow-lg">
                           <div className="font-bold text-yellow-300">SAP Service Layer</div>
                           <div className="text-xs text-slate-300">API RESTful SAP Business One</div>
+                          {/* Pequena seta apontando para o elemento */}
+                          <div className="absolute top-1/2 -right-1 w-2 h-2 bg-slate-800 border-r border-b border-yellow-500/50 transform rotate-45 -translate-y-1/2"></div>
                         </div>
+                        
+                        {/* Área expandida de hover invisível */}
+                        <div className="absolute -inset-4 z-10"></div>
                         
                         <div className="relative">
                           <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-yellow-500/50 transition-all duration-300"></div>
@@ -1701,11 +1706,16 @@ DIFERENCIAIS COMPETITIVOS:
                     {/* Elemento 04 - Database (Bottom) - Tooltip simplificado */}
                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-4">
                       <div className="group cursor-pointer relative">
-                        {/* Tooltip simplificado que aparece no hover */}
-                        <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 bg-slate-800 border border-green-500/50 rounded-lg px-3 py-2 text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 whitespace-nowrap">
+                        {/* Tooltip simplificado que aparece no hover - posicionado acima para não sair da tela */}
+                        <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 bg-slate-800 border border-green-500/50 rounded-lg px-3 py-2 text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 whitespace-nowrap shadow-lg">
                           <div className="font-bold text-green-300">Banco de Dados SAP</div>
                           <div className="text-xs text-slate-300">SQL Server / SAP HANA</div>
+                          {/* Pequena seta apontando para o elemento */}
+                          <div className="absolute -bottom-1 left-1/2 w-2 h-2 bg-slate-800 border-l border-b border-green-500/50 transform rotate-45 -translate-x-1/2"></div>
                         </div>
+                        
+                        {/* Área expandida de hover invisível */}
+                        <div className="absolute -inset-4 z-10"></div>
                         
                         <div className="relative">
                           <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 transform rotate-45 rounded-lg shadow-lg group-hover:scale-110 group-hover:shadow-green-500/50 transition-all duration-300"></div>
