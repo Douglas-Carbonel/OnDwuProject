@@ -31,6 +31,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Credenciais inválidas" });
       }
 
+      // Record user login for consecutive days tracking
+      try {
+        await storage.recordUserLogin(
+          user.id.toString(), 
+          req.ip || req.connection.remoteAddress,
+          req.get('User-Agent')
+        );
+        console.log("📅 Login registrado com sucesso para usuário:", user.id);
+      } catch (loginError) {
+        console.error("❌ Erro ao registrar login:", loginError);
+        // Don't fail login if login recording fails
+      }
+
       // Sync progress with evaluations after successful login
       console.log("🔄 Sincronizando progresso após login para usuário:", user.id);
       try {
@@ -1033,6 +1046,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ 
         success: false,
         consecutiveDays: 0
+      });
+    }
+  });
+
+  // Get user login history
+  app.get("/api/user-logins/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      console.log("📅 Buscando histórico de logins para usuário:", userId);
+
+      const logins = await storage.getUserLogins(userId);
+
+      res.json({
+        success: true,
+        logins: logins,
+        totalLogins: logins.length
+      });
+    } catch (error) {
+      console.error("❌ Error fetching user logins:", error);
+      res.status(500).json({ 
+        success: false,
+        logins: [],
+        totalLogins: 0
       });
     }
   });

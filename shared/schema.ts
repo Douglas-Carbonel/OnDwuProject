@@ -76,6 +76,15 @@ export const userAchievements = pgTable("user_achievements", {
   created_at: timestamp("created_at").defaultNow(),
 });
 
+export const userLogins = pgTable("user_logins", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  user_id: text("user_id").notNull(),
+  login_date: timestamp("login_date").defaultNow(),
+  ip_address: text("ip_address"),
+  user_agent: text("user_agent"),
+  created_at: timestamp("created_at").defaultNow(),
+});
+
 // Export schemas for validation
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
@@ -125,4 +134,4 @@ export type InsertModuleEvaluation = z.infer<typeof insertModuleEvaluationSchema
 export type DailyAttempt = typeof dailyAttempts.$inferSelect;
 export type Certificate = typeof certificates.$inferSelect;
 export type UserAchievement = typeof userAchievements.$inferSelect;
-export type UserAchievement = typeof userAchievements.$inferSelect;
+export type UserLogin = typeof userLogins.$inferSelect;

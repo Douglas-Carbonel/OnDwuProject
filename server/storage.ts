@@ -1,4 +1,4 @@
-import { users, onboardingProgress, moduleEvaluations, avaliacao_user, dailyAttempts, certificates, userAchievements, type User, type InsertUser, type Certificate, type UserAchievement } from "@shared/schema";
+import { users, onboardingProgress, moduleEvaluations, avaliacao_user, dailyAttempts, certificates, userAchievements, userLogins, type User, type InsertUser, type Certificate, type UserAchievement, type UserLogin } from "@shared/schema";
 import { getDatabase } from "./database";
 import type { OnboardingProgress, InsertOnboardingProgress } from "@/hooks/useProgress";
 import { eq, and, desc, sql, gte } from "drizzle-orm";
@@ -31,6 +31,8 @@ export interface IStorage {
   generateCertificate(userId: string, userName: string): Promise<Certificate | null>;
   getCertificate(certificateId: string): Promise<Certificate | null>;
   calculateConsecutiveDays(userId: string): Promise<number>;
+  recordUserLogin(userId: string, ipAddress?: string, userAgent?: string): Promise<UserLogin | null>;
+  getUserLogins(userId: string): Promise<UserLogin[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -421,52 +423,139 @@ export class DatabaseStorage implements IStorage {
     try {
       const numericUserId = userId.replace('user-', '');
 
-      // Buscar todas as avaliações do usuário ordenadas por data
-      const evaluations = await this.db
+      // Buscar todos os logins do usuário ordenados por data
+      const logins = await this.db
         .select()
-        .from(moduleEvaluations)
-        .where(eq(moduleEvaluations.user_id, numericUserId))
-        .orderBy(moduleEvaluations.completed_at);
+        .from(userLogins)
+        .where(eq(userLogins.user_id, numericUserId))
+        .orderBy(userLogins.login_date);
 
-      if (evaluations.length === 0) return 0;
+      if (logins.length === 0) {
+        console.log("📅 Nenhum login registrado, usando dados de avaliações como fallback");
+        
+        // Fallback para avaliações se não houver logins registrados
+        const evaluations = await this.db
+          .select()
+          .from(moduleEvaluations)
+          .where(eq(moduleEvaluations.user_id, numericUserId))
+          .orderBy(moduleEvaluations.completed_at);
 
-      // Extrair datas únicas (apenas dia, sem horário)
+        if (evaluations.length === 0) return 0;
+
+        const uniqueDates = [...new Set(
+          evaluations.map(evaluation => 
+            new Date(evaluation.completed_at).toDateString()
+          )
+        )].sort();
+
+        return this.calculateConsecutiveFromDates(uniqueDates);
+      }
+
+      // Extrair datas únicas de login (apenas dia, sem horário)
       const uniqueDates = [...new Set(
-        evaluations.map(evaluation => 
-          new Date(evaluation.completed_at).toDateString()
+        logins.map(login => 
+          new Date(login.login_date).toDateString()
         )
       )].sort();
 
-      console.log("📅 Datas únicas de acesso:", uniqueDates);
+      console.log("📅 Datas únicas de login:", uniqueDates);
 
-      // Calcular sequência máxima de dias consecutivos
-      let maxConsecutive = 1;
-      let currentConsecutive = 1;
-
-      for (let i = 1; i < uniqueDates.length; i++) {
-        const currentDate = new Date(uniqueDates[i]);
-        const previousDate = new Date(uniqueDates[i - 1]);
-        
-        // Calcular diferença em dias
-        const daysDifference = Math.floor(
-          (currentDate.getTime() - previousDate.getTime()) / (1000 * 60 * 60 * 24)
-        );
-
-        if (daysDifference === 1) {
-          // Dias consecutivos
-          currentConsecutive++;
-          maxConsecutive = Math.max(maxConsecutive, currentConsecutive);
-        } else {
-          // Quebra na sequência
-          currentConsecutive = 1;
-        }
-      }
-
-      console.log("📊 Máximo de dias consecutivos calculado:", maxConsecutive);
-      return maxConsecutive;
+      return this.calculateConsecutiveFromDates(uniqueDates);
     } catch (error) {
       console.error("❌ Erro ao calcular dias consecutivos:", error);
       return 0;
+    }
+  }
+
+  private calculateConsecutiveFromDates(uniqueDates: string[]): number {
+    if (uniqueDates.length === 0) return 0;
+    if (uniqueDates.length === 1) return 1;
+
+    let maxConsecutive = 1;
+    let currentConsecutive = 1;
+
+    for (let i = 1; i < uniqueDates.length; i++) {
+      const currentDate = new Date(uniqueDates[i]);
+      const previousDate = new Date(uniqueDates[i - 1]);
+      
+      // Calcular diferença em dias
+      const daysDifference = Math.floor(
+        (currentDate.getTime() - previousDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      if (daysDifference === 1) {
+        // Dias consecutivos
+        currentConsecutive++;
+        maxConsecutive = Math.max(maxConsecutive, currentConsecutive);
+      } else {
+        // Quebra na sequência
+        currentConsecutive = 1;
+      }
+    }
+
+    console.log("📊 Máximo de dias consecutivos calculado:", maxConsecutive);
+    return maxConsecutive;
+  }
+
+  async recordUserLogin(userId: string, ipAddress?: string, userAgent?: string): Promise<UserLogin | null> {
+    try {
+      const numericUserId = userId.replace('user-', '');
+      
+      // Verificar se já existe um login hoje para evitar múltiplos registros no mesmo dia
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      const existingTodayLogin = await this.db
+        .select()
+        .from(userLogins)
+        .where(
+          and(
+            eq(userLogins.user_id, numericUserId),
+            gte(userLogins.login_date, today),
+            sql`${userLogins.login_date} < ${tomorrow}`
+          )
+        )
+        .limit(1);
+
+      if (existingTodayLogin.length > 0) {
+        console.log("📅 Login já registrado hoje para usuário:", numericUserId);
+        return existingTodayLogin[0];
+      }
+
+      // Registrar novo login
+      const result = await this.db
+        .insert(userLogins)
+        .values({
+          user_id: numericUserId,
+          ip_address: ipAddress,
+          user_agent: userAgent,
+        })
+        .returning();
+
+      console.log("📅 Novo login registrado para usuário:", numericUserId);
+      return result[0];
+    } catch (error) {
+      console.error("❌ Erro ao registrar login:", error);
+      return null;
+    }
+  }
+
+  async getUserLogins(userId: string): Promise<UserLogin[]> {
+    try {
+      const numericUserId = userId.replace('user-', '');
+      
+      const result = await this.db
+        .select()
+        .from(userLogins)
+        .where(eq(userLogins.user_id, numericUserId))
+        .orderBy(desc(userLogins.login_date));
+
+      return result;
+    } catch (error) {
+      console.error("❌ Erro ao buscar logins do usuário:", error);
+      return [];
     }
   }
 
@@ -1178,6 +1267,16 @@ export class MemStorage implements IStorage {
   async calculateConsecutiveDays(userId: string): Promise<number> {
     // Simplified implementation for memory storage
     return 0;
+  }
+
+  async recordUserLogin(userId: string, ipAddress?: string, userAgent?: string): Promise<UserLogin | null> {
+    // Simplified implementation for memory storage
+    return null;
+  }
+
+  async getUserLogins(userId: string): Promise<UserLogin[]> {
+    // Simplified implementation for memory storage
+    return [];
   }
 }
 
