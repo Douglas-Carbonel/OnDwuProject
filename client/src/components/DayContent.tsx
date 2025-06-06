@@ -1668,7 +1668,7 @@ DIFERENCIAIS COMPETITIVOS:
                       </Tooltip>
                     </div>
 
-                    {/* Elemento 03 - Service Layer (Right) */}
+                    {/* Elemento 03 - Service Layer (Right) - Estrutura idêntica aos elementos 01 e 02 */}
                     <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4">
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -1702,7 +1702,7 @@ DIFERENCIAIS COMPETITIVOS:
                       </Tooltip>
                     </div>
 
-                    {/* Elemento 04 - Database (Bottom) */}
+                    {/* Elemento 04 - Database (Bottom) - Estrutura idêntica aos elementos 01 e 02 */}
                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-4">
                       <Tooltip>
                         <TooltipTrigger asChild>
