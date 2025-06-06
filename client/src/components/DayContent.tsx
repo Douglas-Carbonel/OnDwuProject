@@ -1567,7 +1567,7 @@ DIFERENCIAIS COMPETITIVOS:
               </p>
 
               <TooltipProvider delayDuration={200} skipDelayDuration={100}>
-                <div className="bg-slate-900 p-8 rounded-lg border border-slate-600 relative overflow-visible">
+                <div className="bg-slate-900 p-8 rounded-lg border border-slate-600 relative overflow-hidden">
                   {/* Container principal com layout circular */}
                   <div className="relative w-full h-[600px] flex items-center justify-center"
                        style={{ zIndex: 1 }}>
