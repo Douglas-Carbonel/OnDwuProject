@@ -863,30 +863,30 @@ export class DatabaseStorage implements IStorage {
 
       // Check each module from 1 to 4
       for (let moduleId = 1; moduleId <= 4; moduleId++) {
-        const latestEval = latestEvaluationByModule[moduleId];
+        const latestEvaluation = latestEvaluationByModule[moduleId];
 
-        if (latestEval) {
+        if (latestEvaluation) {
           // Store the evaluation result
           newModuleEvaluations[moduleId.toString()] = {
-            score: latestEval.score,
-            passed: latestEval.passed,
-            completedAt: latestEval.completed_at.toISOString()
+            score: latestEvaluation.score,
+            passed: latestEvaluation.passed,
+            completedAt: latestEvaluation.completed_at.toISOString()
           };
 
           // If passed with score >= 90%, mark module as completed
-          if (latestEval.passed && latestEval.score >= 90) {
+          if (latestEvaluation.passed && latestEvaluation.score >= 90) {
             newCompletedModules.push(moduleId);
-            console.log(`✅ Módulo ${moduleId} completado - Score: ${latestEval.score}%, Passou: ${latestEval.passed}`);
+            console.log(`✅ Módulo ${moduleId} completado - Score: ${latestEvaluation.score}%, Passou: ${latestEvaluation.passed}`);
 
-            // Set current module to next available module
+          // Set current module to next available module
             if (moduleId < 4) {
               newCurrentModule = moduleId + 1;
             } else {
               newCurrentModule = 4; // Stay at module 4 if it's the last one
             }
           } else {
-            console.log(`❌ Módulo ${moduleId} não completado - Score: ${latestEval.score}%, Passou: ${latestEval.passed}`);
-            // If this module was not passed, stop here
+            console.log(`❌ Módulo ${moduleId} não completado - Score: ${latestEvaluation.score}%, Passou: ${latestEvaluation.passed}`);
+          // If this module was not passed, stop here
             break;
           }
         } else {
