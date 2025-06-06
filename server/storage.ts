@@ -346,28 +346,133 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getUserAllAttempts(userId: string) {
-    console.log("DatabaseStorage.getUserAllAttempts called for userId:", userId);
     try {
-      const result = await this.db
+      const db = await getDatabase();
+      const attempts = await db
         .select()
-        .from(moduleEvaluations)
-        .where(eq(moduleEvaluations.user_id, userId.toString()))
-        .orderBy(desc(moduleEvaluations.completed_at));
+        .from(dailyAttempts)
+        .where(eq(dailyAttempts.user_id, userId))
+        .orderBy(desc(dailyAttempts.attempt_date));
 
-      return result.map((evaluation) => ({
-        id: evaluation.id,
-        userId: evaluation.user_id,
-        moduleNumber: evaluation.module_id,
-        attemptNumber: evaluation.attempt_number,
-        score: evaluation.score,
-        passed: evaluation.passed,
-        correctAnswers: evaluation.correct_answers,
-        totalQuestions: evaluation.total_questions,
-        timeSpent: evaluation.time_spent,
-        createdAt: evaluation.completed_at
-      }));
+      return attempts;
     } catch (error) {
-      console.error("Error getting user attempts:", error);
+      console.error("❌ Error getting all user attempts:", error);
+      return [];
+    }
+  }
+
+  // Métodos para conquistas
+  async getUserAchievements(userId: string): Promise<UserAchievement[]> {
+    try {
+      const db = await getDatabase();
+      const achievements = await db
+        .select()
+        .from(userAchievements)
+        .where(eq(userAchievements.user_id, userId))
+        .orderBy(desc(userAchievements.unlocked_at));
+
+      return achievements;
+    } catch (error) {
+      console.error("❌ Error getting user achievements:", error);
+      return [];
+    }
+  }
+
+  async unlockAchievement(userId: string, achievementId: string): Promise<UserAchievement | null> {
+    try {
+      const db = await getDatabase();
+
+      // Verificar se já existe
+      const existing = await db
+        .select()
+        .from(userAchievements)
+        .where(
+          and(
+            eq(userAchievements.user_id, userId),
+            eq(userAchievements.achievement_id, achievementId)
+          )
+        )
+        .limit(1);
+
+      if (existing.length > 0) {
+        console.log("🏆 Conquista já desbloqueada:", achievementId);
+        return existing[0];
+      }
+
+      // Inserir nova conquista
+      const result = await db
+        .insert(userAchievements)
+        .values({
+          user_id: userId,
+          achievement_id: achievementId,
+        })
+        .returning();
+
+      console.log("🏆 Nova conquista desbloqueada:", achievementId, "para usuário:", userId);
+      return result[0];
+    } catch (error) {
+      console.error("❌ Error unlocking achievement:", error);
+      return null;
+    }
+  }
+
+  async checkAndUnlockAchievements(userId: string): Promise<string[]> {
+    try {
+      console.log("🏆 Verificando conquistas para usuário:", userId);
+
+      // Buscar dados do progresso
+      const progress = await this.getProgress(userId);
+      if (!progress) return [];
+
+      // Buscar avaliações do usuário
+      const evaluations = await this.getUserEvaluationData(userId);
+
+      const newAchievements: string[] = [];
+
+      // Verificar "Primeiro Passo"
+      if (progress.completed_modules && progress.completed_modules.length >= 1) {
+        const unlocked = await this.unlockAchievement(userId, "first_module");
+        if (unlocked) newAchievements.push("first_module");
+      }
+
+      // Verificar "Perfeccionista"
+      const perfectScores = evaluations.evaluations?.filter(eval => eval.score === 100) || [];
+      if (perfectScores.length > 0) {
+        const unlocked = await this.unlockAchievement(userId, "perfectionist");
+        if (unlocked) newAchievements.push("perfectionist");
+      }
+
+      // Verificar "Aprendiz Veloz"
+      const fastCompletions = evaluations.evaluations?.filter(eval => 
+        eval.time_spent && eval.time_spent < 7200
+      ) || [];
+      if (fastCompletions.length > 0) {
+        const unlocked = await this.unlockAchievement(userId, "speed_learner");
+        if (unlocked) newAchievements.push("speed_learner");
+      }
+
+      // Verificar "Graduado DWU"
+      if (progress.completed_modules && progress.completed_modules.length >= 4) {
+        const unlocked = await this.unlockAchievement(userId, "graduate");
+        if (unlocked) newAchievements.push("graduate");
+      }
+
+      // Verificar "Alto Desempenho"
+      if (evaluations.evaluations && evaluations.evaluations.length > 0) {
+        const allHighScores = evaluations.evaluations.every(eval => eval.score >= 90);
+        if (allHighScores) {
+          const unlocked = await this.unlockAchievement(userId, "high_achiever");
+          if (unlocked) newAchievements.push("high_achiever");
+        }
+      }
+
+      if (newAchievements.length > 0) {
+        console.log("🏆 Novas conquistas desbloqueadas:", newAchievements);
+      }
+
+      return newAchievements;
+    } catch (error) {
+      console.error("❌ Error checking achievements:", error);
       return [];
     }
   }
@@ -572,13 +677,13 @@ export class DatabaseStorage implements IStorage {
   async checkAndUpdateDeadline(userId: string): Promise<{ isExpired: boolean; deadline: Date }> {
     try {
       console.log("🔍 Verificando prazo para userId:", userId);
-      
+
       // Buscar dados do usuário para obter data de criação
       const numericUserId = parseInt(userId.replace('user-', ''));
       console.log("🔍 NumericUserId extraído:", numericUserId);
-      
+
       const user = await this.getUser(numericUserId);
-      
+
       if (!user) {
         console.log("❌ Usuário não encontrado para ID:", numericUserId);
         const deadline = new Date();
@@ -595,7 +700,7 @@ export class DatabaseStorage implements IStorage {
       // Garantir que a data seja parseada corretamente
       const userCreationDate = new Date(user.created_at);
       console.log("📅 Data de criação parseada:", userCreationDate.toISOString());
-      
+
       // Verificar se a data é válida
       if (isNaN(userCreationDate.getTime())) {
         console.log("❌ Data de criação inválida, usando data atual");
@@ -641,7 +746,7 @@ export class DatabaseStorage implements IStorage {
         console.log("🔄 Resetando progresso - prazo expirado");
         const newDeadline = new Date();
         newDeadline.setDate(newDeadline.getDate() + 15);
-        
+
         await this.updateProgress(userId, {
           currentModule: 1,
           completedModules: [],

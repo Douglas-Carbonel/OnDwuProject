@@ -1040,6 +1040,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get user achievements
+  app.get("/api/achievements/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      console.log("🏆 Buscando conquistas para usuário:", userId);
+
+      // Verificar e desbloquear novas conquistas
+      const newAchievements = await storage.checkAndUnlockAchievements(userId);
+      
+      // Buscar todas as conquistas do usuário
+      const userAchievements = await storage.getUserAchievements(userId);
+
+      res.json({
+        success: true,
+        achievements: userAchievements,
+        newAchievements: newAchievements
+      });
+    } catch (error) {
+      console.error("❌ Error fetching achievements:", error);
+      res.status(500).json({ 
+        success: false,
+        message: "Erro ao buscar conquistas" 
+      });
+    }
+  });
+
   // Complete validation endpoint
   app.get("/api/validate-all-data", async (req, res) => {
     try {

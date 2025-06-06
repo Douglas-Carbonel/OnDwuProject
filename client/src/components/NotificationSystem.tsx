@@ -20,6 +20,7 @@ export default function NotificationSystem() {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [deadlineInfo, setDeadlineInfo] = useState<{ isExpired: boolean; deadline: Date; daysRemaining: number } | null>(null);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   // Função para calcular dias restantes
   const calculateDaysRemaining = (deadline: Date): number => {
@@ -71,6 +72,22 @@ export default function NotificationSystem() {
 
     fetchDeadlineInfo();
   }, [user?.userId]);
+
+  // Fechar notificações ao fazer scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (showNotifications) {
+        setShowNotifications(false);
+      }
+    };
+
+    if (showNotifications) {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [showNotifications]);
 
   // Gerar notificações baseadas nos dados reais
   useEffect(() => {
@@ -142,7 +159,6 @@ export default function NotificationSystem() {
     }
   }, [deadlineInfo]);
 
-  const [showNotifications, setShowNotifications] = useState(false);
   const unreadCount = notifications.filter(n => !n.read).length;
 
   const markAsRead = (id: string) => {
