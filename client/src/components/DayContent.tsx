@@ -1848,7 +1848,7 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Linhas de conexão animadas */}
-                    <svg className="absolute inset-4 w-[calc(100%-2rem)] h-[calc(100%-2rem)] pointer-events-none" style={{ zIndex: 15 }}>
+                    <svg className="absolute inset-8 w-[calc(100%-4rem)] h-[calc(100%-4rem)] pointer-events-none overflow-hidden" style={{ zIndex: 15 }}>
                       <defs>
                         <linearGradient id="connectionGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
                           <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.6"/>
@@ -1862,43 +1862,43 @@ DIFERENCIAIS COMPETITIVOS:
 
                       {/* Linha do CRM Interface para o centro */}
                       <line 
-                        x1="50%" y1="20%" 
+                        x1="50%" y1="25%" 
                         x2="50%" y2="50%" 
                         stroke="url(#connectionGradient1)" 
                         strokeWidth="2" 
-                        strokeDasharray="8,4"
+                        strokeDasharray="6,3"
                         className="animate-pulse"
                       />
 
                       {/* Linha do IIS Server para o centro */}
                       <line 
-                        x1="20%" y1="50%" 
+                        x1="25%" y1="50%" 
                         x2="50%" y2="50%" 
                         stroke="url(#connectionGradient1)" 
                         strokeWidth="2" 
-                        strokeDasharray="8,4"
+                        strokeDasharray="6,3"
                         className="animate-pulse"
                         style={{ animationDelay: '0.5s' }}
                       />
 
                       {/* Linha do Service Layer para o centro */}
                       <line 
-                        x1="80%" y1="50%" 
+                        x1="75%" y1="50%" 
                         x2="50%" y2="50%" 
                         stroke="url(#connectionGradient2)" 
                         strokeWidth="2" 
-                        strokeDasharray="8,4"
+                        strokeDasharray="6,3"
                         className="animate-pulse"
                         style={{ animationDelay: '1s' }}
                       />
 
                       {/* Linha do Database para o centro */}
                       <line 
-                        x1="50%" y1="80%" 
+                        x1="50%" y1="75%" 
                         x2="50%" y2="50%" 
                         stroke="url(#connectionGradient2)" 
                         strokeWidth="2" 
-                        strokeDasharray="8,4"
+                        strokeDasharray="6,3"
                         className="animate-pulse"
                         style={{ animationDelay: '1.5s' }}
                       />
