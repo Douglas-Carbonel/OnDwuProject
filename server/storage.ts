@@ -30,6 +30,7 @@ export interface IStorage {
   checkAndUpdateDeadline(userId: string): Promise<{ isExpired: boolean; deadline: Date }>;
   generateCertificate(userId: string, userName: string): Promise<Certificate | null>;
   getCertificate(certificateId: string): Promise<Certificate | null>;
+  calculateConsecutiveDays(userId: string): Promise<number>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -416,6 +417,59 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
+  async calculateConsecutiveDays(userId: string): Promise<number> {
+    try {
+      const numericUserId = userId.replace('user-', '');
+
+      // Buscar todas as avaliações do usuário ordenadas por data
+      const evaluations = await this.db
+        .select()
+        .from(moduleEvaluations)
+        .where(eq(moduleEvaluations.user_id, numericUserId))
+        .orderBy(moduleEvaluations.completed_at);
+
+      if (evaluations.length === 0) return 0;
+
+      // Extrair datas únicas (apenas dia, sem horário)
+      const uniqueDates = [...new Set(
+        evaluations.map(evaluation => 
+          new Date(evaluation.completed_at).toDateString()
+        )
+      )].sort();
+
+      console.log("📅 Datas únicas de acesso:", uniqueDates);
+
+      // Calcular sequência máxima de dias consecutivos
+      let maxConsecutive = 1;
+      let currentConsecutive = 1;
+
+      for (let i = 1; i < uniqueDates.length; i++) {
+        const currentDate = new Date(uniqueDates[i]);
+        const previousDate = new Date(uniqueDates[i - 1]);
+        
+        // Calcular diferença em dias
+        const daysDifference = Math.floor(
+          (currentDate.getTime() - previousDate.getTime()) / (1000 * 60 * 60 * 24)
+        );
+
+        if (daysDifference === 1) {
+          // Dias consecutivos
+          currentConsecutive++;
+          maxConsecutive = Math.max(maxConsecutive, currentConsecutive);
+        } else {
+          // Quebra na sequência
+          currentConsecutive = 1;
+        }
+      }
+
+      console.log("📊 Máximo de dias consecutivos calculado:", maxConsecutive);
+      return maxConsecutive;
+    } catch (error) {
+      console.error("❌ Erro ao calcular dias consecutivos:", error);
+      return 0;
+    }
+  }
+
   async checkAndUnlockAchievements(userId: string): Promise<string[]> {
     try {
       console.log("🏆 Verificando conquistas para usuário:", userId);
@@ -449,6 +503,13 @@ export class DatabaseStorage implements IStorage {
       if (fastCompletions.length > 0) {
         const unlocked = await this.unlockAchievement(userId, "speed_learner");
         if (unlocked) newAchievements.push("speed_learner");
+      }
+
+      // Verificar "Dedicado" - usar cálculo real de dias consecutivos
+      const consecutiveDays = await this.calculateConsecutiveDays(userId);
+      if (consecutiveDays >= 5) {
+        const unlocked = await this.unlockAchievement(userId, "dedicated");
+        if (unlocked) newAchievements.push("dedicated");
       }
 
       // Verificar "Graduado DWU"
@@ -1112,6 +1173,11 @@ export class MemStorage implements IStorage {
   async syncProgressWithEvaluations(userId: string): Promise<OnboardingProgress | undefined> {
     // Simplified implementation for memory storage
     return this.progress.get(userId);
+  }
+
+  async calculateConsecutiveDays(userId: string): Promise<number> {
+    // Simplified implementation for memory storage
+    return 0;
   }
 }
 

@@ -25,6 +25,7 @@ interface AchievementSystemProps {
 export default function AchievementSystem({ userProgress }: AchievementSystemProps) {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [userEvaluations, setUserEvaluations] = useState<any[]>([]);
+  const [consecutiveDays, setConsecutiveDays] = useState(0);
   const [loading, setLoading] = useState(true);
 
   // Buscar dados de avaliações e conquistas do usuário
@@ -45,6 +46,14 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
           const evaluationsData = await evaluationsResponse.json();
           console.log("🏆 Dados de avaliações recebidos:", evaluationsData);
           setUserEvaluations(evaluationsData.evaluations || []);
+        }
+
+        // Buscar dias consecutivos
+        const consecutiveResponse = await fetch(`/api/consecutive-days/${userProgress.userId}`);
+        if (consecutiveResponse.ok) {
+          const consecutiveData = await consecutiveResponse.json();
+          console.log("📅 Dias consecutivos recebidos:", consecutiveData);
+          setConsecutiveDays(consecutiveData.consecutiveDays || 0);
         }
 
         // Buscar conquistas (isso também verifica e desbloqueia novas)
@@ -74,7 +83,8 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
     console.log("🏆 Calculando conquistas com dados:", {
       completedModules: userProgress.completedModules,
       currentModule: userProgress.currentModule,
-      evaluations: userEvaluations
+      evaluations: userEvaluations,
+      consecutiveDays: consecutiveDays
     });
 
     // Verificar pontuação perfeita (100%)
@@ -84,12 +94,6 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
     // Verificar velocidade (menos de 2 horas = 120 minutos = 7200 segundos)
     const fastCompletions = userEvaluations.filter(evaluation => evaluation.time_spent && evaluation.time_spent < 7200);
     const hasSpeedLearning = fastCompletions.length > 0;
-
-    // Calcular dias consecutivos de acesso (simulado por número de avaliações em dias diferentes)
-    const uniqueDays = new Set(
-      userEvaluations.map(evaluation => new Date(evaluation.completed_at).toDateString())
-    );
-    const consecutiveDays = uniqueDays.size;
 
     const calculatedAchievements: Achievement[] = [
       {
@@ -131,7 +135,7 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
         description: "Acesse o sistema por 5 dias consecutivos",
         icon: "clock",
         unlocked: consecutiveDays >= 5,
-        progress: consecutiveDays,
+        progress: Math.min(consecutiveDays, 5),
         maxProgress: 5,
         category: "engagement",
         points: 200
@@ -168,7 +172,7 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
     })));
 
     setAchievements(calculatedAchievements);
-  }, [userProgress, userEvaluations, loading]);
+  }, [userProgress, userEvaluations, consecutiveDays, loading]);
 
   const totalPoints = achievements
     .filter(a => a.unlocked)
