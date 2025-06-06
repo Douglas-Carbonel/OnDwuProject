@@ -1571,7 +1571,7 @@ DIFERENCIAIS COMPETITIVOS:
                   {/* Container principal com layout circular */}
                   <div className="relative w-full h-[600px] flex items-center justify-center"
                        style={{ zIndex: 1 }}>
-                    
+
                     {/* Elemento central - Núcleo do Sistema */}
                     <div className="absolute inset-0 flex items-center justify-center z-20">
                       <Tooltip>
@@ -1589,9 +1589,9 @@ DIFERENCIAIS COMPETITIVOS:
                           </div>
                         </TooltipTrigger>
                         <TooltipContent 
-                          className="bg-slate-800/95 backdrop-blur-sm border-blue-500/50 max-w-xs shadow-2xl shadow-blue-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
+                          className="bg-slate-800/95 backdrop-blur-sm border-blue-500/50 max-w-xs shadow-2xl shadow-blue-500/20 animate-in fade-in-0 zoom-in-95 duration-200 z-[9999]"
                           sideOffset={20}
-                          style={{ zIndex: 10000 }}
+                          style={{ zIndex: 9999 }}
                           side="top"
                           align="center"
                           avoidCollisions={true}
@@ -1617,7 +1617,7 @@ DIFERENCIAIS COMPETITIVOS:
                     <div className="absolute inset-8 rounded-full border border-slate-600/20 z-10"></div>
 
                     {/* Elemento 01 - CRM Interface (Top) */}
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4 z-30">
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4 z-40">
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer p-4">
@@ -1647,9 +1647,9 @@ DIFERENCIAIS COMPETITIVOS:
                           </div>
                         </TooltipTrigger>
                         <TooltipContent 
-                          className="bg-slate-800/95 backdrop-blur-sm border-red-500/50 max-w-xs shadow-2xl shadow-red-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
+                          className="bg-slate-800/95 backdrop-blur-sm border-red-500/50 max-w-xs shadow-2xl shadow-red-500/20 animate-in fade-in-0 zoom-in-95 duration-200 z-[9999]"
                           sideOffset={20}
-                          style={{ zIndex: 10000 }}
+                          style={{ zIndex: 9999 }}
                           side="bottom"
                           align="center"
                           avoidCollisions={true}
@@ -1677,7 +1677,7 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Elemento 02 - IIS Server (Left) */}
-                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-30">
+                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-40">
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer p-4">
@@ -1704,9 +1704,9 @@ DIFERENCIAIS COMPETITIVOS:
                           </div>
                         </TooltipTrigger>
                         <TooltipContent 
-                          className="bg-slate-800/95 backdrop-blur-sm border-orange-500/50 max-w-xs shadow-2xl shadow-orange-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
+                          className="bg-slate-800/95 backdrop-blur-sm border-orange-500/50 max-w-xs shadow-2xl shadow-orange-500/20 animate-in fade-in-0 zoom-in-95 duration-200 z-[9999]"
                           sideOffset={20}
-                          style={{ zIndex: 10000 }}
+                          style={{ zIndex: 9999 }}
                           side="right"
                           align="center"
                           avoidCollisions={true}
@@ -1734,7 +1734,7 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Elemento 03 - Service Layer (Right) */}
-                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-30">
+                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-40">
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer p-4">
@@ -1761,9 +1761,9 @@ DIFERENCIAIS COMPETITIVOS:
                           </div>
                         </TooltipTrigger>
                         <TooltipContent 
-                          className="bg-slate-800/95 backdrop-blur-sm border-yellow-500/50 max-w-xs shadow-2xl shadow-yellow-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
+                          className="bg-slate-800/95 backdrop-blur-sm border-yellow-500/50 max-w-xs shadow-2xl shadow-yellow-500/20 animate-in fade-in-0 zoom-in-95 duration-200 z-[9999]"
                           sideOffset={20}
-                          style={{ zIndex: 10000 }}
+                          style={{ zIndex: 9999 }}
                           side="left"
                           align="center"
                           avoidCollisions={true}
@@ -1791,7 +1791,7 @@ DIFERENCIAIS COMPETITIVOS:
                     </div>
 
                     {/* Elemento 04 - Database (Bottom) */}
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-4 z-30">
+                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-4 z-40">
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="group cursor-pointer p-4">
@@ -1818,9 +1818,9 @@ DIFERENCIAIS COMPETITIVOS:
                           </div>
                         </TooltipTrigger>
                         <TooltipContent 
-                          className="bg-slate-800/95 backdrop-blur-sm border-green-500/50 max-w-xs shadow-2xl shadow-green-500/20 animate-in fade-in-0 zoom-in-95 duration-200"
+                          className="bg-slate-800/95 backdrop-blur-sm border-green-500/50 max-w-xs shadow-2xl shadow-green-500/20 animate-in fade-in-0 zoom-in-95 duration-200 z-[9999]"
                           sideOffset={20}
-                          style={{ zIndex: 10000 }}
+                          style={{ zIndex: 9999 }}
                           side="top"
                           align="center"
                           avoidCollisions={true}
@@ -1859,7 +1859,7 @@ DIFERENCIAIS COMPETITIVOS:
                           <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.6"/>
                         </linearGradient>
                       </defs>
-                      
+
                       {/* Linha do CRM Interface para o centro */}
                       <line 
                         x1="50%" y1="15%" 
@@ -1869,7 +1869,7 @@ DIFERENCIAIS COMPETITIVOS:
                         strokeDasharray="10,5"
                         className="animate-pulse"
                       />
-                      
+
                       {/* Linha do IIS Server para o centro */}
                       <line 
                         x1="15%" y1="50%" 
@@ -1880,7 +1880,7 @@ DIFERENCIAIS COMPETITIVOS:
                         className="animate-pulse"
                         style={{ animationDelay: '0.5s' }}
                       />
-                      
+
                       {/* Linha do Service Layer para o centro */}
                       <line 
                         x1="85%" y1="50%" 
@@ -1891,7 +1891,7 @@ DIFERENCIAIS COMPETITIVOS:
                         className="animate-pulse"
                         style={{ animationDelay: '1s' }}
                       />
-                      
+
                       {/* Linha do Database para o centro */}
                       <line 
                         x1="50%" y1="85%" 
@@ -1911,9 +1911,7 @@ DIFERENCIAIS COMPETITIVOS:
                     <h6 className="text-center text-slate-300 font-semibold mb-6 text-xl flex items-center justify-center">
                       <Zap className="mr-3" size={24} />
                       Fluxo de Comunicação Integrada
-                    </h6>
-                    
-                    <div className="grid md:grid-cols-4 gap-4">
+                    </h6><div className="grid md:grid-cols-4 gap-4">
                       <div className="bg-gradient-to-br from-red-900/30 to-red-800/30 p-4 rounded-xl border border-red-600/30 hover:scale-105 transition-all duration-300">
                         <div className="flex items-center space-x-3 mb-3">
                           <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
