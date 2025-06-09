@@ -120,6 +120,12 @@ export const insertModuleEvaluationSchema = z.object({
   time_spent: z.number().optional(),
 });
 
+export const insertUserLoginSchema = z.object({
+  user_id: z.string(),
+  ip_address: z.string().optional(),
+  user_agent: z.string().optional(),
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type OnboardingProgress = typeof onboardingProgress.$inferSelect & {
@@ -135,3 +141,4 @@ export type DailyAttempt = typeof dailyAttempts.$inferSelect;
 export type Certificate = typeof certificates.$inferSelect;
 export type UserAchievement = typeof userAchievements.$inferSelect;
 export type UserLogin = typeof userLogins.$inferSelect;
+export type InsertUserLogin = z.infer<typeof insertUserLoginSchema>;

@@ -1,4 +1,4 @@
-import { users, onboardingProgress, moduleEvaluations, avaliacao_user, dailyAttempts, certificates, userAchievements, userLogins, type User, type InsertUser, type Certificate, type UserAchievement, type UserLogin } from "@shared/schema";
+import { users, onboardingProgress, moduleEvaluations, avaliacao_user, dailyAttempts, certificates, userAchievements, userLogins, type User, type InsertUser, type Certificate, type UserAchievement, type UserLogin, type InsertUserLogin } from "@shared/schema";
 import { getDatabase } from "./database";
 import type { OnboardingProgress, InsertOnboardingProgress } from "@/hooks/useProgress";
 import { eq, and, desc, sql, gte } from "drizzle-orm";
@@ -1096,6 +1096,124 @@ export class DatabaseStorage implements IStorage {
     } catch (error) {
       console.error("❌ Erro ao sincronizar progresso:", error);
       return undefined;
+    }
+  }
+
+  async recordUserLogin(userId: string, ipAddress?: string, userAgent?: string): Promise<UserLogin | null> {
+    try {
+      // Check if user already logged in today (same day)
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      const existingLogin = await this.db
+        .select()
+        .from(userLogins)
+        .where(
+          and(
+            eq(userLogins.user_id, userId),
+            gte(userLogins.login_date, today),
+            sql`${userLogins.login_date} < ${tomorrow}`
+          )
+        )
+        .limit(1);
+
+      if (existingLogin.length > 0) {
+        console.log("📅 ⚠️ Login não foi registrado (possivelmente já existe hoje)");
+        return existingLogin[0];
+      }
+
+      // Record new login
+      const loginData: InsertUserLogin = {
+        user_id: userId,
+        ip_address: ipAddress,
+        user_agent: userAgent
+      };
+
+      const result = await this.db
+        .insert(userLogins)
+        .values(loginData)
+        .returning();
+
+      console.log("📅 ✅ Login registrado com sucesso para usuário:", userId);
+      return result[0];
+    } catch (error) {
+      console.error("❌ Erro ao registrar login:", error);
+      return null;
+    }
+  }
+
+  async getUserLogins(userId: string): Promise<UserLogin[]> {
+    try {
+      const result = await this.db
+        .select()
+        .from(userLogins)
+        .where(eq(userLogins.user_id, userId))
+        .orderBy(desc(userLogins.login_date));
+
+      return result;
+    } catch (error) {
+      console.error("❌ Erro ao buscar logins do usuário:", error);
+      return [];
+    }
+  }
+
+  async calculateConsecutiveDays(userId: string): Promise<number> {
+    try {
+      const logins = await this.getUserLogins(userId);
+      
+      if (logins.length === 0) {
+        return 0;
+      }
+
+      // Get unique days from logins
+      const uniqueDays = new Set(
+        logins.map(login => new Date(login.login_date).toDateString())
+      );
+
+      const sortedDays = Array.from(uniqueDays)
+        .map(dateStr => new Date(dateStr))
+        .sort((a, b) => b.getTime() - a.getTime()); // Most recent first
+
+      if (sortedDays.length === 0) return 0;
+
+      let consecutiveDays = 1;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // Check if the most recent login was today or yesterday
+      const mostRecentDay = new Date(sortedDays[0]);
+      mostRecentDay.setHours(0, 0, 0, 0);
+      
+      const daysDiff = Math.floor((today.getTime() - mostRecentDay.getTime()) / (1000 * 60 * 60 * 24));
+      
+      if (daysDiff > 1) {
+        // More than 1 day gap, streak is broken
+        return 1;
+      }
+
+      // Count consecutive days backwards
+      for (let i = 1; i < sortedDays.length; i++) {
+        const currentDay = new Date(sortedDays[i]);
+        currentDay.setHours(0, 0, 0, 0);
+        
+        const previousDay = new Date(sortedDays[i - 1]);
+        previousDay.setHours(0, 0, 0, 0);
+        
+        const diff = Math.floor((previousDay.getTime() - currentDay.getTime()) / (1000 * 60 * 60 * 24));
+        
+        if (diff === 1) {
+          consecutiveDays++;
+        } else {
+          break;
+        }
+      }
+
+      return consecutiveDays;
+    } catch (error) {
+      console.error("❌ Erro ao calcular dias consecutivos:", error);
+      return 0;
     }
   }
 }

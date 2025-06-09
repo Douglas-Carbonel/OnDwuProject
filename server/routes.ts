@@ -516,6 +516,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get consecutive days for achievements
+  app.get("/api/consecutive-days/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      console.log("📅 Calculando dias consecutivos para usuário:", userId);
+
+      const consecutiveDays = await storage.calculateConsecutiveDays(userId);
+
+      res.json({
+        consecutiveDays,
+        success: true
+      });
+    } catch (error) {
+      console.error("❌ Erro ao calcular dias consecutivos:", error);
+      res.status(500).json({ 
+        error: "Internal server error",
+        consecutiveDays: 0
+      });
+    }
+  });
+
   // Achievements routes
   app.get("/api/achievements/:userId", async (req, res) => {
     try {
