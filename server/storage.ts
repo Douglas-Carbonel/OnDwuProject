@@ -424,7 +424,7 @@ export class DatabaseStorage implements IStorage {
       const numericUserId = userId.replace('user-', '');
       console.log("📅 Calculando dias consecutivos para userId:", numericUserId);
 
-      // Buscar todos os logins do usuário ordenados por data
+      // Buscar todos os logins do usuário ordenados por data (mais recente primeiro)
       const logins = await this.db
         .select()
         .from(userLogins)
@@ -434,85 +434,66 @@ export class DatabaseStorage implements IStorage {
       console.log("📅 Total de logins encontrados:", logins.length);
 
       if (logins.length === 0) {
-        console.log("📅 Nenhum login registrado, usando dados de avaliações como fallback");
-
-        // Fallback para avaliações se não houver logins registrados
-        const evaluations = await this.db
-          .select()
-          .from(moduleEvaluations)
-          .where(eq(moduleEvaluations.user_id, numericUserId))
-          .orderBy(desc(moduleEvaluations.completed_at));
-
-        if (evaluations.length === 0) return 0;
-
-        const uniqueDates = [...new Set(
-          evaluations.map(evaluation => 
-            new Date(evaluation.completed_at).toDateString()
-          )
-        )].sort();
-
-        console.log("📅 Datas únicas de avaliações (fallback):", uniqueDates);
-        
-        // Se tem pelo menos uma avaliação, considera como 1 dia de atividade mínimo
-        return Math.max(1, this.calculateConsecutiveFromDates(uniqueDates));
+        console.log("📅 Nenhum login registrado");
+        return 0;
       }
 
-      // Extrair datas únicas de login (apenas dia, sem horário)
-      const loginDates = logins.map(login => new Date(login.login_date).toDateString());
-      const uniqueDates = [...new Set(loginDates)].sort();
+      // Extrair apenas as datas (sem horário) dos logins
+      const loginDates = logins.map(login => {
+        const date = new Date(login.login_date);
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      });
 
-      console.log("📅 Datas de login brutas:", loginDates);
-      console.log("📅 Datas únicas de login ordenadas:", uniqueDates);
+      // Remover datas duplicadas e ordenar do mais recente para o mais antigo
+      const uniqueDates = [...new Set(loginDates.map(d => d.getTime()))]
+        .map(time => new Date(time))
+        .sort((a, b) => b.getTime() - a.getTime());
 
-      const consecutiveDays = this.calculateConsecutiveFromDates(uniqueDates);
+      console.log("📅 Datas únicas de login:", uniqueDates.map(d => d.toDateString()));
+
+      // Calcular dias consecutivos a partir da data mais recente
+      let consecutiveDays = 1; // Pelo menos 1 dia (o dia mais recente)
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // Verificar se o login mais recente é de hoje ou ontem
+      const mostRecentDate = uniqueDates[0];
+      const daysDiff = Math.floor((today.getTime() - mostRecentDate.getTime()) / (1000 * 60 * 60 * 24));
+
+      if (daysDiff > 1) {
+        // Se o último login foi há mais de 1 dia, a sequência está quebrada
+        console.log(`📅 Último login foi há ${daysDiff} dias. Sequência quebrada.`);
+        return 1; // Conta apenas o último dia de login
+      }
+
+      // Contar dias consecutivos
+      for (let i = 1; i < uniqueDates.length; i++) {
+        const currentDate = uniqueDates[i - 1];
+        const previousDate = uniqueDates[i];
+        
+        const diffTime = currentDate.getTime() - previousDate.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+        console.log(`📅 Comparando ${currentDate.toDateString()} com ${previousDate.toDateString()}: diferença de ${diffDays} dias`);
+
+        if (diffDays === 1) {
+          consecutiveDays++;
+          console.log(`📅 Dia consecutivo! Total: ${consecutiveDays}`);
+        } else {
+          console.log(`📅 Sequência quebrada na diferença de ${diffDays} dias`);
+          break;
+        }
+      }
+
       console.log("📅 Resultado final de dias consecutivos:", consecutiveDays);
-
-      // Se tem pelo menos um login, considera como 1 dia mínimo
-      return Math.max(logins.length > 0 ? 1 : 0, consecutiveDays);
+      return consecutiveDays;
     } catch (error) {
       console.error("❌ Erro ao calcular dias consecutivos:", error);
       return 0;
     }
   }
 
-  private calculateConsecutiveFromDates(uniqueDates: string[]): number {
-    if (uniqueDates.length === 0) return 0;
-    if (uniqueDates.length === 1) return 1;
-
-    console.log("📅 Calculando consecutivos com datas:", uniqueDates);
-
-    // Converter strings de data para objetos Date e ordenar
-    const dates = uniqueDates.map(dateStr => new Date(dateStr)).sort((a, b) => a.getTime() - b.getTime());
-
-    let maxConsecutive = 1;
-    let currentConsecutive = 1;
-
-    console.log("📅 Datas ordenadas:", dates.map(d => d.toDateString()));
-
-    for (let i = 1; i < dates.length; i++) {
-      const currentDate = dates[i];
-      const previousDate = dates[i - 1];
-
-      // Calcular diferença em dias (sem considerar horário)
-      const diffTime = currentDate.getTime() - previousDate.getTime();
-      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-
-      console.log(`📅 Comparando ${previousDate.toDateString()} com ${currentDate.toDateString()}: diferença de ${diffDays} dias`);
-
-      if (diffDays === 1) {
-        currentConsecutive++;
-        console.log(`📅 Dia consecutivo! Atual: ${currentConsecutive}`);
-      } else {
-        console.log(`📅 Sequência quebrada. Reiniciando contagem.`);
-        currentConsecutive = 1;
-      }
-
-      maxConsecutive = Math.max(maxConsecutive, currentConsecutive);
-    }
-
-    console.log("📅 Máximo de dias consecutivos calculado:", maxConsecutive);
-    return maxConsecutive;
-  }
+  
 
   async recordUserLogin(userId: string, ipAddress?: string, userAgent?: string): Promise<UserLogin | null> {
     try {
