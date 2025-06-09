@@ -716,7 +716,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Enhanced Comparison Section with Professional Table */}
+      {/* Enhanced Comparison Section with Interactive Table */}
       <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-indigo-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
@@ -754,17 +754,17 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                     <h4 className="text-xl font-bold text-blue-300">Padrões do SAP Business One</h4>
                   </div>
                   <ul className="space-y-3 text-sm text-slate-300">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                      <span>Segue as regras de negócio, transações e procedimentos de autorização padrões</span>
+                    <li className="flex items-start gap-2 group">
+                      <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                      <span className="group-hover:text-slate-200 transition-colors duration-300">Segue as regras de negócio, transações e procedimentos de autorização padrões</span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                      <span>Exibição de impostos em tempo real de acordo com parametrizações existentes</span>
+                    <li className="flex items-start gap-2 group">
+                      <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                      <span className="group-hover:text-slate-200 transition-colors duration-300">Exibição de impostos em tempo real de acordo com parametrizações existentes</span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                      <span>Ferramenta desenvolvida exclusivamente para o SAP Business One</span>
+                    <li className="flex items-start gap-2 group">
+                      <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                      <span className="group-hover:text-slate-200 transition-colors duration-300">Ferramenta desenvolvida exclusivamente para o SAP Business One</span>
                     </li>
                   </ul>
                 </div>
@@ -777,56 +777,131 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                     <h4 className="text-xl font-bold text-green-300">Redução de Custos</h4>
                   </div>
                   <ul className="space-y-3 text-sm text-slate-300">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                      <span>Dispensa licenciamento profissional e não impõe limites</span>
+                    <li className="flex items-start gap-2 group">
+                      <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                      <span className="group-hover:text-slate-200 transition-colors duration-300">Dispensa licenciamento profissional e não impõe limites</span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                      <span>Tudo funciona de forma nativa, sem integrações externas</span>
+                    <li className="flex items-start gap-2 group">
+                      <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                      <span className="group-hover:text-slate-200 transition-colors duration-300">Tudo funciona de forma nativa, sem integrações externas</span>
                     </li>
                   </ul>
                 </div>
               </div>
             </div>
 
-            {/* Professional Comparison Table */}
-            <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-700/50">
-              <div className="text-center mb-6">
-                <h4 className="text-2xl font-semibold text-slate-200 mb-2">Comparativo de Funcionalidades</h4>
-                <p className="text-slate-400">Compare as principais características</p>
+            {/* Interactive Comparison Table */}
+            <div className="bg-gradient-to-br from-slate-900/70 to-slate-800/70 rounded-2xl p-8 border border-slate-700/50 backdrop-blur-sm hover:border-slate-600/50 transition-all duration-300">
+              <div className="text-center mb-8">
+                <h4 className="text-3xl font-semibold bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent mb-4">
+                  Comparativo Interativo
+                </h4>
+                <p className="text-slate-400 text-lg">Clique nas linhas para ver detalhes dos diferenciais</p>
               </div>
               
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-slate-700">
-                      <th className="text-left p-4 text-slate-200 font-semibold">Funcionalidade</th>
-                      <th className="text-center p-4 text-blue-300 font-semibold">CRM One</th>
-                      <th className="text-center p-4 text-slate-400 font-semibold">Outras Soluções</th>
+                    <tr className="border-b-2 border-indigo-600/50">
+                      <th className="text-left p-6 font-bold text-slate-200 text-lg">Critério</th>
+                      <th className="text-center p-6 font-bold text-blue-300 text-lg relative">
+                        <div className="flex items-center justify-center gap-2">
+                          <Sparkles className="w-6 h-6 text-blue-400 animate-pulse" />
+                          CRM ONE
+                          <Sparkles className="w-6 h-6 text-blue-400 animate-pulse" />
+                        </div>
+                      </th>
+                      <th className="text-center p-6 font-bold text-slate-400 text-lg">Concorrente A</th>
+                      <th className="text-center p-6 font-bold text-slate-400 text-lg">Concorrente B</th>
                     </tr>
                   </thead>
                   <tbody>
                     {[
-                      { feature: "Integração Nativa com SAP B1", crm: true, others: false },
-                      { feature: "App Mobile Offline", crm: true, others: "Parcial" },
-                      { feature: "Dashboards SQL/HANA", crm: true, others: false },
-                      { feature: "Suporte Especializado", crm: true, others: "Básico" },
-                      { feature: "Evolução junto ao SAP", crm: true, others: false },
-                      { feature: "Custo-benefício", crm: true, others: false }
+                      { 
+                        criteria: "Integração Nativa com SAP B1", 
+                        crm: true, 
+                        compA: false, 
+                        compB: false,
+                        tooltip: "100% nativo, sem necessidade de middleware ou APIs intermediárias"
+                      },
+                      { 
+                        criteria: "App Mobile Offline", 
+                        crm: true, 
+                        compA: true, 
+                        compB: false,
+                        tooltip: "Funciona completamente offline com sincronização automática"
+                      },
+                      { 
+                        criteria: "Evolui junto ao SAP sem retrabalho", 
+                        crm: true, 
+                        compA: false, 
+                        compB: false,
+                        tooltip: "Compatibilidade garantida com atualizações do SAP Business One"
+                      },
+                      { 
+                        criteria: "Dashboards SQL/HANA", 
+                        crm: true, 
+                        compA: false, 
+                        compB: true,
+                        tooltip: "Consultas diretas no banco SAP HANA para dados em tempo real"
+                      },
+                      { 
+                        criteria: "Suporte Direto com Especialista", 
+                        crm: true, 
+                        compA: false, 
+                        compB: true,
+                        tooltip: "Equipe certificada SAP com 9+ anos de experiência"
+                      },
+                      { 
+                        criteria: "Banco de Dados Próprio", 
+                        crm: true, 
+                        compA: false, 
+                        compB: false,
+                        tooltip: "Utiliza diretamente o banco do SAP, garantindo consistência"
+                      },
+                      { 
+                        criteria: "Custo-benefício", 
+                        crm: true, 
+                        compA: false, 
+                        compB: false,
+                        tooltip: "Menor TCO do mercado com ROI comprovado em 6 meses"
+                      }
                     ].map((row, index) => (
-                      <tr key={index} className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors duration-200">
-                        <td className="p-4 text-slate-300">{row.feature}</td>
-                        <td className="text-center p-4">
-                          <CheckCircle className="w-5 h-5 text-green-400 mx-auto" />
+                      <tr 
+                        key={index} 
+                        className="border-b border-slate-800/50 hover:bg-gradient-to-r hover:from-indigo-900/20 hover:to-purple-900/20 transition-all duration-300 group cursor-pointer"
+                        title={row.tooltip}
+                      >
+                        <td className="p-6 text-slate-300 font-medium group-hover:text-slate-100 transition-colors duration-300">
+                          <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 bg-indigo-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            {row.criteria}
+                          </div>
                         </td>
-                        <td className="text-center p-4">
-                          {row.others === true ? (
-                            <CheckCircle className="w-5 h-5 text-green-400 mx-auto" />
-                          ) : row.others === "Parcial" || row.others === "Básico" ? (
-                            <div className="text-xs text-slate-400">{row.others}</div>
+                        <td className="text-center p-6">
+                          {row.crm ? (
+                            <div className="flex items-center justify-center">
+                              <div className="relative">
+                                <CheckCircle className="w-8 h-8 text-green-400 mx-auto animate-pulse group-hover:scale-125 transition-transform duration-300" />
+                                <div className="absolute inset-0 bg-green-400/20 rounded-full animate-ping group-hover:animate-none"></div>
+                              </div>
+                            </div>
                           ) : (
-                            <X className="w-5 h-5 text-red-400 mx-auto opacity-60" />
+                            <X className="w-8 h-8 text-red-400 mx-auto group-hover:scale-110 transition-transform duration-300" />
+                          )}
+                        </td>
+                        <td className="text-center p-6">
+                          {row.compA ? (
+                            <CheckCircle className="w-6 h-6 text-green-400 mx-auto group-hover:scale-110 transition-transform duration-300" />
+                          ) : (
+                            <X className="w-6 h-6 text-red-400 mx-auto opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
+                          )}
+                        </td>
+                        <td className="text-center p-6">
+                          {row.compB ? (
+                            <CheckCircle className="w-6 h-6 text-green-400 mx-auto group-hover:scale-110 transition-transform duration-300" />
+                          ) : (
+                            <X className="w-6 h-6 text-red-400 mx-auto opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
                           )}
                         </td>
                       </tr>
@@ -835,12 +910,22 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                 </table>
               </div>
 
-              <div className="flex justify-center mt-6">
-                <div className="text-center p-4 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-lg border border-blue-500/30">
-                  <div className="flex items-center gap-2 text-blue-300">
-                    <Trophy className="w-5 h-5" />
-                    <span className="font-semibold">100% das funcionalidades disponíveis</span>
-                  </div>
+              {/* Summary Cards */}
+              <div className="grid md:grid-cols-3 gap-6 mt-8">
+                <div className="text-center p-6 bg-gradient-to-br from-blue-600/20 to-blue-500/20 rounded-xl border border-blue-500/30">
+                  <Trophy className="w-12 h-12 text-blue-400 mx-auto mb-3 animate-bounce" />
+                  <div className="text-2xl font-bold text-blue-300 mb-1">7/7</div>
+                  <p className="text-slate-400 text-sm">Vantagens CRM One</p>
+                </div>
+                <div className="text-center p-6 bg-gradient-to-br from-orange-600/20 to-orange-500/20 rounded-xl border border-orange-500/30">
+                  <Target className="w-12 h-12 text-orange-400 mx-auto mb-3" />
+                  <div className="text-2xl font-bold text-orange-300 mb-1">2/7</div>
+                  <p className="text-slate-400 text-sm">Concorrente A</p>
+                </div>
+                <div className="text-center p-6 bg-gradient-to-br from-purple-600/20 to-purple-500/20 rounded-xl border border-purple-500/30">
+                  <Star className="w-12 h-12 text-purple-400 mx-auto mb-3" />
+                  <div className="text-2xl font-bold text-purple-300 mb-1">3/7</div>
+                  <p className="text-slate-400 text-sm">Concorrente B</p>
                 </div>
               </div>
             </div>
