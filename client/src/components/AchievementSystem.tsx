@@ -40,7 +40,7 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
       try {
         console.log("🏆 Buscando dados para conquistas do usuário:", userProgress.userId);
         
-        // Buscar avaliações
+        // Buscar avaliações primeiro
         const evaluationsResponse = await fetch(`/api/admin/user-evaluations/${userProgress.userId}`);
         if (evaluationsResponse.ok) {
           const evaluationsData = await evaluationsResponse.json();
@@ -51,20 +51,35 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
           setUserEvaluations([]);
         }
 
-        // Buscar dias consecutivos
+        // Buscar dias consecutivos com retry
+        console.log("📅 Iniciando busca de dias consecutivos...");
         const consecutiveResponse = await fetch(`/api/consecutive-days/${userProgress.userId}`);
         if (consecutiveResponse.ok) {
           const consecutiveData = await consecutiveResponse.json();
-          console.log("📅 Dias consecutivos recebidos:", consecutiveData);
-          const days = consecutiveData.consecutiveDays || 0;
-          setConsecutiveDays(days);
-          console.log("📅 Dias consecutivos definidos no state:", days);
+          console.log("📅 Response completa de dias consecutivos:", consecutiveData);
+          
+          if (consecutiveData.success && typeof consecutiveData.consecutiveDays === 'number') {
+            const days = consecutiveData.consecutiveDays;
+            console.log("📅 Dias consecutivos extraídos:", days);
+            setConsecutiveDays(days);
+            
+            if (days > 0) {
+              console.log("📅 ✅ Dias consecutivos definidos com sucesso:", days);
+              console.log("📅 Total de logins:", consecutiveData.totalLogins);
+              console.log("📅 Datas de login:", consecutiveData.loginDates);
+            } else {
+              console.log("📅 ⚠️ Nenhum dia consecutivo encontrado");
+            }
+          } else {
+            console.log("❌ Formato de resposta inválido para dias consecutivos");
+            setConsecutiveDays(0);
+          }
         } else {
-          console.log("❌ Erro ao buscar dias consecutivos, usando 0");
+          console.log("❌ Erro HTTP ao buscar dias consecutivos:", consecutiveResponse.status);
           setConsecutiveDays(0);
         }
 
-        // Buscar conquistas (isso também verifica e desbloqueia novas)
+        // Buscar conquistas do banco (isso também verifica e desbloqueia novas)
         const achievementsResponse = await fetch(`/api/achievements/${userProgress.userId}`);
         if (achievementsResponse.ok) {
           const achievementsData = await achievementsResponse.json();
@@ -83,7 +98,9 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
       }
     };
 
-    fetchUserData();
+    // Aguardar um pouco para garantir que o userProgress esteja totalmente carregado
+    const timer = setTimeout(fetchUserData, 100);
+    return () => clearTimeout(timer);
   }, [userProgress?.userId]);
 
   // Calcular conquistas baseadas em dados reais
@@ -109,8 +126,15 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
     const fastCompletions = userEvaluations.filter(evaluation => evaluation.time_spent && evaluation.time_spent < 7200);
     const hasSpeedLearning = fastCompletions.length > 0;
 
-    // Verificar se tem pelo menos 2 dias de acesso (mais realista)
-    const hasDedicatedProgress = consecutiveDays >= 2;
+    // Debug dos dados que estão sendo usados
+    console.log("🏆 Debug dos dados para conquistas:", {
+      userProgressCompletedModules: userProgress?.completedModules,
+      userEvaluationsLength: userEvaluations.length,
+      consecutiveDaysValue: consecutiveDays,
+      hasAnyAttempt,
+      perfectScoresLength: perfectScores.length,
+      fastCompletionsLength: fastCompletions.length
+    });
 
     const calculatedAchievements: Achievement[] = [
       {
@@ -152,7 +176,7 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
         description: "Acesse o sistema por 5 dias consecutivos",
         icon: "clock",
         unlocked: consecutiveDays >= 5,
-        progress: Math.min(consecutiveDays, 5),
+        progress: Math.min(Math.max(consecutiveDays, 0), 5),
         maxProgress: 5,
         category: "engagement",
         points: 200
@@ -185,8 +209,19 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
       id: a.id,
       title: a.title,
       unlocked: a.unlocked,
-      progress: a.progress
+      progress: a.progress,
+      maxProgress: a.maxProgress
     })));
+
+    // Log específico para a conquista "Dedicado"
+    const dedicatedAchievement = calculatedAchievements.find(a => a.id === "dedicated");
+    if (dedicatedAchievement) {
+      console.log("🔍 CONQUISTA DEDICADO - Detalhes:");
+      console.log("   - consecutiveDays usado:", consecutiveDays);
+      console.log("   - progress calculado:", dedicatedAchievement.progress);
+      console.log("   - unlocked:", dedicatedAchievement.unlocked);
+      console.log("   - condição (consecutiveDays >= 5):", consecutiveDays >= 5);
+    }
 
     setAchievements(calculatedAchievements);
   }, [userProgress, userEvaluations, consecutiveDays, loading]);
