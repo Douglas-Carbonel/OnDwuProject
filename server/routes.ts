@@ -1,12 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertProgressSchema, userLogins } from "@shared/schema";
+import { insertProgressSchema } from "@shared/schema";
 import { testSupabaseConnection } from "./test-connection";
 import { authService } from "./auth";
 import { z } from "zod";
-import { getDatabase } from "./database";
-import { desc } from "drizzle-orm";
 
 export async function registerRoutes(app: Express): Promise<Server> {
 
@@ -1104,66 +1102,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ 
         success: false,
         error: error.message
-      });
-    }
-  });
-
-  // Endpoint para inserir dados de teste na tabela user_logins
-  app.post("/api/debug/insert-consecutive-days", async (req, res) => {
-    try {
-      const { userId, daysToCreate = 5 } = req.body;
-      
-      if (!userId) {
-        return res.status(400).json({ error: "userId é obrigatório" });
-      }
-
-      console.log("🧪 Inserindo dados de teste para dias consecutivos - userId:", userId, "dias:", daysToCreate);
-
-      const numericUserId = userId.toString().replace('user-', '');
-      const db = getDatabase();
-      const insertedLogins = [];
-
-      // Criar logins para os últimos X dias consecutivos
-      for (let i = daysToCreate - 1; i >= 0; i--) {
-        const loginDate = new Date();
-        loginDate.setDate(loginDate.getDate() - i);
-        loginDate.setHours(9 + Math.floor(Math.random() * 8), Math.floor(Math.random() * 60), 0, 0); // Entre 9h e 17h
-
-        const result = await db
-          .insert(userLogins)
-          .values({
-            user_id: numericUserId,
-            login_date: loginDate,
-            ip_address: "192.168.1." + Math.floor(Math.random() * 255),
-            user_agent: "Test-Agent-" + i,
-          })
-          .returning();
-
-        insertedLogins.push(result[0]);
-        console.log(`📅 Inserido login para ${loginDate.toISOString()}`);
-      }
-
-      // Calcular dias consecutivos após inserção
-      const consecutiveDays = await storage.calculateConsecutiveDays(userId);
-
-      // Buscar todos os logins do usuário
-      const allUserLogins = await storage.getUserLogins(userId);
-
-      res.json({
-        success: true,
-        message: `${daysToCreate} logins consecutivos inseridos com sucesso!`,
-        insertedLogins: insertedLogins,
-        consecutiveDaysCalculated: consecutiveDays,
-        allUserLogins: allUserLogins,
-        totalUserLogins: allUserLogins.length
-      });
-
-    } catch (error) {
-      console.error("❌ Erro ao inserir dados de teste:", error);
-      res.status(500).json({
-        success: false,
-        error: error.message,
-        stack: error.stack
       });
     }
   });
