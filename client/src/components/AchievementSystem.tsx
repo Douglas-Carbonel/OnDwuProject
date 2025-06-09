@@ -304,18 +304,18 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
               </div>
               
               <div className="flex-1">
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className={`font-medium ${
+                <div className="flex items-start justify-between mb-2 gap-2">
+                  <h4 className={`font-medium flex-1 min-w-0 ${
                     achievement.unlocked ? 'text-white' : 'text-slate-400'
                   }`}>
                     {achievement.title}
                   </h4>
-                  <div className="flex items-center space-x-2">
-                    <Badge className={getCategoryColor(achievement.category)}>
+                  <div className="flex items-center space-x-2 flex-shrink-0">
+                    <Badge className={`${getCategoryColor(achievement.category)} text-xs whitespace-nowrap`}>
                       {achievement.category}
                     </Badge>
                     {achievement.unlocked && (
-                      <Badge className="bg-yellow-500/20 text-yellow-400">
+                      <Badge className="bg-yellow-500/20 text-yellow-400 text-xs whitespace-nowrap">
                         +{achievement.points}
                       </Badge>
                     )}
