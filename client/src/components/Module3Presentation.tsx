@@ -632,7 +632,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                 <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
                   <Layers className="w-6 h-6 text-orange-400" />
                 </div>
-                <h2 className="text-2xl font-bold text-white">Módulos Completos do Sistema</h2>
+                <h2 className="text-2xl font-bold text-white">💎 Benefícios Exclusivos da Ferramenta</h2>
               </div>
               {expandedSections.has('modules') ? 
                 <ChevronUp className="w-6 h-6 text-orange-400" /> : 
@@ -647,10 +647,10 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             <div className="space-y-8">
               <div className="text-center">
                 <h3 className="text-3xl font-bold bg-gradient-to-r from-orange-300 to-red-300 bg-clip-text text-transparent mb-4">
-                  Funcionalidades Completas
+                  🚀 Transforme Seu Negócio Hoje
                 </h3>
                 <p className="text-slate-300 text-lg max-w-3xl mx-auto">
-                  Cada módulo foi desenvolvido para atender necessidades específicas do seu negócio.
+                  Descubra como cada funcionalidade vai revolucionar sua operação e aumentar seus resultados.
                 </p>
               </div>
 
