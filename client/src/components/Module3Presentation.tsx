@@ -48,7 +48,9 @@ import {
   Maximize,
   RefreshCw,
   Bell,
-  Heart
+  Heart,
+  Sparkles,
+  Trophy
 } from "lucide-react";
 
 interface Module3PresentationProps {
@@ -57,7 +59,7 @@ interface Module3PresentationProps {
 
 export default function Module3Presentation({ onComplete }: Module3PresentationProps) {
   const [viewedSections, setViewedSections] = useState<Set<string>>(new Set());
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['hero']));
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [completionProgress, setCompletionProgress] = useState(0);
   const [animatedCounters, setAnimatedCounters] = useState<{[key: string]: number}>({});
 
@@ -242,7 +244,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Interface Section - New */}
+      {/* Interface Section */}
       <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-cyan-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
@@ -315,7 +317,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Mobile Section - New */}
+      {/* Mobile Section */}
       <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-green-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
@@ -384,7 +386,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Dashboards Section - Enhanced */}
+      {/* Dashboards Section */}
       <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-purple-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
@@ -465,7 +467,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Security Section - New */}
+      {/* Security Section */}
       <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-red-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
@@ -539,7 +541,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Support Section - New */}
+      {/* Support Section */}
       <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-yellow-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
@@ -714,7 +716,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Enhanced Comparison Section */}
+      {/* Enhanced Comparison Section with Interactive Table */}
       <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-indigo-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
@@ -788,56 +790,143 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
               </div>
             </div>
 
-            {/* Enhanced Comparison Table */}
-            <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300">
-              <h4 className="text-2xl font-semibold text-slate-200 mb-6 text-center">Comparativo Detalhado com Concorrentes</h4>
+            {/* Interactive Comparison Table */}
+            <div className="bg-gradient-to-br from-slate-900/70 to-slate-800/70 rounded-2xl p-8 border border-slate-700/50 backdrop-blur-sm hover:border-slate-600/50 transition-all duration-300">
+              <div className="text-center mb-8">
+                <h4 className="text-3xl font-semibold bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent mb-4">
+                  Comparativo Interativo
+                </h4>
+                <p className="text-slate-400 text-lg">Clique nas linhas para ver detalhes dos diferenciais</p>
+              </div>
+              
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-slate-700">
-                      <th className="text-left p-4 font-semibold text-slate-300">Critério</th>
-                      <th className="text-center p-4 font-semibold text-blue-400">CRM ONE</th>
-                      <th className="text-center p-4 font-semibold text-slate-400">Concorrente A</th>
-                      <th className="text-center p-4 font-semibold text-slate-400">Concorrente B</th>
+                    <tr className="border-b-2 border-indigo-600/50">
+                      <th className="text-left p-6 font-bold text-slate-200 text-lg">Critério</th>
+                      <th className="text-center p-6 font-bold text-blue-300 text-lg relative">
+                        <div className="flex items-center justify-center gap-2">
+                          <Sparkles className="w-6 h-6 text-blue-400 animate-pulse" />
+                          CRM ONE
+                          <Sparkles className="w-6 h-6 text-blue-400 animate-pulse" />
+                        </div>
+                      </th>
+                      <th className="text-center p-6 font-bold text-slate-400 text-lg">Concorrente A</th>
+                      <th className="text-center p-6 font-bold text-slate-400 text-lg">Concorrente B</th>
                     </tr>
                   </thead>
                   <tbody>
                     {[
-                      { criteria: "Integração Nativa com SAP B1", crm: true, compA: false, compB: false },
-                      { criteria: "App Mobile Offline", crm: true, compA: true, compB: false },
-                      { criteria: "Evolui junto ao SAP sem retrabalho", crm: true, compA: false, compB: false },
-                      { criteria: "Dashboards SQL/HANA", crm: true, compA: false, compB: true },
-                      { criteria: "Suporte Direto com Especialista", crm: true, compA: false, compB: true },
-                      { criteria: "Banco de Dados Próprio", crm: true, compA: false, compB: false },
-                      { criteria: "Custo-benefício", crm: true, compA: false, compB: false }
+                      { 
+                        criteria: "Integração Nativa com SAP B1", 
+                        crm: true, 
+                        compA: false, 
+                        compB: false,
+                        tooltip: "100% nativo, sem necessidade de middleware ou APIs intermediárias"
+                      },
+                      { 
+                        criteria: "App Mobile Offline", 
+                        crm: true, 
+                        compA: true, 
+                        compB: false,
+                        tooltip: "Funciona completamente offline com sincronização automática"
+                      },
+                      { 
+                        criteria: "Evolui junto ao SAP sem retrabalho", 
+                        crm: true, 
+                        compA: false, 
+                        compB: false,
+                        tooltip: "Compatibilidade garantida com atualizações do SAP Business One"
+                      },
+                      { 
+                        criteria: "Dashboards SQL/HANA", 
+                        crm: true, 
+                        compA: false, 
+                        compB: true,
+                        tooltip: "Consultas diretas no banco SAP HANA para dados em tempo real"
+                      },
+                      { 
+                        criteria: "Suporte Direto com Especialista", 
+                        crm: true, 
+                        compA: false, 
+                        compB: true,
+                        tooltip: "Equipe certificada SAP com 9+ anos de experiência"
+                      },
+                      { 
+                        criteria: "Banco de Dados Próprio", 
+                        crm: true, 
+                        compA: false, 
+                        compB: false,
+                        tooltip: "Utiliza diretamente o banco do SAP, garantindo consistência"
+                      },
+                      { 
+                        criteria: "Custo-benefício", 
+                        crm: true, 
+                        compA: false, 
+                        compB: false,
+                        tooltip: "Menor TCO do mercado com ROI comprovado em 6 meses"
+                      }
                     ].map((row, index) => (
-                      <tr key={index} className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors duration-300">
-                        <td className="p-4 text-slate-300 font-medium">{row.criteria}</td>
-                        <td className="text-center p-4">
+                      <tr 
+                        key={index} 
+                        className="border-b border-slate-800/50 hover:bg-gradient-to-r hover:from-indigo-900/20 hover:to-purple-900/20 transition-all duration-300 group cursor-pointer"
+                        title={row.tooltip}
+                      >
+                        <td className="p-6 text-slate-300 font-medium group-hover:text-slate-100 transition-colors duration-300">
+                          <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 bg-indigo-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            {row.criteria}
+                          </div>
+                        </td>
+                        <td className="text-center p-6">
                           {row.crm ? (
-                            <CheckCircle className="w-5 h-5 text-green-400 mx-auto animate-pulse" />
+                            <div className="flex items-center justify-center">
+                              <div className="relative">
+                                <CheckCircle className="w-8 h-8 text-green-400 mx-auto animate-pulse group-hover:scale-125 transition-transform duration-300" />
+                                <div className="absolute inset-0 bg-green-400/20 rounded-full animate-ping group-hover:animate-none"></div>
+                              </div>
+                            </div>
                           ) : (
-                            <X className="w-5 h-5 text-red-400 mx-auto" />
+                            <X className="w-8 h-8 text-red-400 mx-auto group-hover:scale-110 transition-transform duration-300" />
                           )}
                         </td>
-                        <td className="text-center p-4">
+                        <td className="text-center p-6">
                           {row.compA ? (
-                            <CheckCircle className="w-5 h-5 text-green-400 mx-auto" />
+                            <CheckCircle className="w-6 h-6 text-green-400 mx-auto group-hover:scale-110 transition-transform duration-300" />
                           ) : (
-                            <X className="w-5 h-5 text-red-400 mx-auto" />
+                            <X className="w-6 h-6 text-red-400 mx-auto opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
                           )}
                         </td>
-                        <td className="text-center p-4">
+                        <td className="text-center p-6">
                           {row.compB ? (
-                            <CheckCircle className="w-5 h-5 text-green-400 mx-auto" />
+                            <CheckCircle className="w-6 h-6 text-green-400 mx-auto group-hover:scale-110 transition-transform duration-300" />
                           ) : (
-                            <X className="w-5 h-5 text-red-400 mx-auto" />
+                            <X className="w-6 h-6 text-red-400 mx-auto opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
                           )}
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
+              </div>
+
+              {/* Summary Cards */}
+              <div className="grid md:grid-cols-3 gap-6 mt-8">
+                <div className="text-center p-6 bg-gradient-to-br from-blue-600/20 to-blue-500/20 rounded-xl border border-blue-500/30">
+                  <Trophy className="w-12 h-12 text-blue-400 mx-auto mb-3 animate-bounce" />
+                  <div className="text-2xl font-bold text-blue-300 mb-1">7/7</div>
+                  <p className="text-slate-400 text-sm">Vantagens CRM One</p>
+                </div>
+                <div className="text-center p-6 bg-gradient-to-br from-orange-600/20 to-orange-500/20 rounded-xl border border-orange-500/30">
+                  <Target className="w-12 h-12 text-orange-400 mx-auto mb-3" />
+                  <div className="text-2xl font-bold text-orange-300 mb-1">2/7</div>
+                  <p className="text-slate-400 text-sm">Concorrente A</p>
+                </div>
+                <div className="text-center p-6 bg-gradient-to-br from-purple-600/20 to-purple-500/20 rounded-xl border border-purple-500/30">
+                  <Star className="w-12 h-12 text-purple-400 mx-auto mb-3" />
+                  <div className="text-2xl font-bold text-purple-300 mb-1">3/7</div>
+                  <p className="text-slate-400 text-sm">Concorrente B</p>
+                </div>
               </div>
             </div>
           </CardContent>
