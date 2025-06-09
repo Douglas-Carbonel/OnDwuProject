@@ -520,8 +520,8 @@ export class DatabaseStorage implements IStorage {
         .where(
           and(
             eq(userLogins.user_id, numericUserId),
-            gte(userLogins.login_date, today.toISOString()),
-            sql`${userLogins.login_date} < ${tomorrow.toISOString()}`
+            gte(userLogins.login_date, today),
+            sql`${userLogins.login_date} < ${tomorrow}`
           )
         )
         .limit(1);
