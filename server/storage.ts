@@ -506,8 +506,13 @@ export class DatabaseStorage implements IStorage {
       console.log("🔄 recordUserLogin - ipAddress:", ipAddress);
       console.log("🔄 recordUserLogin - userAgent:", userAgent?.substring(0, 50) + "...");
       
+      // Criar data atual no fuso horário de Brasília
+      const nowBrasilia = new Date().toLocaleString("en-US", {timeZone: "America/Sao_Paulo"});
+      const currentDate = new Date(nowBrasilia);
+      console.log("📅 Data atual (Brasília):", currentDate.toISOString());
+      
       // Verificar se já existe um login hoje para evitar múltiplos registros no mesmo dia
-      const today = new Date();
+      const today = new Date(currentDate);
       today.setHours(0, 0, 0, 0);
       const tomorrow = new Date(today);
       tomorrow.setDate(tomorrow.getDate() + 1);
@@ -533,7 +538,7 @@ export class DatabaseStorage implements IStorage {
         return existingTodayLogin[0];
       }
 
-      // Registrar novo login
+      // Registrar novo login com data em fuso horário de Brasília
       console.log("🔄 Inserindo novo registro de login...");
       const result = await this.db
         .insert(userLogins)
@@ -541,13 +546,14 @@ export class DatabaseStorage implements IStorage {
           user_id: numericUserId,
           ip_address: ipAddress,
           user_agent: userAgent,
+          login_date: currentDate,
         })
         .returning();
 
       console.log("📅 ✅ Novo login registrado com sucesso!");
       console.log("📅 - ID do registro:", result[0].id);
       console.log("📅 - Usuário:", result[0].user_id);
-      console.log("📅 - Data:", result[0].login_date);
+      console.log("📅 - Data (Brasília):", result[0].login_date);
       return result[0];
     } catch (error) {
       console.error("❌ ERRO CRÍTICO ao registrar login:");

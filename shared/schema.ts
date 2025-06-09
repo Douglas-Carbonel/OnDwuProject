@@ -79,7 +79,7 @@ export const userAchievements = pgTable("user_achievements", {
 export const userLogins = pgTable("user_logins", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   user_id: text("user_id").notNull(),
-  login_date: timestamp("login_date").defaultNow(),
+  login_date: timestamp("login_date").defaultNow().notNull(),
   ip_address: text("ip_address"),
   user_agent: text("user_agent"),
   created_at: timestamp("created_at").defaultNow(),
