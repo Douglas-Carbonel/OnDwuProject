@@ -581,7 +581,6 @@ export class DatabaseStorage implements IStorage {
       return result;
     } catch (error) {
       console.error("❌ Erro ao buscar logins do usuário:", error);
-      return []; ao buscar logins do usuário:", error);
       console.error("❌ Error details:", error.message);
       return [];
     }
