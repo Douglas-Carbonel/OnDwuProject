@@ -525,7 +525,7 @@ export class DatabaseStorage implements IStorage {
         .where(
           and(
             eq(userLogins.user_id, numericUserId),
-            sql`${userLogins.login_date} >= ${today.toISOString()}`,
+            gte(userLogins.login_date, today),
             sql`${userLogins.login_date} < ${tomorrow.toISOString()}`
           )
         )
@@ -533,10 +533,11 @@ export class DatabaseStorage implements IStorage {
 
       console.log("🔄 Logins encontrados para hoje:", existingTodayLogin.length);
 
+      // SEMPRE REGISTRAR NOVO LOGIN PARA TESTE
       if (existingTodayLogin.length > 0) {
         console.log("📅 ⚠️ Login já registrado hoje para usuário:", numericUserId, "às", existingTodayLogin[0].login_date);
-        console.log("📅 ℹ️ Retornando registro existente, sem criar duplicata");
-        return existingTodayLogin[0];
+        console.log("📅 🧪 TESTE: Registrando novo login mesmo com existência prévia");
+        // Não retornar aqui para permitir novo registro
       }
 
       // Registrar novo login com data em fuso horário de Brasília

@@ -1145,6 +1145,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Endpoint para forçar registro de login (mesmo se já existir hoje)
+  app.post("/api/debug/force-login-record", async (req, res) => {
+    try {
+      const { userId } = req.body;
+      
+      if (!userId) {
+        return res.status(400).json({ error: "userId é obrigatório" });
+      }
+
+      console.log("🧪 FORÇANDO registro de login para userId:", userId);
+
+      // Forçar inserção direta no banco
+      const numericUserId = userId.toString().replace('user-', '');
+      const currentDate = new Date();
+      
+      const result = await storage.db
+        .insert(userLogins)
+        .values({
+          user_id: numericUserId,
+          ip_address: req.ip || req.connection.remoteAddress || "127.0.0.1",
+          user_agent: req.get('User-Agent') || "Force-Test-Agent",
+          login_date: currentDate,
+        })
+        .returning();
+
+      console.log("🧪 Login forçado inserido:", result[0]);
+
+      // Get all logins for this user
+      const allLogins = await storage.getUserLogins(userId);
+
+      res.json({
+        success: true,
+        message: "Login forçado inserido com sucesso",
+        newRecord: result[0],
+        allUserLogins: allLogins,
+        totalLogins: allLogins.length
+      });
+
+    } catch (error) {
+      console.error("❌ Erro no login forçado:", error);
+      res.status(500).json({
+        success: false,
+        error: error.message,
+        stack: error.stack
+      });
+    }
+  });
+
   // Endpoint para verificar se a tabela user_logins existe e tem dados
   app.get("/api/debug/check-login-table", async (req, res) => {
     try {
