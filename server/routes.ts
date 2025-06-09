@@ -36,13 +36,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log("🔄 Tentando registrar login para usuário:", user.id);
         console.log("🔄 IP:", req.ip || req.connection.remoteAddress);
         console.log("🔄 User-Agent:", req.get('User-Agent'));
-        
+
         const loginRecord = await storage.recordUserLogin(
           user.id.toString(), 
           req.ip || req.connection.remoteAddress || req.socket.remoteAddress,
           req.get('User-Agent')
         );
-        
+
         if (loginRecord) {
           console.log("📅 ✅ Login registrado com sucesso para usuário:", user.id, "- Record ID:", loginRecord.id);
         } else {
@@ -1048,7 +1048,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // First, let's get the user logins for debugging
       const userLogins = await storage.getUserLogins(userId);
       console.log("📅 Logins encontrados para usuário:", userId, "Total:", userLogins.length);
-      
+
       userLogins.forEach((login, index) => {
         console.log(`📅 Login ${index + 1}:`, {
           id: login.id,
@@ -1105,7 +1105,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/debug/all-logins", async (req, res) => {
     try {
       console.log("🧪 Buscando todos os logins no banco de dados");
-      
+
       const db = getDatabase();
       const allLogins = await db.select().from(userLogins).orderBy(desc(userLogins.login_date));
 
@@ -1128,7 +1128,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/debug/test-login-recording", async (req, res) => {
     try {
       const { userId } = req.body;
-      
+
       if (!userId) {
         return res.status(400).json({ error: "userId é obrigatório" });
       }
@@ -1163,7 +1163,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  
+
 
   // Endpoint para verificar se a tabela user_logins existe e tem dados
   app.get("/api/debug/check-login-table", async (req, res) => {
@@ -1296,6 +1296,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Debug endpoint for consecutive days
+  app.get("/api/debug/consecutive-days/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      console.log("🔍 DEBUG: Testando cálculo de dias consecutivos para:", userId);
+
+      // Buscar logins do usuário
+      const userLogins = await storage.getUserLogins(userId);
+      console.log("🔍 DEBUG: Total de logins encontrados:", userLogins.length);
+
+      // Mostrar todos os logins
+      const loginsFormatted = userLogins.map(login => ({
+        id: login.id,
+        date: login.login_date,
+        dateString: new Date(login.login_date).toDateString(),
+        dayOfWeek: new Date(login.login_date).toLocaleDateString('pt-BR', { weekday: 'long' })
+      }));
+
+      console.log("🔍 DEBUG: Logins formatados:", loginsFormatted);
+
+      // Calcular dias consecutivos
+      const consecutiveDays = await storage.calculateConsecutiveDays(userId);
+      console.log("🔍 DEBUG: Resultado do cálculo:", consecutiveDays);
+
+      res.json({
+        success: true,
+        userId: userId,
+        numericUserId: userId.replace('user-', ''),
+        totalLogins: userLogins.length,
+        allLogins: loginsFormatted,
+        consecutiveDaysCalculated: consecutiveDays,
+        today: new Date().toDateString(),
+        message: "Debug completo do cálculo de dias consecutivos"
+      });
+
+    } catch (error) {
+      console.error("❌ DEBUG: Erro:", error);
+      res.status(500).json({
+        success: false,
+        error: error.message,
+        stack: error.stack
+      });
+    }
+  });
+
+  // Debug
   const httpServer = createServer(app);
   return httpServer;
 }

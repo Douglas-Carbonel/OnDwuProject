@@ -46,6 +46,9 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
           const evaluationsData = await evaluationsResponse.json();
           console.log("🏆 Dados de avaliações recebidos:", evaluationsData);
           setUserEvaluations(evaluationsData.evaluations || []);
+        } else {
+          console.log("❌ Erro ao buscar avaliações, usando array vazio");
+          setUserEvaluations([]);
         }
 
         // Buscar dias consecutivos
@@ -53,7 +56,9 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
         if (consecutiveResponse.ok) {
           const consecutiveData = await consecutiveResponse.json();
           console.log("📅 Dias consecutivos recebidos:", consecutiveData);
-          setConsecutiveDays(consecutiveData.consecutiveDays || 0);
+          const days = consecutiveData.consecutiveDays || 0;
+          setConsecutiveDays(days);
+          console.log("📅 Dias consecutivos definidos no state:", days);
         } else {
           console.log("❌ Erro ao buscar dias consecutivos, usando 0");
           setConsecutiveDays(0);
@@ -71,6 +76,8 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
         }
       } catch (error) {
         console.error("❌ Erro ao buscar dados:", error);
+        setConsecutiveDays(0);
+        setUserEvaluations([]);
       } finally {
         setLoading(false);
       }
@@ -87,7 +94,8 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
       completedModules: userProgress.completedModules,
       currentModule: userProgress.currentModule,
       evaluations: userEvaluations,
-      consecutiveDays: consecutiveDays
+      consecutiveDays: consecutiveDays,
+      loadingState: loading
     });
 
     // Verificar se tem pelo menos uma tentativa (progresso inicial)
