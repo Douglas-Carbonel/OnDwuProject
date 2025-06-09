@@ -11,7 +11,7 @@ import {
   CheckCircle, Clock, Headset, Download, Trophy, Users,
   FileText, TriangleAlert, Search, Gamepad, Info, ArrowUp, ArrowRight, UserCircle, Presentation,
   Target, Lightbulb, Zap, Shield, Eye, Rocket, Brain, Handshake, TrendingUp, Settings,
-  Server, Code, Network, ArrowDown, Monitor, TrendingUp
+  Server, Code, Network, ArrowDown, Monitor
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import SlidePresentation from "./SlidePresentation";
