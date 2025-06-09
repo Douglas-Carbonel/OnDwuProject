@@ -1367,7 +1367,8 @@ DIFERENCIAIS COMPETITIVOS:
 
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="bg-slate-900 p-6 rounded-lg border border-slate-600">
-                  <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4<Database className="text-white" size={24} />
+                  <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
+                    <Database className="text-white" size={24} />
                   </div>
                   <h5 className="font-semibold mb-2">CRM One</h5>
                   <p className="text-slate-400 text-sm">Sistema principal de gestão de relacionamento com clientes</p>
