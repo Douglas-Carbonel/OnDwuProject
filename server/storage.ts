@@ -432,7 +432,7 @@ export class DatabaseStorage implements IStorage {
 
       if (logins.length === 0) {
         console.log("📅 Nenhum login registrado, usando dados de avaliações como fallback");
-        
+
         // Fallback para avaliações se não houver logins registrados
         const evaluations = await this.db
           .select()
@@ -477,7 +477,7 @@ export class DatabaseStorage implements IStorage {
     for (let i = 1; i < uniqueDates.length; i++) {
       const currentDate = new Date(uniqueDates[i]);
       const previousDate = new Date(uniqueDates[i - 1]);
-      
+
       // Calcular diferença em dias
       const daysDifference = Math.floor(
         (currentDate.getTime() - previousDate.getTime()) / (1000 * 60 * 60 * 24)
@@ -504,7 +504,7 @@ export class DatabaseStorage implements IStorage {
       console.log("🔄 recordUserLogin - numericUserId:", numericUserId);
       console.log("🔄 recordUserLogin - ipAddress:", ipAddress);
       console.log("🔄 recordUserLogin - userAgent:", userAgent?.substring(0, 50) + "...");
-      
+
       // Verificar se já existe um login hoje para evitar múltiplos registros no mesmo dia
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -532,14 +532,13 @@ export class DatabaseStorage implements IStorage {
         return existingTodayLogin[0];
       }
 
-      // Registrar novo login
-      console.log("🔄 Inserindo novo registro de login...");
+      // Registrar novo login - usar NOW() do PostgreSQL para evitar problemas com Date objects
       const result = await this.db
         .insert(userLogins)
         .values({
           user_id: numericUserId,
-          ip_address: ipAddress,
-          user_agent: userAgent,
+          ip_address: ipAddress || null,
+          user_agent: userAgent || null,
         })
         .returning();
 
@@ -561,7 +560,7 @@ export class DatabaseStorage implements IStorage {
     try {
       const numericUserId = userId.replace('user-', '');
       console.log("🔍 getUserLogins - userId:", userId, "numericUserId:", numericUserId);
-      
+
       const result = await this.db
         .select()
         .from(userLogins)
@@ -569,7 +568,7 @@ export class DatabaseStorage implements IStorage {
         .orderBy(desc(userLogins.login_date));
 
       console.log("🔍 getUserLogins - encontrados", result.length, "registros");
-      
+
       if (result.length > 0) {
         console.log("🔍 getUserLogins - últimos 3 registros:");
         result.slice(0, 3).forEach((login, index) => {
@@ -821,7 +820,7 @@ export class DatabaseStorage implements IStorage {
         const nextAttemptTime = new Date(lastAttempt.completed_at.getTime() + 24 * 60 * 60 * 1000);
         const remainingTime = nextAttemptTime.getTime() - Date.now();
 
-        console.log("❌ Limite excedido - próxima tentativa em:", Math.max(0, remainingTime), "ms");
+        console.log("❌ Limite excedido - próxima tentativa em:",Math.max(0, remainingTime), "ms");
         console.log("🕒 Última tentativa:", lastAttempt.completed_at);
         console.log("🕒 Próxima tentativa disponível em:", nextAttemptTime);
 
