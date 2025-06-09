@@ -1,4 +1,4 @@
-import { users, onboardingProgress, moduleEvaluations, avaliacao_user, dailyAttempts, certificates, userAchievements, userLogins, type User, type InsertUser, type Certificate, type UserAchievement, type UserLogin, type InsertUserLogin } from "@shared/schema";
+import { users, onboardingProgress, moduleEvaluations, avaliacao_user, dailyAttempts, certificates, userAchievements, userLogins, type User, type InsertUser, type Certificate, type UserAchievement, type UserLogin } from "@shared/schema";
 import { getDatabase } from "./database";
 import type { OnboardingProgress, InsertOnboardingProgress } from "@/hooks/useProgress";
 import { eq, and, desc, sql, gte } from "drizzle-orm";
@@ -33,9 +33,6 @@ export interface IStorage {
   calculateConsecutiveDays(userId: string): Promise<number>;
   recordUserLogin(userId: string, ipAddress?: string, userAgent?: string): Promise<UserLogin | null>;
   getUserLogins(userId: string): Promise<UserLogin[]>;
-  checkAndUnlockAchievements(userId: string): Promise<string[]>;
-  getUserAchievements(userId: string): Promise<UserAchievement[]>;
-  unlockAchievement(userId: string, achievementId: string): Promise<UserAchievement | null>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -435,7 +432,7 @@ export class DatabaseStorage implements IStorage {
 
       if (logins.length === 0) {
         console.log("📅 Nenhum login registrado, usando dados de avaliações como fallback");
-
+        
         // Fallback para avaliações se não houver logins registrados
         const evaluations = await this.db
           .select()
@@ -480,7 +477,7 @@ export class DatabaseStorage implements IStorage {
     for (let i = 1; i < uniqueDates.length; i++) {
       const currentDate = new Date(uniqueDates[i]);
       const previousDate = new Date(uniqueDates[i - 1]);
-
+      
       // Calcular diferença em dias
       const daysDifference = Math.floor(
         (currentDate.getTime() - previousDate.getTime()) / (1000 * 60 * 60 * 24)
@@ -507,48 +504,50 @@ export class DatabaseStorage implements IStorage {
       console.log("🔄 recordUserLogin - numericUserId:", numericUserId);
       console.log("🔄 recordUserLogin - ipAddress:", ipAddress);
       console.log("🔄 recordUserLogin - userAgent:", userAgent?.substring(0, 50) + "...");
+      
+      // Verificar se já existe um login hoje para evitar múltiplos registros no mesmo dia
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
 
-      // Use direct postgres client to avoid Drizzle date handling issues
-      const postgres = require('postgres');
-      const connectionString = "postgresql://postgres.brjwbznxsfbtoktpdssw:oBfiPmNzLW81Hz1b@aws-0-sa-east-1.pooler.supabase.com:6543/postgres";
-      const directSql = postgres(connectionString, { ssl: 'require' });
+      console.log("🔄 Verificando login existente para hoje entre:", today.toISOString(), "e", tomorrow.toISOString());
 
-      console.log("🔄 Verificando login existente para hoje...");
+      const existingTodayLogin = await this.db
+        .select()
+        .from(userLogins)
+        .where(
+          and(
+            eq(userLogins.user_id, numericUserId),
+            gte(userLogins.login_date, today),
+            sql`${userLogins.login_date} < ${tomorrow}`
+          )
+        )
+        .limit(1);
 
-      // Check for existing login today
-      const existingLogins = await directSql`
-        SELECT * FROM user_logins 
-        WHERE user_id = ${numericUserId} 
-        AND DATE(login_date) = CURRENT_DATE 
-        LIMIT 1
-      `;
+      console.log("🔄 Logins encontrados para hoje:", existingTodayLogin.length);
 
-      console.log("🔄 Logins encontrados para hoje:", existingLogins.length);
-
-      if (existingLogins.length > 0) {
-        console.log("📅 ⚠️ Login já registrado hoje para usuário:", numericUserId);
-        await directSql.end();
-        return existingLogins[0] as UserLogin;
+      if (existingTodayLogin.length > 0) {
+        console.log("📅 ⚠️ Login já registrado hoje para usuário:", numericUserId, "às", existingTodayLogin[0].login_date);
+        return existingTodayLogin[0];
       }
 
-      // Insert new login
-      const insertResult = await directSql`
-        INSERT INTO user_logins (user_id, ip_address, user_agent, login_date) 
-        VALUES (${numericUserId}, ${ipAddress || null}, ${userAgent || null}, NOW()) 
-        RETURNING *
-      `;
+      // Registrar novo login
+      console.log("🔄 Inserindo novo registro de login...");
+      const result = await this.db
+        .insert(userLogins)
+        .values({
+          user_id: numericUserId,
+          ip_address: ipAddress,
+          user_agent: userAgent,
+        })
+        .returning();
 
-      await directSql.end();
-
-      if (insertResult.length > 0) {
-        console.log("📅 ✅ Novo login registrado com sucesso!");
-        console.log("📅 - ID do registro:", insertResult[0].id);
-        console.log("📅 - Usuário:", insertResult[0].user_id);
-        console.log("📅 - Data:", insertResult[0].login_date);
-        return insertResult[0] as UserLogin;
-      }
-
-      return null;
+      console.log("📅 ✅ Novo login registrado com sucesso!");
+      console.log("📅 - ID do registro:", result[0].id);
+      console.log("📅 - Usuário:", result[0].user_id);
+      console.log("📅 - Data:", result[0].login_date);
+      return result[0];
     } catch (error) {
       console.error("❌ ERRO CRÍTICO ao registrar login:");
       console.error("❌ Error object:", error);
@@ -562,7 +561,7 @@ export class DatabaseStorage implements IStorage {
     try {
       const numericUserId = userId.replace('user-', '');
       console.log("🔍 getUserLogins - userId:", userId, "numericUserId:", numericUserId);
-
+      
       const result = await this.db
         .select()
         .from(userLogins)
@@ -570,7 +569,7 @@ export class DatabaseStorage implements IStorage {
         .orderBy(desc(userLogins.login_date));
 
       console.log("🔍 getUserLogins - encontrados", result.length, "registros");
-
+      
       if (result.length > 0) {
         console.log("🔍 getUserLogins - últimos 3 registros:");
         result.slice(0, 3).forEach((login, index) => {
@@ -822,7 +821,7 @@ export class DatabaseStorage implements IStorage {
         const nextAttemptTime = new Date(lastAttempt.completed_at.getTime() + 24 * 60 * 60 * 1000);
         const remainingTime = nextAttemptTime.getTime() - Date.now();
 
-        console.log("❌ Limite excedido - próxima tentativa em:",Math.max(0, remainingTime), "ms");
+        console.log("❌ Limite excedido - próxima tentativa em:", Math.max(0, remainingTime), "ms");
         console.log("🕒 Última tentativa:", lastAttempt.completed_at);
         console.log("🕒 Próxima tentativa disponível em:", nextAttemptTime);
 
@@ -1100,124 +1099,6 @@ export class DatabaseStorage implements IStorage {
       return undefined;
     }
   }
-
-  async recordUserLogin(userId: string, ipAddress?: string, userAgent?: string): Promise<UserLogin | null> {
-    try {
-      // Check if user already logged in today (same day)
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const tomorrow = new Date(today);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-
-      const existingLogin = await this.db
-        .select()
-        .from(userLogins)
-        .where(
-          and(
-            eq(userLogins.user_id, userId),
-            gte(userLogins.login_date, today),
-            sql`${userLogins.login_date} < ${tomorrow}`
-          )
-        )
-        .limit(1);
-
-      if (existingLogin.length > 0) {
-        console.log("📅 ⚠️ Login não foi registrado (possivelmente já existe hoje)");
-        return existingLogin[0];
-      }
-
-      // Record new login
-      const loginData: InsertUserLogin = {
-        user_id: userId,
-        ip_address: ipAddress,
-        user_agent: userAgent
-      };
-
-      const result = await this.db
-        .insert(userLogins)
-        .values(loginData)
-        .returning();
-
-      console.log("📅 ✅ Login registrado com sucesso para usuário:", userId);
-      return result[0];
-    } catch (error) {
-      console.error("❌ Erro ao registrar login:", error);
-      return null;
-    }
-  }
-
-  async getUserLogins(userId: string): Promise<UserLogin[]> {
-    try {
-      const result = await this.db
-        .select()
-        .from(userLogins)
-        .where(eq(userLogins.user_id, userId))
-        .orderBy(desc(userLogins.login_date));
-
-      return result;
-    } catch (error) {
-      console.error("❌ Erro ao buscar logins do usuário:", error);
-      return [];
-    }
-  }
-
-  async calculateConsecutiveDays(userId: string): Promise<number> {
-    try {
-      const logins = await this.getUserLogins(userId);
-      
-      if (logins.length === 0) {
-        return 0;
-      }
-
-      // Get unique days from logins
-      const uniqueDays = new Set(
-        logins.map(login => new Date(login.login_date).toDateString())
-      );
-
-      const sortedDays = Array.from(uniqueDays)
-        .map(dateStr => new Date(dateStr))
-        .sort((a, b) => b.getTime() - a.getTime()); // Most recent first
-
-      if (sortedDays.length === 0) return 0;
-
-      let consecutiveDays = 1;
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      // Check if the most recent login was today or yesterday
-      const mostRecentDay = new Date(sortedDays[0]);
-      mostRecentDay.setHours(0, 0, 0, 0);
-      
-      const daysDiff = Math.floor((today.getTime() - mostRecentDay.getTime()) / (1000 * 60 * 60 * 24));
-      
-      if (daysDiff > 1) {
-        // More than 1 day gap, streak is broken
-        return 1;
-      }
-
-      // Count consecutive days backwards
-      for (let i = 1; i < sortedDays.length; i++) {
-        const currentDay = new Date(sortedDays[i]);
-        currentDay.setHours(0, 0, 0, 0);
-        
-        const previousDay = new Date(sortedDays[i - 1]);
-        previousDay.setHours(0, 0, 0, 0);
-        
-        const diff = Math.floor((previousDay.getTime() - currentDay.getTime()) / (1000 * 60 * 60 * 24));
-        
-        if (diff === 1) {
-          consecutiveDays++;
-        } else {
-          break;
-        }
-      }
-
-      return consecutiveDays;
-    } catch (error) {
-      console.error("❌ Erro ao calcular dias consecutivos:", error);
-      return 0;
-    }
-  }
 }
 
 export class MemStorage implements IStorage {
@@ -1422,21 +1303,6 @@ export class MemStorage implements IStorage {
   async getUserLogins(userId: string): Promise<UserLogin[]> {
     // Simplified implementation for memory storage
     return [];
-  }
-
-  async checkAndUnlockAchievements(userId: string): Promise<string[]> {
-    // Simplified implementation for memory storage
-    return [];
-  }
-
-  async getUserAchievements(userId: string): Promise<UserAchievement[]> {
-    // Simplified implementation for memory storage
-    return [];
-  }
-
-  async unlockAchievement(userId: string, achievementId: string): Promise<UserAchievement | null> {
-    // Simplified implementation for memory storage
-    return null;
   }
 }
 
