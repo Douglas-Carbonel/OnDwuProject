@@ -508,13 +508,8 @@ export class DatabaseStorage implements IStorage {
       console.log("🔄 recordUserLogin - ipAddress:", ipAddress);
       console.log("🔄 recordUserLogin - userAgent:", userAgent?.substring(0, 50) + "...");
 
-      // Verificar se já existe um login hoje para evitar múltiplos registros no mesmo dia
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const tomorrow = new Date(today);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-
-      console.log("🔄 Verificando login existente para hoje entre:", today.toISOString(), "e", tomorrow.toISOString());
+      // Verificar se já existe um login hoje usando SQL DATE functions
+      console.log("🔄 Verificando login existente para hoje...");
 
       const existingTodayLogin = await this.db
         .select()
@@ -522,8 +517,7 @@ export class DatabaseStorage implements IStorage {
         .where(
           and(
             eq(userLogins.user_id, numericUserId),
-            gte(userLogins.login_date, today),
-            sql`${userLogins.login_date} < ${tomorrow}`
+            sql`DATE(login_date) = CURRENT_DATE`
           )
         )
         .limit(1);
@@ -535,7 +529,7 @@ export class DatabaseStorage implements IStorage {
         return existingTodayLogin[0];
       }
 
-      // Registrar novo login - usar NOW() do PostgreSQL para evitar problemas com Date objects
+      // Registrar novo login - let defaultNow() handle the timestamp
       const result = await this.db
         .insert(userLogins)
         .values({
