@@ -1045,11 +1045,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { userId } = req.params;
       console.log("📅 Calculando dias consecutivos para usuário:", userId);
 
+      // First, let's get the user logins for debugging
+      const userLogins = await storage.getUserLogins(userId);
+      console.log("📅 Logins encontrados para usuário:", userId, "Total:", userLogins.length);
+      
+      userLogins.forEach((login, index) => {
+        console.log(`📅 Login ${index + 1}:`, {
+          id: login.id,
+          date: login.login_date,
+          dateString: new Date(login.login_date).toDateString()
+        });
+      });
+
       const consecutiveDays = await storage.calculateConsecutiveDays(userId);
+      console.log("📅 Dias consecutivos calculados:", consecutiveDays);
 
       res.json({
         success: true,
-        consecutiveDays: consecutiveDays
+        consecutiveDays: consecutiveDays,
+        totalLogins: userLogins.length,
+        loginDates: userLogins.map(login => ({
+          date: login.login_date,
+          dateString: new Date(login.login_date).toDateString()
+        }))
       });
     } catch (error) {
       console.error("❌ Error calculating consecutive days:", error);

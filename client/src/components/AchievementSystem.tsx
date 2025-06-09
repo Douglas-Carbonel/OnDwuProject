@@ -54,6 +54,9 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
           const consecutiveData = await consecutiveResponse.json();
           console.log("📅 Dias consecutivos recebidos:", consecutiveData);
           setConsecutiveDays(consecutiveData.consecutiveDays || 0);
+        } else {
+          console.log("❌ Erro ao buscar dias consecutivos, usando 0");
+          setConsecutiveDays(0);
         }
 
         // Buscar conquistas (isso também verifica e desbloqueia novas)
@@ -135,7 +138,7 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
         description: "Acesse o sistema por 5 dias consecutivos",
         icon: "clock",
         unlocked: consecutiveDays >= 5,
-        progress: Math.min(consecutiveDays, 5),
+        progress: consecutiveDays,
         maxProgress: 5,
         category: "engagement",
         points: 200
