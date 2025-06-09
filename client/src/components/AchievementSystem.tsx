@@ -90,6 +90,9 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
       consecutiveDays: consecutiveDays
     });
 
+    // Verificar se tem pelo menos uma tentativa (progresso inicial)
+    const hasAnyAttempt = userEvaluations.length > 0;
+    
     // Verificar pontuação perfeita (100%)
     const perfectScores = userEvaluations.filter(evaluation => evaluation.score === 100);
     const hasPerfectScore = perfectScores.length > 0;
@@ -98,14 +101,17 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
     const fastCompletions = userEvaluations.filter(evaluation => evaluation.time_spent && evaluation.time_spent < 7200);
     const hasSpeedLearning = fastCompletions.length > 0;
 
+    // Verificar se tem pelo menos 2 dias de acesso (mais realista)
+    const hasDedicatedProgress = consecutiveDays >= 2;
+
     const calculatedAchievements: Achievement[] = [
       {
         id: "first_module",
         title: "Primeiro Passo",
         description: "Complete seu primeiro módulo",
         icon: "star",
-        unlocked: (userProgress?.completedModules?.length || 0) >= 1,
-        progress: userProgress?.completedModules?.length || 0,
+        unlocked: (userProgress?.completedModules?.length || 0) >= 1 || hasAnyAttempt,
+        progress: Math.max(userProgress?.completedModules?.length || 0, hasAnyAttempt ? 1 : 0),
         maxProgress: 1,
         category: "learning",
         points: 50
@@ -138,7 +144,7 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
         description: "Acesse o sistema por 5 dias consecutivos",
         icon: "clock",
         unlocked: consecutiveDays >= 5,
-        progress: consecutiveDays,
+        progress: Math.min(consecutiveDays, 5),
         maxProgress: 5,
         category: "engagement",
         points: 200
@@ -161,7 +167,7 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
         icon: "award",
         unlocked: userEvaluations.length > 0 && userEvaluations.every(evaluation => evaluation.score >= 90),
         progress: userEvaluations.filter(evaluation => evaluation.score >= 90).length,
-        maxProgress: userEvaluations.length || 1,
+        maxProgress: Math.max(userEvaluations.length, 1),
         category: "performance",
         points: 300
       }

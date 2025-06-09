@@ -452,7 +452,9 @@ export class DatabaseStorage implements IStorage {
         )].sort();
 
         console.log("📅 Datas únicas de avaliações (fallback):", uniqueDates);
-        return this.calculateConsecutiveFromDates(uniqueDates);
+        
+        // Se tem pelo menos uma avaliação, considera como 1 dia de atividade mínimo
+        return Math.max(1, this.calculateConsecutiveFromDates(uniqueDates));
       }
 
       // Extrair datas únicas de login (apenas dia, sem horário)
@@ -465,7 +467,8 @@ export class DatabaseStorage implements IStorage {
       const consecutiveDays = this.calculateConsecutiveFromDates(uniqueDates);
       console.log("📅 Resultado final de dias consecutivos:", consecutiveDays);
 
-      return consecutiveDays;
+      // Se tem pelo menos um login, considera como 1 dia mínimo
+      return Math.max(logins.length > 0 ? 1 : 0, consecutiveDays);
     } catch (error) {
       console.error("❌ Erro ao calcular dias consecutivos:", error);
       return 0;
