@@ -297,20 +297,20 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
             }`}
           >
             <div className="flex items-start space-x-3">
-              <div className={`p-2 rounded-full ${
+              <div className={`p-2 rounded-full flex-shrink-0 ${
                 achievement.unlocked ? 'bg-yellow-500/20' : 'bg-slate-800'
               }`}>
                 {getIcon(achievement.icon)}
               </div>
               
-              <div className="flex-1">
-                <div className="flex items-start justify-between mb-2 gap-2">
-                  <h4 className={`font-medium flex-1 min-w-0 ${
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between mb-2 gap-3">
+                  <h4 className={`font-medium flex-1 min-w-0 text-sm truncate ${
                     achievement.unlocked ? 'text-white' : 'text-slate-400'
                   }`}>
                     {achievement.title}
                   </h4>
-                  <div className="flex items-center space-x-2 flex-shrink-0">
+                  <div className="flex flex-col items-end space-y-1 flex-shrink-0">
                     <Badge className={`${getCategoryColor(achievement.category)} text-xs whitespace-nowrap`}>
                       {achievement.category}
                     </Badge>
