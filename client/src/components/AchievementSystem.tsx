@@ -121,8 +121,8 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
       loadingState: loading
     });
 
-    // Verificar se tem pelo menos uma tentativa (progresso inicial)
-    const hasAnyAttempt = userEvaluations.length > 0;
+    // Verificar se completou algum módulo (currentModule > 1 significa que passou do módulo 1)
+    const hasCompletedFirstModule = (userProgress?.currentModule || 1) > 1 || (userProgress?.completedModules?.length || 0) >= 1;
     
     // Verificar pontuação perfeita (100%)
     const perfectScores = userEvaluations.filter(evaluation => evaluation.score === 100);
@@ -135,9 +135,10 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
     // Debug dos dados que estão sendo usados
     console.log("🏆 Debug dos dados para conquistas:", {
       userProgressCompletedModules: userProgress?.completedModules,
+      userProgressCurrentModule: userProgress?.currentModule,
       userEvaluationsLength: userEvaluations.length,
       consecutiveDaysValue: consecutiveDays,
-      hasAnyAttempt,
+      hasCompletedFirstModule,
       perfectScoresLength: perfectScores.length,
       fastCompletionsLength: fastCompletions.length
     });
@@ -148,8 +149,8 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
         title: "Primeiro Passo",
         description: "Complete seu primeiro módulo",
         icon: "star",
-        unlocked: (userProgress?.completedModules?.length || 0) >= 1 || hasAnyAttempt,
-        progress: Math.max(userProgress?.completedModules?.length || 0, hasAnyAttempt ? 1 : 0),
+        unlocked: hasCompletedFirstModule,
+        progress: hasCompletedFirstModule ? 1 : 0,
         maxProgress: 1,
         category: "learning",
         points: 50
