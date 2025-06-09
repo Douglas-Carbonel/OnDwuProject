@@ -41,38 +41,36 @@ const moduleQuestions: Record<number, Question[]> = {
   1: [
     {
       id: 1,
-      question: "Qual é a missão principal da DWU IT Solutions?",
+      question: "Qual é a área de atuação principal da empresa DWU?",
       options: [
-        "Vender softwares de terceiros",
-        "Transformar a gestão empresarial através de tecnologia de ponta",
-        "Ser a maior empresa de TI do Brasil",
-        "Focar apenas em desenvolvimento de sistemas",
+        "Agronegócio",
+        "Soluções financeiras",
+        "Desenvolvimento de soluções integradas com SAP Business One",
+        " Vendas diretas e televendas",
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
     },
     {
       id: 2,
-      question:
-        "Qual dos seguintes é um dos valores fundamentais da cultura DWU?",
+      question: "A quem se destina principalmente o sistema CRM One?",
       options: [
-        "Competição interna",
-        "Paixão pelo que fazemos",
-        "Individualismo",
-        "Lucro acima de tudo",
+        "Clientes finais que compram SAP",
+        "Equipes comerciais e de atendimento ao cliente",
+        "Somente programadores SAP",
+        "Departamentos financeiros e fiscais",
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
     },
     {
       id: 3,
-      question:
-        "A DWU IT Solutions possui quantos anos de experiência no mercado?",
+      question: "O que caracteriza a cultura da DWU segundo a apresentação?",
       options: [
-        "Menos de 10 anos",
-        "Mais de 15 anos",
-        "Exatamente 10 anos",
-        "Mais de 25 anos",
+        "Foco total em entregas técnicas, sem atenção ao cliente",
+        "Processos inflexíveis para todos os setores",
+        " Proximidade com o cliente, soluções sob medida e inovação constante",
+        "Isolamento entre times e comunicação restrita",
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
     },
     {
       id: 4,
@@ -87,20 +85,20 @@ const moduleQuestions: Record<number, Question[]> = {
     },
     {
       id: 5,
-      question: "Em qual contexto a DWU atua geograficamente?",
-      options: [
-        "Apenas Brasil",
-        "América do Sul",
-        "Mais de 15 países",
-        "Apenas região Sudeste",
-      ],
+      question: "Há quanto tempo a DWU está no mercado?",
+      options: ["Desde 2020", "Desde 2015", "Há mais de 10 anos", "Desde 2009"],
       correctAnswer: 2,
     },
     {
       id: 6,
       question:
-        "Qual é o SLA (Service Level Agreement) de uptime garantido pela DWU?",
-      options: ["95%", "98%", "99.9%", "100%"],
+        "O que significa o axioma “Alta performance é obrigação, não exceção”?",
+      options: [
+        "Que apenas líderes precisam entregar bons resultados",
+        " Que a empresa tolera variações de desempenho",
+        "Que o desempenho otimizado deve ser padrão e diferencial no mercado",
+        "Que performance é um bônus, não uma exigência",
+      ],
       correctAnswer: 2,
     },
     {
@@ -116,105 +114,155 @@ const moduleQuestions: Record<number, Question[]> = {
     },
     {
       id: 8,
-      question: "Aproximadamente quantos clientes ativos a DWU possui?",
-      options: ["Menos de 300", "Cerca de 500", "Mais de 800", "Mais de 1000"],
-      correctAnswer: 1,
+      question:
+        "De acordo com o axioma “Usuário no centro, sempre”, quais são os pilares da experiência DWU",
+      options: [
+        "Escalabilidade e lucro",
+        "Segurança e controle",
+        "Empatia, simplicidade e eficiência",
+        "Design, marketing e autonomia",
+      ],
+      correctAnswer: 2,
     },
     {
       id: 9,
-      question: "Qual setor empresarial NÃO é mencionado como cliente da DWU?",
-      options: ["Manufatura", "Varejo", "Saúde", "Educação"],
-      correctAnswer: 3,
+      question:
+        " O que se entende por “Conhecimento é a base do nosso impacto”?",
+      options: [
+        "A experiência do cliente vem antes do domínio do produto",
+        "Só especialistas devem buscar conhecimento",
+        "Dominar os produtos DWU torna os colaboradores referência no mercado",
+        "Conhecimento deve ser centralizado na liderança",
+      ],
+      correctAnswer: 2,
     },
     {
       id: 10,
-      question: "Com qual ERP o CRM One possui integração nativa?",
+      question:
+        "Segundo o axioma “Aprender é a única constante”, o que é esperado dos colaboradores?",
       options: [
-        "Oracle ERP",
-        "SAP Business One",
-        "Totvs Protheus",
-        "Microsoft Dynamics",
+        "Que dominem tudo ao entrar na empresa",
+        "Que priorizem tarefas repetitivas",
+        "Que mantenham um compromisso contínuo com o aprendizado",
+        "Que aprendam somente em treinamentos formais",
+      ],
+      correctAnswer: 2,
+    },
+    {
+      id: 11,
+      question:
+        "Quando a empresa afirma que “usuário no centro, sempre”, isso significa:",
+      options: [
+        "Entregar funcionalidades complexas acima da simplicidade",
+        "Priorizar a experiência do usuário com empatia e eficiência",
+        "Fazer o necessário apenas para cumprir entregas",
+        "Esperar que o usuário se adapte ao sistema",
       ],
       correctAnswer: 1,
     },
     {
-      id: 11,
-      question: "Qual é a visão estratégica da DWU IT Solutions?",
-      options: [
-        "Ser líder em soluções ERP na América Latina",
-        "Dominar apenas o mercado brasileiro",
-        "Expandir para a Europa",
-        "Focar exclusivamente no Brasil",
-      ],
-      correctAnswer: 0,
-    },
-    {
       id: 12,
-      question: "Quantos níveis de suporte técnico a DWU oferece?",
-      options: ["2 níveis", "3 níveis", "4 níveis", "5 níveis"],
+      question:
+        "Qual comportamento é incentivado com “Ensinar algo a alguém todos os dias”?",
+      options: [
+        " Competição interna entre colegas",
+        "Compartilhamento de conhecimento como cultura contínua",
+        "Criar materiais técnicos somente quando solicitado",
+        " Deixar que apenas líderes ensinem",
+      ],
       correctAnswer: 1,
     },
     {
       id: 13,
-      question: "Qual ferramenta é utilizada para gestão de chamados na DWU?",
-      options: ["Notion", "GLPI", "TeamViewer", "Microsoft Teams"],
+      question: "Comunicação anti-fragilidade” implica em:",
+      options: [
+        "Evitar conversas difíceis para manter o clima",
+        "Dar e receber feedbacks com maturidade, mesmo em momentos desafiadores",
+        "Esconder problemas até ter certeza da solução",
+        " Sempre falar diretamente, sem pensar no impacto",
+      ],
       correctAnswer: 1,
     },
     {
       id: 14,
       question:
-        "Para acesso remoto aos sistemas dos clientes, qual ferramenta é utilizada?",
-      options: ["GLPI", "Notion", "TeamViewer", "Teams"],
-      correctAnswer: 2,
+        "Qual a postura correta diante de erros, segundo os axiomas do colaborador?",
+      options: [
+        "Ocultar os erros para evitar desgaste",
+        "Aceitar erros apenas se forem inéditos e gerar aprendizado",
+        "Errar sem limites e sem responsabilidade",
+        "Replicar o que já não deu certo antes",
+      ],
+      correctAnswer: 1,
     },
     {
       id: 15,
-      question: "Qual equipe é responsável pelas implementações do CRM One?",
+      question: "O que mais aproxima o colaborador dos valores da DWU?",
       options: [
-        "Equipe de Suporte",
-        "Equipe de Desenvolvimento",
-        "Equipe de Consultoria",
-        "Equipe de Vendas",
+        "Executar bem tarefas técnicas, sem se importar com cultura",
+        "Aderir aos axiomas da empresa e do time com atitude prática",
+        "Focar só nas entregas, sem interagir com os demais",
+        "Estudar apenas ferramentas, não comportamentos",
+      ],
+      correctAnswer: 1,
+    },
+    {
+      id: 16,
+      question: "Como a DWU enxerga o papel da energia na performance?",
+      options: [
+        "Um colaborador cansado entrega mais",
+        "Energia não é fator decisivo para resultados",
+        "Energia constante move o time e impulsiona o crescimento",
+        " Energia emocional é irrelevante no contexto técnico",
       ],
       correctAnswer: 2,
     },
     {
-      id: 16,
-      question:
-        "Aproximadamente quantas empresas de manufatura são clientes da DWU?",
-      options: ["Mais de 100", "Mais de 150", "Mais de 200", "Mais de 250"],
-      correctAnswer: 0,
-    },
-    {
       id: 17,
-      question: "O setor de varejo possui quantas lojas como clientes da DWU?",
-      options: ["Mais de 150", "Mais de 200", "Mais de 250", "Mais de 300"],
-      correctAnswer: 1,
+      question:
+        "Qual o papel dos dados, segundo o axioma “Dados são nossa bússola estratégica”?",
+      options: [
+        "Validar sentimentos pessoais",
+        "Evitar erros simples",
+        "Guiar decisões com base em análises concretas",
+        "Acompanhar apenas indicadores de venda",
+      ],
+      correctAnswer: 2,
     },
     {
       id: 18,
       question:
-        "Qual ferramenta é utilizada para manuais e comunicação interna?",
-      options: ["GLPI", "Notion", "TeamViewer", "Microsoft Teams"],
-      correctAnswer: 3,
+        "O que é priorizado na fase de “Cuidado personalizado com o cliente”?",
+      options: [
+        "Rapidez na entrega do sistema",
+        "Redução de custo com suporte",
+        "Entendimento profundo do contexto do cliente antes da implantação",
+        "Aplicação direta do manual técnico",
+      ],
+      correctAnswer: 2,
     },
     {
       id: 19,
       question:
-        "Na área da saúde, aproximadamente quantas clínicas são clientes?",
-      options: ["Mais de 60", "Mais de 80", "Mais de 100", "Mais de 120"],
+        "Qual a diferença entre “Cuidado personalizado” e “Atendimento humanizado”?",
+      options: [
+        " Um é técnico, o outro é comercial",
+        "Um visa análise do contexto antes da entrega; o outro busca conexão com a história do cliente",
+        "Não há diferença prática entre os dois",
+        "O atendimento humanizado ocorre apenas com clientes VIP",
+      ],
       correctAnswer: 1,
     },
     {
       id: 20,
-      question: "Qual é o foco principal da equipe de desenvolvimento da DWU?",
+      question: "O que acontece se a fase de perfilamento for mal executada?",
       options: [
-        "Apenas correção de bugs",
-        "Criação do CRM One e constantes inovações",
-        "Apenas manutenção de sistemas",
-        "Apenas documentação técnica",
+        "O cliente será automaticamente reencaminhado",
+        "A fase de produto se ajusta automaticamente",
+        "Há risco de oferecer soluções desalinhadas com a realidade do cliente",
+        "O cliente nem perceberá diferença",
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
     },
   ],
   2: [
