@@ -33,6 +33,9 @@ export interface IStorage {
   calculateConsecutiveDays(userId: string): Promise<number>;
   recordUserLogin(userId: string, ipAddress?: string, userAgent?: string): Promise<UserLogin | null>;
   getUserLogins(userId: string): Promise<UserLogin[]>;
+  checkAndUnlockAchievements(userId: string): Promise<string[]>;
+  getUserAchievements(userId: string): Promise<UserAchievement[]>;
+  unlockAchievement(userId: string, achievementId: string): Promise<UserAchievement | null>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -1420,6 +1423,21 @@ export class MemStorage implements IStorage {
   async getUserLogins(userId: string): Promise<UserLogin[]> {
     // Simplified implementation for memory storage
     return [];
+  }
+
+  async checkAndUnlockAchievements(userId: string): Promise<string[]> {
+    // Simplified implementation for memory storage
+    return [];
+  }
+
+  async getUserAchievements(userId: string): Promise<UserAchievement[]> {
+    // Simplified implementation for memory storage
+    return [];
+  }
+
+  async unlockAchievement(userId: string, achievementId: string): Promise<UserAchievement | null> {
+    // Simplified implementation for memory storage
+    return null;
   }
 }
 
