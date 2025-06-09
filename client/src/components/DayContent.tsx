@@ -11,10 +11,13 @@ import {
   CheckCircle, Clock, Headset, Download, Trophy, Users,
   FileText, TriangleAlert, Search, Gamepad, Info, ArrowUp, ArrowRight, UserCircle, Presentation,
   Target, Lightbulb, Zap, Shield, Eye, Rocket, Brain, Handshake, TrendingUp, Settings,
-  Server, Code, Network, ArrowDown, Monitor
+  Server, Code, Network, ArrowDown, Monitor, TrendingUp
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import SlidePresentation from "./SlidePresentation";
+import Module3Presentation from "./Module3Presentation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 interface DayContentProps {
   day: number;
@@ -687,8 +690,7 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
             doc.text(`Gerado em: ${new Date().toLocaleString('pt-BR')}`, 120, 292);
           }
 
-          // Save the PDF
-          const fileName = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
+          // Save the PDF          const fileName = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
           console.log('💾 Salvando arquivo:', fileName);
           doc.save(fileName);
           console.log('✅ Download concluído:', materialName);
@@ -1366,8 +1368,7 @@ DIFERENCIAIS COMPETITIVOS:
 
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="bg-slate-900 p-6 rounded-lg border border-slate-600">
-                  <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
-                    <Database className="text-white" size={24} />
+                  <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4<Database className="text-white" size={24} />
                   </div>
                   <h5 className="font-semibold mb-2">CRM One</h5>
                   <p className="text-slate-400 text-sm">Sistema principal de gestão de relacionamento com clientes</p>
@@ -2421,7 +2422,76 @@ DIFERENCIAIS COMPETITIVOS:
         </>
       )}
 
-
+      {day === 3 && (
+         <Tabs defaultValue="presentation" className="w-full">
+         <TabsList className="grid w-full grid-cols-2 mb-8">
+           <TabsTrigger value="presentation" className="flex items-center gap-2">
+             <Presentation size={16} />
+             Apresentação
+           </TabsTrigger>
+           <TabsTrigger value="checklist" className="flex items-center gap-2">
+             <CheckCircle size={16} />
+             Lista de Verificação
+           </TabsTrigger>
+         </TabsList>
+ 
+         <TabsContent value="presentation" className="space-y-6">
+           <Module3Presentation onComplete={handlePresentationComplete} />
+           {presentationCompleted && (
+             <div className="text-center">
+               <Badge variant="secondary" className="bg-green-600/20 text-green-400 border-green-600/50">
+                 <CheckCircle size={16} className="mr-1" />
+                 Apresentação Concluída
+               </Badge>
+             </div>
+           )}
+         </TabsContent>
+ 
+         
+         <TabsContent value="checklist" className="space-y-6">
+             <Card className="glass-effect border-slate-700/50">
+               <CardContent className="p-8">
+                 <div className="space-y-6">
+                   <div className="flex items-center justify-between">
+                     <h3 className="text-xl font-semibold text-slate-200 flex items-center gap-2">
+                       <CheckCircle className="text-green-400" size={20} />
+                       Lista de Verificação
+                     </h3>
+                     <Badge variant="outline" className="text-slate-300">
+                       {completedItems.filter(Boolean).length}/{dayData.checklist.length}
+                     </Badge>
+                   </div>
+ 
+                   <div className="space-y-4">
+                     {dayData.checklist.map((item, index) => (
+                       <div
+                         key={index}
+                         className="flex items-start space-x-4 p-4 rounded-lg bg-slate-800/30 border border-slate-700/50 hover:bg-slate-800/50 transition-colors"
+                       >
+                         <Checkbox
+                           id={`item-${index}`}
+                           checked={completedItems[index] || false}
+                           onCheckedChange={(checked) => handleItemCheck(index, checked as boolean)}
+                           className="mt-1"
+                         />
+                         <label
+                           htmlFor={`item-${index}`}
+                           className={`text-sm leading-relaxed cursor-pointer flex-1 ${
+                             completedItems[index] ? 'text-slate-400 line-through' : 'text-slate-300'
+                           }`}
+                         >
+                           {item}
+                         </label>
+                       </div>
+                     ))}
+                   </div>
+                 </div>
+               </CardContent>
+             </Card>
+           </TabsContent>
+       </Tabs>
+       
+       )}
 
       {/* Checklist */}
       <Card className="bg-slate-800 border-slate-700">
