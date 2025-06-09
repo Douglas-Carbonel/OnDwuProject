@@ -37,15 +37,17 @@ export const onboardingData: OnboardingDay[] = [
   {
     day: 3,
     title: "Benefícios da Ferramenta",
-    description: "Pontos fortes do CRM One e comparação com concorrentes de mercado",
+    description: "Apresentação completa do CRM One - A Solução Definitiva para SAP Business One",
     checklist: [
       "Conhecer a solução definitiva para SAP Business One",
       "Compreender os benefícios do CRM One",
       "Explorar as funcionalidades principais",
       "Analisar os módulos do sistema",
-      "Entender por que escolher o CRM One",
-      "Comparar com concorrentes do mercado",
-      "Visualizar informações em tempo real"
+      "Conhecer a interface intuitiva e responsiva",
+      "Entender o aplicativo mobile nativo",
+      "Explorar dashboards inteligentes",
+      "Compreender segurança e conformidade",
+      "Conhecer o suporte especializado"
     ]
   },
   {
