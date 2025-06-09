@@ -33,14 +33,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Record user login for consecutive days tracking
       try {
-        await storage.recordUserLogin(
+        console.log("🔄 Tentando registrar login para usuário:", user.id);
+        console.log("🔄 IP:", req.ip || req.connection.remoteAddress);
+        console.log("🔄 User-Agent:", req.get('User-Agent'));
+        
+        const loginRecord = await storage.recordUserLogin(
           user.id.toString(), 
           req.ip || req.connection.remoteAddress,
           req.get('User-Agent')
         );
-        console.log("📅 Login registrado com sucesso para usuário:", user.id);
+        
+        if (loginRecord) {
+          console.log("📅 ✅ Login registrado com sucesso para usuário:", user.id, "- Record ID:", loginRecord.id);
+        } else {
+          console.log("📅 ⚠️ Login não foi registrado (possivelmente já existe hoje)");
+        }
       } catch (loginError) {
-        console.error("❌ Erro ao registrar login:", loginError);
+        console.error("❌ ERRO CRÍTICO ao registrar login:", loginError);
+        console.error("❌ Stack trace:", loginError.stack);
         // Don't fail login if login recording fails
       }
 
@@ -1069,6 +1079,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
         success: false,
         logins: [],
         totalLogins: 0
+      });
+    }
+  });
+
+  // Debug endpoint to test login recording
+  app.post("/api/debug/test-login-recording", async (req, res) => {
+    try {
+      const { userId } = req.body;
+      
+      if (!userId) {
+        return res.status(400).json({ error: "userId é obrigatório" });
+      }
+
+      console.log("🧪 Testando registro de login para userId:", userId);
+
+      // Test recording login
+      const loginRecord = await storage.recordUserLogin(
+        userId,
+        req.ip || req.connection.remoteAddress || "127.0.0.1",
+        req.get('User-Agent') || "Test-Agent"
+      );
+
+      // Get all logins for this user
+      const allLogins = await storage.getUserLogins(userId);
+
+      res.json({
+        success: true,
+        message: "Teste de registro de login concluído",
+        newRecord: loginRecord,
+        allUserLogins: allLogins,
+        totalLogins: allLogins.length
+      });
+
+    } catch (error) {
+      console.error("❌ Erro no teste de login:", error);
+      res.status(500).json({
+        success: false,
+        error: error.message,
+        stack: error.stack
       });
     }
   });

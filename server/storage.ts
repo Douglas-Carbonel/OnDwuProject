@@ -500,12 +500,18 @@ export class DatabaseStorage implements IStorage {
   async recordUserLogin(userId: string, ipAddress?: string, userAgent?: string): Promise<UserLogin | null> {
     try {
       const numericUserId = userId.replace('user-', '');
+      console.log("🔄 recordUserLogin - userId original:", userId);
+      console.log("🔄 recordUserLogin - numericUserId:", numericUserId);
+      console.log("🔄 recordUserLogin - ipAddress:", ipAddress);
+      console.log("🔄 recordUserLogin - userAgent:", userAgent?.substring(0, 50) + "...");
       
       // Verificar se já existe um login hoje para evitar múltiplos registros no mesmo dia
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const tomorrow = new Date(today);
       tomorrow.setDate(tomorrow.getDate() + 1);
+
+      console.log("🔄 Verificando login existente para hoje entre:", today.toISOString(), "e", tomorrow.toISOString());
 
       const existingTodayLogin = await this.db
         .select()
@@ -519,27 +525,34 @@ export class DatabaseStorage implements IStorage {
         )
         .limit(1);
 
+      console.log("🔄 Logins encontrados para hoje:", existingTodayLogin.length);
+
       if (existingTodayLogin.length > 0) {
-        console.log("📅 Login já registrado hoje para usuário:", numericUserId);
+        console.log("📅 ⚠️ Login já registrado hoje para usuário:", numericUserId, "às", existingTodayLogin[0].login_date);
         return existingTodayLogin[0];
       }
 
-      // Registrar novo login - usar NOW() do PostgreSQL para evitar problemas com Date objects
+      // Registrar novo login
+      console.log("🔄 Inserindo novo registro de login...");
       const result = await this.db
         .insert(userLogins)
         .values({
           user_id: numericUserId,
-          ip_address: ipAddress || null,
-          user_agent: userAgent || null,
-          login_date: sql`NOW()`,
-          created_at: sql`NOW()`
+          ip_address: ipAddress,
+          user_agent: userAgent,
         })
         .returning();
 
-      console.log("📅 Novo login registrado para usuário:", numericUserId);
+      console.log("📅 ✅ Novo login registrado com sucesso!");
+      console.log("📅 - ID do registro:", result[0].id);
+      console.log("📅 - Usuário:", result[0].user_id);
+      console.log("📅 - Data:", result[0].login_date);
       return result[0];
     } catch (error) {
-      console.error("❌ Erro ao registrar login:", error);
+      console.error("❌ ERRO CRÍTICO ao registrar login:");
+      console.error("❌ Error object:", error);
+      console.error("❌ Error message:", error.message);
+      console.error("❌ Error stack:", error.stack);
       return null;
     }
   }
@@ -547,6 +560,7 @@ export class DatabaseStorage implements IStorage {
   async getUserLogins(userId: string): Promise<UserLogin[]> {
     try {
       const numericUserId = userId.replace('user-', '');
+      console.log("🔍 getUserLogins - userId:", userId, "numericUserId:", numericUserId);
       
       const result = await this.db
         .select()
@@ -554,9 +568,19 @@ export class DatabaseStorage implements IStorage {
         .where(eq(userLogins.user_id, numericUserId))
         .orderBy(desc(userLogins.login_date));
 
+      console.log("🔍 getUserLogins - encontrados", result.length, "registros");
+      
+      if (result.length > 0) {
+        console.log("🔍 getUserLogins - últimos 3 registros:");
+        result.slice(0, 3).forEach((login, index) => {
+          console.log(`   ${index + 1}. ID: ${login.id}, Data: ${login.login_date}, IP: ${login.ip_address}`);
+        });
+      }
+
       return result;
     } catch (error) {
       console.error("❌ Erro ao buscar logins do usuário:", error);
+      console.error("❌ Error details:", error.message);
       return [];
     }
   }
