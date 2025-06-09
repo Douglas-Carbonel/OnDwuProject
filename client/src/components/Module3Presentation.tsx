@@ -120,7 +120,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
           <div className="relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600/30 to-purple-600/30 rounded-full border border-blue-500/50 backdrop-blur-sm">
             <Rocket className="w-8 h-8 text-blue-400 animate-bounce" />
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent">
-              CRM One - Solução Definitiva
+              CRM One - Transforme Seus Resultados
             </span>
           </div>
         </div>
@@ -158,7 +158,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                 </div>
                 <div>
                   <h2 className="text-4xl font-bold text-white mb-2">CRM One</h2>
-                  <p className="text-blue-200 text-lg">A Solução Definitiva para o SAP Business One</p>
+                  <p className="text-blue-200 text-lg">Revolucione Sua Gestão Comercial com Tecnologia de Ponta</p>
                   <p className="text-slate-400 text-sm mt-1">100% Integrado • Tempo Real • Seguro</p>
                 </div>
               </div>
@@ -769,7 +769,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
               </div>
 
               <div className="bg-gradient-to-r from-green-900/20 to-emerald-900/20 p-8 rounded-2xl border border-green-600/30">
-                <h4 className="text-2xl font-bold text-green-300 mb-4">Solicite uma Demonstração Gratuita</h4>
+                <h4 className="text-2xl font-bold text-green-300 mb-4">🚀 Acelere Seus Resultados Hoje Mesmo!</h4>
                 <p className="text-slate-400 mb-6">Veja como o CRM One pode transformar seus resultados em apenas 30 minutos</p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-3 text-lg font-semibold transform hover:scale-105 transition-all duration-300">
