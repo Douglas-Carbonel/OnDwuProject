@@ -23,11 +23,11 @@ interface DayContentProps {
   onProgressUpdate: (progress: number) => void;
 }
 
-interface SlidePresentationProps {
+interface LocalSlidePresentationProps {
   onComplete: () => void;
 }
 
-function SlidePresentation({ onComplete }: SlidePresentationProps) {
+function LocalSlidePresentation({ onComplete }: LocalSlidePresentationProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
@@ -1022,7 +1022,7 @@ DIFERENCIAIS COMPETITIVOS:
           </TabsList>
 
           <TabsContent value="presentation" className="space-y-6">
-            <SlidePresentation onComplete={handlePresentationComplete} />
+            <LocalSlidePresentation onComplete={handlePresentationComplete} />
             {presentationCompleted && (
               <div className="text-center">
                 <Badge variant="secondary" className="bg-green-600/20 text-green-400 border-green-600/50">
