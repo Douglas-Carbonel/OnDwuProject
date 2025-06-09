@@ -511,7 +511,7 @@ export class DatabaseStorage implements IStorage {
       const currentDate = new Date(nowBrasilia);
       console.log("📅 Data atual (Brasília):", currentDate.toISOString());
       
-      // Verificar se já existe um login hoje para evitar múltiplos registros no mesmo dia
+      // Verificar se já existe um login hoje
       const today = new Date(currentDate);
       today.setHours(0, 0, 0, 0);
       const tomorrow = new Date(today);
@@ -533,14 +533,30 @@ export class DatabaseStorage implements IStorage {
 
       console.log("🔄 Logins encontrados para hoje:", existingTodayLogin.length);
 
-      // SEMPRE REGISTRAR NOVO LOGIN PARA TESTE
       if (existingTodayLogin.length > 0) {
-        console.log("📅 ⚠️ Login já registrado hoje para usuário:", numericUserId, "às", existingTodayLogin[0].login_date);
-        console.log("📅 🧪 TESTE: Registrando novo login mesmo com existência prévia");
-        // Não retornar aqui para permitir novo registro
+        // Atualizar registro existente com nova data/hora de login
+        console.log("📅 🔄 Atualizando login existente para usuário:", numericUserId);
+        console.log("📅 - Login anterior:", existingTodayLogin[0].login_date);
+        console.log("📅 - Novo login:", currentDate.toISOString());
+
+        const result = await this.db
+          .update(userLogins)
+          .set({
+            login_date: currentDate,
+            ip_address: ipAddress,
+            user_agent: userAgent,
+          })
+          .where(eq(userLogins.id, existingTodayLogin[0].id))
+          .returning();
+
+        console.log("📅 ✅ Login atualizado com sucesso!");
+        console.log("📅 - ID do registro:", result[0].id);
+        console.log("📅 - Usuário:", result[0].user_id);
+        console.log("📅 - Nova data (Brasília):", result[0].login_date);
+        return result[0];
       }
 
-      // Registrar novo login com data em fuso horário de Brasília
+      // Criar novo registro se não existir login hoje
       console.log("🔄 Inserindo novo registro de login...");
       const result = await this.db
         .insert(userLogins)
