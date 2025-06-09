@@ -470,7 +470,7 @@ export class DatabaseStorage implements IStorage {
       for (let i = 1; i < uniqueDates.length; i++) {
         const currentDate = uniqueDates[i - 1];
         const previousDate = uniqueDates[i];
-        
+
         const diffTime = currentDate.getTime() - previousDate.getTime();
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
@@ -493,7 +493,7 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  
+
 
   async recordUserLogin(userId: string, ipAddress?: string, userAgent?: string): Promise<UserLogin | null> {
     try {

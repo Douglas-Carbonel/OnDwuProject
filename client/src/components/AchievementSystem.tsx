@@ -51,31 +51,34 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
           setUserEvaluations([]);
         }
 
-        // Buscar dias consecutivos com retry
-        console.log("📅 Iniciando busca de dias consecutivos...");
-        const consecutiveResponse = await fetch(`/api/consecutive-days/${userProgress.userId}`);
-        if (consecutiveResponse.ok) {
-          const consecutiveData = await consecutiveResponse.json();
-          console.log("📅 Response completa de dias consecutivos:", consecutiveData);
+        // Buscar dias consecutivos
+        console.log("📅 Iniciando busca de dias consecutivos para userId:", userProgress.userId);
+        try {
+          const consecutiveResponse = await fetch(`/api/consecutive-days/${userProgress.userId}`);
           
-          if (consecutiveData.success && typeof consecutiveData.consecutiveDays === 'number') {
-            const days = consecutiveData.consecutiveDays;
-            console.log("📅 Dias consecutivos extraídos:", days);
-            setConsecutiveDays(days);
+          if (consecutiveResponse.ok) {
+            const consecutiveData = await consecutiveResponse.json();
+            console.log("📅 Response completa de dias consecutivos:", consecutiveData);
             
-            if (days > 0) {
-              console.log("📅 ✅ Dias consecutivos definidos com sucesso:", days);
+            if (consecutiveData.success && typeof consecutiveData.consecutiveDays === 'number') {
+              const days = consecutiveData.consecutiveDays;
+              console.log("📅 Dias consecutivos extraídos:", days);
+              setConsecutiveDays(days);
+              
+              console.log("📅 ✅ Dias consecutivos definidos:", days);
               console.log("📅 Total de logins:", consecutiveData.totalLogins);
               console.log("📅 Datas de login:", consecutiveData.loginDates);
             } else {
-              console.log("📅 ⚠️ Nenhum dia consecutivo encontrado");
+              console.log("❌ Formato de resposta inválido para dias consecutivos:", consecutiveData);
+              setConsecutiveDays(0);
             }
           } else {
-            console.log("❌ Formato de resposta inválido para dias consecutivos");
+            const errorText = await consecutiveResponse.text();
+            console.log("❌ Erro HTTP ao buscar dias consecutivos:", consecutiveResponse.status, errorText);
             setConsecutiveDays(0);
           }
-        } else {
-          console.log("❌ Erro HTTP ao buscar dias consecutivos:", consecutiveResponse.status);
+        } catch (error) {
+          console.error("❌ Erro na requisição de dias consecutivos:", error);
           setConsecutiveDays(0);
         }
 
