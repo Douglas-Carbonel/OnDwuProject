@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -71,13 +70,13 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
   const toggleSection = (sectionId: string) => {
     const newExpanded = new Set(expandedSections);
     const newViewed = new Set(viewedSections);
-    
+
     if (newExpanded.has(sectionId)) {
       newExpanded.delete(sectionId);
     } else {
       newExpanded.add(sectionId);
       newViewed.add(sectionId);
-      
+
       // Animate counters when section is opened
       if (sectionId === 'hero') {
         animateCounter('clients', 500);
@@ -85,7 +84,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         animateCounter('satisfaction', 98);
       }
     }
-    
+
     setExpandedSections(newExpanded);
     setViewedSections(newViewed);
   };
@@ -125,7 +124,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             </span>
           </div>
         </div>
-        
+
         <div className="space-y-4">
           <p className="text-slate-400 text-lg">Explore todas as seções para conhecer nossa solução completa</p>
           <div className="max-w-md mx-auto space-y-2">
@@ -172,7 +171,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             </div>
           </div>
         </div>
-        
+
         {expandedSections.has('hero') && (
           <CardContent className="p-8 space-y-8 animate-in slide-in-from-top duration-500">
             {/* Statistics */}
@@ -265,7 +264,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             </div>
           </div>
         </div>
-        
+
         {expandedSections.has('interface') && (
           <CardContent className="p-8 animate-in slide-in-from-left duration-500">
             <div className="grid lg:grid-cols-2 gap-8">
@@ -338,7 +337,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             </div>
           </div>
         </div>
-        
+
         {expandedSections.has('mobile') && (
           <CardContent className="p-8 animate-in slide-in-from-right duration-500">
             <div className="grid lg:grid-cols-3 gap-6">
@@ -407,7 +406,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             </div>
           </div>
         </div>
-        
+
         {expandedSections.has('dashboards') && (
           <CardContent className="p-8 animate-in slide-in-from-bottom duration-500">
             <div className="space-y-8">
@@ -488,7 +487,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             </div>
           </div>
         </div>
-        
+
         {expandedSections.has('security') && (
           <CardContent className="p-8 animate-in slide-in-from-top duration-500">
             <div className="grid lg:grid-cols-2 gap-8">
@@ -562,7 +561,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             </div>
           </div>
         </div>
-        
+
         {expandedSections.has('support') && (
           <CardContent className="p-8 animate-in slide-in-from-left duration-500">
             <div className="grid lg:grid-cols-3 gap-6">
@@ -642,7 +641,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             </div>
           </div>
         </div>
-        
+
         {expandedSections.has('modules') && (
           <CardContent className="p-8 animate-in slide-in-from-right duration-500">
             <div className="space-y-8">
@@ -737,7 +736,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             </div>
           </div>
         </div>
-        
+
         {expandedSections.has('comparison') && (
           <CardContent className="p-8 space-y-8 animate-in slide-in-from-bottom duration-500">
             <div className="text-center space-y-4">
@@ -769,7 +768,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                   </ul>
                 </div>
               </div>
-              
+
               <div className="space-y-6">
                 <div className="bg-gradient-to-br from-green-900/20 to-emerald-900/20 p-6 rounded-xl border border-green-600/30 hover:border-green-500/50 transition-all duration-300">
                   <div className="flex items-center gap-3 mb-4">
@@ -798,7 +797,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                 </h4>
                 <p className="text-slate-400 text-lg">Clique nas linhas para ver detalhes dos diferenciais</p>
               </div>
-              
+
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
@@ -954,7 +953,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             </div>
           </div>
         </div>
-        
+
         {expandedSections.has('conclusion') && (
           <CardContent className="p-8 animate-in slide-in-from-top duration-500">
             <div className="text-center space-y-8">
