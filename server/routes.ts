@@ -1163,6 +1163,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Debug endpoint specifically for user 2
+  app.get("/api/debug/user-2-data", async (req, res) => {
+    try {
+      console.log("🧪 Verificando dados do usuário 2...");
+
+      // Get user 2 logins
+      const userLogins = await storage.getUserLogins("2");
+      console.log("🔍 Logins encontrados para usuário 2:", userLogins.length);
+
+      // Calculate consecutive days
+      const consecutiveDays = await storage.calculateConsecutiveDays("2");
+      console.log("📅 Dias consecutivos calculados:", consecutiveDays);
+
+      // Get user evaluations
+      const userEvaluations = await storage.getUserEvaluationData("2");
+      console.log("📊 Avaliações encontradas:", userEvaluations.evaluations.length);
+
+      res.json({
+        success: true,
+        userId: "2",
+        data: {
+          logins: userLogins,
+          consecutiveDays: consecutiveDays,
+          evaluations: userEvaluations.evaluations,
+          totalLogins: userLogins.length,
+          totalEvaluations: userEvaluations.evaluations.length
+        },
+        debug: {
+          loginDates: userLogins.map(login => ({
+            id: login.id,
+            date: login.login_date,
+            dateString: new Date(login.login_date).toDateString()
+          }))
+        }
+      });
+
+    } catch (error) {
+      console.error("❌ Erro ao verificar dados do usuário 2:", error);
+      res.status(500).json({
+        success: false,
+        error: error.message,
+        stack: error.stack
+      });
+    }
+  });
+
 
 
   // Endpoint para verificar se a tabela user_logins existe e tem dados

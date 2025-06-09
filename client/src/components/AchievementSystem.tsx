@@ -31,17 +31,20 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
   // Buscar dados de avaliações e conquistas do usuário
   useEffect(() => {
     const fetchUserData = async () => {
-      if (!userProgress?.userId) {
-        console.log("🏆 Sem userId, finalizando loading");
+      // Extrair userId de diferentes propriedades possíveis do userProgress
+      const userId = userProgress?.userId || userProgress?.user_id || (userProgress && typeof userProgress === 'object' && Object.keys(userProgress).find(key => key.includes('userId')));
+      
+      if (!userId) {
+        console.log("🏆 Sem userId válido, userProgress:", userProgress);
         setLoading(false);
         return;
       }
 
       try {
-        console.log("🏆 Buscando dados para conquistas do usuário:", userProgress.userId);
+        console.log("🏆 Buscando dados para conquistas do usuário:", userId);
         
         // Buscar avaliações primeiro
-        const evaluationsResponse = await fetch(`/api/admin/user-evaluations/${userProgress.userId}`);
+        const evaluationsResponse = await fetch(`/api/admin/user-evaluations/${userId}`);
         if (evaluationsResponse.ok) {
           const evaluationsData = await evaluationsResponse.json();
           console.log("🏆 Dados de avaliações recebidos:", evaluationsData);
@@ -52,9 +55,9 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
         }
 
         // Buscar dias consecutivos
-        console.log("📅 Iniciando busca de dias consecutivos para userId:", userProgress.userId);
+        console.log("📅 Iniciando busca de dias consecutivos para userId:", userId);
         try {
-          const consecutiveResponse = await fetch(`/api/consecutive-days/${userProgress.userId}`);
+          const consecutiveResponse = await fetch(`/api/consecutive-days/${userId}`);
           
           if (consecutiveResponse.ok) {
             const consecutiveData = await consecutiveResponse.json();
@@ -83,7 +86,7 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
         }
 
         // Buscar conquistas do banco (isso também verifica e desbloqueia novas)
-        const achievementsResponse = await fetch(`/api/achievements/${userProgress.userId}`);
+        const achievementsResponse = await fetch(`/api/achievements/${userId}`);
         if (achievementsResponse.ok) {
           const achievementsData = await achievementsResponse.json();
           console.log("🏆 Conquistas do banco:", achievementsData);
@@ -104,7 +107,7 @@ export default function AchievementSystem({ userProgress }: AchievementSystemPro
     // Aguardar um pouco para garantir que o userProgress esteja totalmente carregado
     const timer = setTimeout(fetchUserData, 100);
     return () => clearTimeout(timer);
-  }, [userProgress?.userId]);
+  }, [userProgress]);
 
   // Calcular conquistas baseadas em dados reais
   useEffect(() => {

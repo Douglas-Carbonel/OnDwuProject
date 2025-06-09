@@ -423,6 +423,8 @@ export class DatabaseStorage implements IStorage {
     try {
       const numericUserId = userId.replace('user-', '');
       console.log("📅 Calculando dias consecutivos para userId:", numericUserId);
+      console.log("📅 Tipo de userId:", typeof userId);
+      console.log("📅 UserId original:", userId);
 
       // Buscar todos os logins do usuário ordenados por data (mais recente primeiro)
       const logins = await this.db
@@ -432,6 +434,7 @@ export class DatabaseStorage implements IStorage {
         .orderBy(desc(userLogins.login_date));
 
       console.log("📅 Total de logins encontrados:", logins.length);
+      console.log("📅 SQL query executada para user_id:", numericUserId);
 
       if (logins.length === 0) {
         console.log("📅 Nenhum login registrado");
