@@ -39,7 +39,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         const loginRecord = await storage.recordUserLogin(
           user.id.toString(), 
-          req.ip || req.connection.remoteAddress,
+          req.ip || req.connection.remoteAddress || req.socket.remoteAddress,
           req.get('User-Agent')
         );
         
@@ -1097,7 +1097,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Test recording login
       const loginRecord = await storage.recordUserLogin(
         userId,
-        req.ip || req.connection.remoteAddress || "127.0.0.1",
+        req.ip || req.connection.remoteAddress || req.socket.remoteAddress || "127.0.0.1",
         req.get('User-Agent') || "Test-Agent"
       );
 
@@ -1118,6 +1118,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
         success: false,
         error: error.message,
         stack: error.stack
+      });
+    }
+  });
+
+  // Endpoint para verificar se a tabela user_logins existe e tem dados
+  app.get("/api/debug/check-login-table", async (req, res) => {
+    try {
+      console.log("🔍 Verificando tabela user_logins...");
+
+      // Buscar todos os logins na tabela
+      const allLogins = await storage.db
+        .select()
+        .from(userLogins)
+        .orderBy(desc(userLogins.login_date))
+        .limit(50);
+
+      // Buscar total de registros
+      const totalCount = await storage.db
+        .select({ count: sql`count(*)` })
+        .from(userLogins);
+
+      res.json({
+        success: true,
+        message: "Verificação da tabela user_logins",
+        data: {
+          totalRecords: totalCount[0]?.count || 0,
+          recentLogins: allLogins,
+          tableExists: allLogins !== undefined
+        }
+      });
+
+    } catch (error) {
+      console.error("❌ Erro ao verificar tabela:", error);
+      res.status(500).json({
+        success: false,
+        error: error.message,
+        details: "Tabela user_logins pode não existir ou ter problemas de estrutura"
       });
     }
   });

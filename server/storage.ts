@@ -499,6 +499,7 @@ export class DatabaseStorage implements IStorage {
 
   async recordUserLogin(userId: string, ipAddress?: string, userAgent?: string): Promise<UserLogin | null> {
     try {
+      // Converter userId para número se necessário (remove 'user-' prefix se existir)
       const numericUserId = userId.replace('user-', '');
       console.log("🔄 recordUserLogin - userId original:", userId);
       console.log("🔄 recordUserLogin - numericUserId:", numericUserId);
@@ -580,6 +581,7 @@ export class DatabaseStorage implements IStorage {
       return result;
     } catch (error) {
       console.error("❌ Erro ao buscar logins do usuário:", error);
+      return []; ao buscar logins do usuário:", error);
       console.error("❌ Error details:", error.message);
       return [];
     }
