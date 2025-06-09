@@ -535,6 +535,7 @@ export class DatabaseStorage implements IStorage {
 
       if (existingTodayLogin.length > 0) {
         console.log("📅 ⚠️ Login já registrado hoje para usuário:", numericUserId, "às", existingTodayLogin[0].login_date);
+        console.log("📅 ℹ️ Retornando registro existente, sem criar duplicata");
         return existingTodayLogin[0];
       }
 

@@ -1083,6 +1083,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Debug endpoint to check all logins in database
+  app.get("/api/debug/all-logins", async (req, res) => {
+    try {
+      console.log("🧪 Buscando todos os logins no banco de dados");
+      
+      const db = getDatabase();
+      const allLogins = await db.select().from(userLogins).orderBy(desc(userLogins.login_date));
+
+      res.json({
+        success: true,
+        totalLogins: allLogins.length,
+        logins: allLogins,
+        message: `Encontrados ${allLogins.length} registros de login no banco`
+      });
+    } catch (error) {
+      console.error("❌ Erro ao buscar todos os logins:", error);
+      res.status(500).json({ 
+        success: false,
+        error: error.message
+      });
+    }
+  });
+
   // Debug endpoint to test login recording
   app.post("/api/debug/test-login-recording", async (req, res) => {
     try {
