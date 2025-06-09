@@ -508,42 +508,47 @@ export class DatabaseStorage implements IStorage {
       console.log("🔄 recordUserLogin - ipAddress:", ipAddress);
       console.log("🔄 recordUserLogin - userAgent:", userAgent?.substring(0, 50) + "...");
 
-      // Verificar se já existe um login hoje usando SQL DATE functions
+      // Use direct postgres client to avoid Drizzle date handling issues
+      const postgres = require('postgres');
+      const connectionString = "postgresql://postgres.brjwbznxsfbtoktpdssw:oBfiPmNzLW81Hz1b@aws-0-sa-east-1.pooler.supabase.com:6543/postgres";
+      const directSql = postgres(connectionString, { ssl: 'require' });
+
       console.log("🔄 Verificando login existente para hoje...");
 
-      const existingTodayLogin = await this.db
-        .select()
-        .from(userLogins)
-        .where(
-          and(
-            eq(userLogins.user_id, numericUserId),
-            sql`DATE(login_date) = CURRENT_DATE`
-          )
-        )
-        .limit(1);
+      // Check for existing login today
+      const existingLogins = await directSql`
+        SELECT * FROM user_logins 
+        WHERE user_id = ${numericUserId} 
+        AND DATE(login_date) = CURRENT_DATE 
+        LIMIT 1
+      `;
 
-      console.log("🔄 Logins encontrados para hoje:", existingTodayLogin.length);
+      console.log("🔄 Logins encontrados para hoje:", existingLogins.length);
 
-      if (existingTodayLogin.length > 0) {
-        console.log("📅 ⚠️ Login já registrado hoje para usuário:", numericUserId, "às", existingTodayLogin[0].login_date);
-        return existingTodayLogin[0];
+      if (existingLogins.length > 0) {
+        console.log("📅 ⚠️ Login já registrado hoje para usuário:", numericUserId);
+        await directSql.end();
+        return existingLogins[0] as UserLogin;
       }
 
-      // Registrar novo login - let defaultNow() handle the timestamp
-      const result = await this.db
-        .insert(userLogins)
-        .values({
-          user_id: numericUserId,
-          ip_address: ipAddress || null,
-          user_agent: userAgent || null,
-        })
-        .returning();
+      // Insert new login
+      const insertResult = await directSql`
+        INSERT INTO user_logins (user_id, ip_address, user_agent, login_date) 
+        VALUES (${numericUserId}, ${ipAddress || null}, ${userAgent || null}, NOW()) 
+        RETURNING *
+      `;
 
-      console.log("📅 ✅ Novo login registrado com sucesso!");
-      console.log("📅 - ID do registro:", result[0].id);
-      console.log("📅 - Usuário:", result[0].user_id);
-      console.log("📅 - Data:", result[0].login_date);
-      return result[0];
+      await directSql.end();
+
+      if (insertResult.length > 0) {
+        console.log("📅 ✅ Novo login registrado com sucesso!");
+        console.log("📅 - ID do registro:", insertResult[0].id);
+        console.log("📅 - Usuário:", insertResult[0].user_id);
+        console.log("📅 - Data:", insertResult[0].login_date);
+        return insertResult[0] as UserLogin;
+      }
+
+      return null;
     } catch (error) {
       console.error("❌ ERRO CRÍTICO ao registrar login:");
       console.error("❌ Error object:", error);
