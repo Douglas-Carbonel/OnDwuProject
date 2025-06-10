@@ -241,13 +241,13 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                     icon: Award,
                     title: "DWU IT Solutions",
                     desc: "Especialistas em SAP",
-                    details: "15 anos de experiência em SAP Business One",
+                    details: "10 anos de experiência em SAP Business One",
                     color: "purple",
                     gradient: "from-purple-600/20 via-pink-600/10 to-purple-600/20",
                     border: "border-purple-500/30",
                     iconBg: "bg-purple-500/20",
                     badge: "EXPERT",
-                    features: ["500+ implementações", "Suporte 24/7", "Consultoria especializada"]
+                    features: ["100+ implementações", "Suporte centralizado", "Consultoria especializada"]
                   }
                 ].map((item, index) => (
                   <div key={index} className={`group/card relative overflow-hidden`}>
@@ -980,7 +980,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                 <div className={`w-14 h-14 bg-emerald-500/20 rounded-2xl flex items-center justify-center group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 shadow-lg ${expandedSections.has('conclusion') ? 'rotate-12 scale-110' : ''}`}>
                   <Rocket className="w-7 h-7 text-emerald-400" />
                 </div>
-                <h2 className="text-3xl font-bold text-white group-hover:text-emerald-100 transition-colors duration-300">Transforme Sua Gestão Hoje</h2>
+                <h2 className="text-3xl font-bold text-white group-hover:text-emerald-100 transition-colors duration-300">Transforme Sua Gestão</h2>
               </div>
               <div className={`transform transition-all duration-500 ${expandedSections.has('conclusion') ? 'rotate-180' : ''}`}>
                 <ChevronDown className="w-6 h-6 text-emerald-400 group-hover:animate-bounce" />
@@ -994,11 +994,11 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             <div className="space-y-10">
               <div className="text-center space-y-8">
                 <h3 className="text-5xl font-bold bg-gradient-to-r from-emerald-300 via-green-300 to-cyan-300 bg-clip-text text-transparent animate-pulse">
-                  Pronto para Revolucionar?
+                  Destaques CRM One!
                 </h3>
                 <p className="text-slate-300 text-xl max-w-4xl mx-auto leading-relaxed">
                   O CRM One não é apenas uma ferramenta, é o futuro da gestão empresarial integrada ao SAP Business One. 
-                  Junte-se às centenas de empresas que já transformaram seus resultados.
+                  
                 </p>
               </div>
 
@@ -1019,7 +1019,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                   </div>
                   <h4 className="text-2xl font-bold text-emerald-300 group-hover/final:text-white transition-colors duration-300">Suporte Completo</h4>
                   <p className="text-slate-300 group-hover/final:text-slate-200 transition-colors duration-300">
-                    Equipe especializada disponível 24/7 para seu sucesso
+                    Equipe especializada disponível
                   </p>
                 </div>
 
@@ -1036,7 +1036,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
 
               <div className="text-center space-y-8">
                 <div className="bg-gradient-to-r from-emerald-600/20 to-green-600/20 p-10 rounded-3xl border border-emerald-500/30 max-w-4xl mx-auto">
-                  <h4 className="text-3xl font-bold text-emerald-300 mb-6">Próximos Passos</h4>
+                  <h4 className="text-3xl font-bold text-emerald-300 mb-6">Processo de implementação defindo</h4>
                   <div className="grid md:grid-cols-3 gap-6 text-left">
                     <div className="flex items-start gap-4">
                       <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0">
