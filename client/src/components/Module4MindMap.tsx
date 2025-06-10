@@ -87,16 +87,18 @@ export default function Module4MindMap({
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
-  // Definição dos nós do mapa mental com melhor distribuição espacial
+  // Definição dos nós do mapa mental seguindo linha do tempo lógica horizontal
   const mindMapNodes: MindMapNode[] = [
-    // Centro - CRM One Core
+    // Linha Principal (Timeline Horizontal) - Base Y: 400
+    
+    // 1. Início - CRM One Core (Centro de partida)
     {
       id: 'core',
       title: 'CRM One',
       subtitle: 'Certificação Especialista',
       description: 'Centro de conhecimento completo do CRM One',
       icon: Trophy,
-      position: { x: 600, y: 400 },
+      position: { x: 200, y: 400 },
       color: 'blue',
       gradient: 'from-blue-600 to-purple-600',
       status: 'available',
@@ -106,44 +108,127 @@ export default function Module4MindMap({
       isCore: true
     },
 
-    // Ramo Superior Esquerdo - Licenças
+    // 2. Licenças (Primeiro tópico da timeline)
     {
       id: 'licencas',
       title: 'Licenças',
       description: 'Tipos de licenças e configurações',
       icon: Shield,
-      position: { x: 300, y: 200 },
+      position: { x: 350, y: 400 },
       color: 'green',
       gradient: 'from-green-600 to-emerald-600',
       status: 'available',
       contentType: 'pdf',
       estimatedTime: '20 min',
       difficulty: 'intermediate',
-      children: ['layout-admin', 'conceitos-licenca', 'tipos-acesso']
+      children: ['conceitos-licenca', 'tipos-acesso', 'layout-admin']
     },
 
+    // 3. Configurações (Segundo tópico da timeline)
     {
-      id: 'layout-admin',
-      title: 'Layout',
-      subtitle: 'Administração',
-      description: 'Interface de administração e layout customizável',
-      icon: Layout,
-      position: { x: 150, y: 120 },
-      color: 'green',
-      gradient: 'from-green-500 to-green-700',
+      id: 'configuracoes',
+      title: 'Configurações',
+      description: 'Configurações avançadas do sistema',
+      icon: Settings,
+      position: { x: 500, y: 400 },
+      color: 'orange',
+      gradient: 'from-orange-600 to-red-600',
       status: 'available',
-      contentType: 'interactive',
-      estimatedTime: '25 min',
+      contentType: 'pdf',
+      estimatedTime: '40 min',
+      difficulty: 'advanced',
+      children: ['grupos-itens', 'tipos-atividade']
+    },
+
+    // 4. Pipeline de Vendas (Terceiro tópico da timeline)
+    {
+      id: 'pipeline',
+      title: 'Pipeline',
+      subtitle: 'de Vendas',
+      description: 'Gestão completa do pipeline de vendas',
+      icon: TrendingUp,
+      position: { x: 650, y: 400 },
+      color: 'purple',
+      gradient: 'from-purple-600 to-indigo-600',
+      status: 'available',
+      contentType: 'presentation',
+      estimatedTime: '30 min',
+      difficulty: 'intermediate',
+      children: ['pedidos-vendas']
+    },
+
+    // 5. Lucro (Quarto tópico da timeline)
+    {
+      id: 'lucro',
+      title: 'Lucro',
+      description: 'Análise de lucratividade e margens',
+      icon: DollarSign,
+      position: { x: 800, y: 400 },
+      color: 'yellow',
+      gradient: 'from-yellow-600 to-orange-600',
+      status: 'available',
+      contentType: 'presentation',
+      estimatedTime: '28 min',
       difficulty: 'advanced'
     },
 
+    // 6. Relatórios (Quinto tópico da timeline)
+    {
+      id: 'relatorios',
+      title: 'Relatórios',
+      description: 'Sistema completo de relatórios',
+      icon: FileText,
+      position: { x: 950, y: 400 },
+      color: 'indigo',
+      gradient: 'from-indigo-600 to-purple-600',
+      status: 'available',
+      contentType: 'video',
+      estimatedTime: '45 min',
+      difficulty: 'advanced',
+      children: ['relatorios-principais']
+    },
+
+    // 7. Análise (Sexto tópico da timeline)
+    {
+      id: 'analise',
+      title: 'Análise',
+      description: 'Ferramentas de análise e Business Intelligence',
+      icon: BarChart3,
+      position: { x: 1100, y: 400 },
+      color: 'pink',
+      gradient: 'from-pink-600 to-rose-600',
+      status: 'available',
+      contentType: 'presentation',
+      estimatedTime: '35 min',
+      difficulty: 'advanced',
+      children: ['dashboards-bi']
+    },
+
+    // 8. Utilidades (Sétimo tópico da timeline)
+    {
+      id: 'utilidades',
+      title: 'Utilidades',
+      description: 'Ferramentas e utilitários do sistema',
+      icon: Settings,
+      position: { x: 1250, y: 400 },
+      color: 'cyan',
+      gradient: 'from-cyan-600 to-blue-600',
+      status: 'available',
+      contentType: 'video',
+      estimatedTime: '22 min',
+      difficulty: 'intermediate'
+    },
+
+    // Ramificações Superiores (Y: 250-320)
+    
+    // Licenças - Ramificações superiores
     {
       id: 'conceitos-licenca',
       title: 'Conceitos',
       subtitle: 'de Licença',
       description: 'Fundamentos e tipos de licenciamento',
       icon: BookOpen,
-      position: { x: 250, y: 80 },
+      position: { x: 300, y: 280 },
       color: 'green',
       gradient: 'from-emerald-500 to-green-600',
       status: 'available',
@@ -158,7 +243,7 @@ export default function Module4MindMap({
       subtitle: 'Acesso',
       description: 'Configuração de tipos de acesso e permissões',
       icon: Lock,
-      position: { x: 400, y: 120 },
+      position: { x: 380, y: 280 },
       color: 'green',
       gradient: 'from-green-600 to-teal-600',
       status: 'available',
@@ -167,30 +252,29 @@ export default function Module4MindMap({
       difficulty: 'intermediate'
     },
 
-    // Ramo Superior Central - Pipeline de Vendas
     {
-      id: 'pipeline',
-      title: 'Pipeline',
-      subtitle: 'de Vendas',
-      description: 'Gestão completa do pipeline de vendas',
-      icon: TrendingUp,
-      position: { x: 600, y: 150 },
-      color: 'purple',
-      gradient: 'from-purple-600 to-indigo-600',
+      id: 'layout-admin',
+      title: 'Layout',
+      subtitle: 'Administração',
+      description: 'Interface de administração e layout customizável',
+      icon: Layout,
+      position: { x: 340, y: 200 },
+      color: 'green',
+      gradient: 'from-green-500 to-green-700',
       status: 'available',
-      contentType: 'presentation',
-      estimatedTime: '30 min',
-      difficulty: 'intermediate',
-      children: ['pedidos-vendas']
+      contentType: 'interactive',
+      estimatedTime: '25 min',
+      difficulty: 'advanced'
     },
 
+    // Pipeline - Ramificações superiores
     {
       id: 'pedidos-vendas',
       title: 'Pedidos',
       subtitle: 'de Vendas',
       description: 'Gerenciamento de pedidos e processo de vendas',
       icon: BarChart3,
-      position: { x: 700, y: 80 },
+      position: { x: 650, y: 280 },
       color: 'purple',
       gradient: 'from-indigo-500 to-purple-700',
       status: 'available',
@@ -199,44 +283,32 @@ export default function Module4MindMap({
       difficulty: 'advanced'
     },
 
-    // Ramo Superior Direito - Utilidades
+    // Análise - Ramificações superiores
     {
-      id: 'utilidades',
-      title: 'Utilidades',
-      description: 'Ferramentas e utilitários do sistema',
-      icon: Settings,
-      position: { x: 950, y: 200 },
-      color: 'cyan',
-      gradient: 'from-cyan-600 to-blue-600',
+      id: 'dashboards-bi',
+      title: 'Dashboards',
+      subtitle: 'Business Intelligence',
+      description: 'Criação e customização de dashboards BI',
+      icon: Monitor,
+      position: { x: 1100, y: 280 },
+      color: 'pink',
+      gradient: 'from-rose-500 to-pink-700',
       status: 'available',
-      contentType: 'video',
-      estimatedTime: '22 min',
-      difficulty: 'intermediate'
-    },
-
-    // Ramo Esquerdo - Configurações
-    {
-      id: 'configuracoes',
-      title: 'Configurações',
-      description: 'Configurações avançadas do sistema',
-      icon: Settings,
-      position: { x: 200, y: 400 },
-      color: 'orange',
-      gradient: 'from-orange-600 to-red-600',
-      status: 'available',
-      contentType: 'pdf',
+      contentType: 'interactive',
       estimatedTime: '40 min',
-      difficulty: 'advanced',
-      children: ['grupos-itens', 'tipos-atividade']
+      difficulty: 'advanced'
     },
 
+    // Ramificações Inferiores (Y: 520-580)
+    
+    // Configurações - Ramificações inferiores
     {
       id: 'grupos-itens',
       title: 'Grupo',
       subtitle: 'de Itens',
       description: 'Organização e categorização de itens',
       icon: Layers,
-      position: { x: 80, y: 480 },
+      position: { x: 450, y: 520 },
       color: 'orange',
       gradient: 'from-red-500 to-orange-600',
       status: 'available',
@@ -251,7 +323,7 @@ export default function Module4MindMap({
       subtitle: 'Atividade',
       description: 'Configuração de tipos de atividades',
       icon: Calendar,
-      position: { x: 150, y: 550 },
+      position: { x: 550, y: 520 },
       color: 'orange',
       gradient: 'from-orange-600 to-yellow-600',
       status: 'available',
@@ -260,44 +332,14 @@ export default function Module4MindMap({
       difficulty: 'beginner'
     },
 
-    // Ramo Inferior Esquerdo - Lucro
-    {
-      id: 'lucro',
-      title: 'Lucro',
-      description: 'Análise de lucratividade e margens',
-      icon: DollarSign,
-      position: { x: 300, y: 600 },
-      color: 'yellow',
-      gradient: 'from-yellow-600 to-orange-600',
-      status: 'available',
-      contentType: 'presentation',
-      estimatedTime: '28 min',
-      difficulty: 'advanced'
-    },
-
-    // Ramo Central Inferior - Relatórios
-    {
-      id: 'relatorios',
-      title: 'Relatórios',
-      description: 'Sistema completo de relatórios',
-      icon: FileText,
-      position: { x: 600, y: 650 },
-      color: 'indigo',
-      gradient: 'from-indigo-600 to-purple-600',
-      status: 'available',
-      contentType: 'video',
-      estimatedTime: '45 min',
-      difficulty: 'advanced',
-      children: ['relatorios-principais']
-    },
-
+    // Relatórios - Ramificações inferiores
     {
       id: 'relatorios-principais',
       title: 'Principais',
       subtitle: 'Relatórios',
       description: 'Relatórios mais utilizados no CRM One',
       icon: PieChart,
-      position: { x: 750, y: 720 },
+      position: { x: 950, y: 520 },
       color: 'indigo',
       gradient: 'from-purple-500 to-indigo-700',
       status: 'available',
@@ -306,45 +348,14 @@ export default function Module4MindMap({
       difficulty: 'intermediate'
     },
 
-    // Ramo Direito - Análise
-    {
-      id: 'analise',
-      title: 'Análise',
-      description: 'Ferramentas de análise e Business Intelligence',
-      icon: BarChart3,
-      position: { x: 1000, y: 400 },
-      color: 'pink',
-      gradient: 'from-pink-600 to-rose-600',
-      status: 'available',
-      contentType: 'presentation',
-      estimatedTime: '35 min',
-      difficulty: 'advanced',
-      children: ['dashboards-bi']
-    },
-
-    {
-      id: 'dashboards-bi',
-      title: 'Dashboards',
-      subtitle: 'Business Intelligence',
-      description: 'Criação e customização de dashboards BI',
-      icon: Monitor,
-      position: { x: 1150, y: 320 },
-      color: 'pink',
-      gradient: 'from-rose-500 to-pink-700',
-      status: 'available',
-      contentType: 'interactive',
-      estimatedTime: '40 min',
-      difficulty: 'advanced'
-    },
-
-    // Avaliação Final
+    // Avaliação Final (Final da timeline)
     {
       id: 'avaliacao-final',
       title: 'Avaliação',
       subtitle: 'Certificação',
       description: 'Prova final para certificação de especialista',
       icon: Award,
-      position: { x: 600, y: 800 },
+      position: { x: 700, y: 650 },
       color: 'emerald',
       gradient: 'from-emerald-600 to-green-600',
       status: 'locked',
