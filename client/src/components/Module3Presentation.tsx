@@ -64,7 +64,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
   const [animatedCounters, setAnimatedCounters] = useState<{[key: string]: number}>({});
 
   const sections = [
-    'hero', 'interface', 'mobile', 'dashboards', 'security', 'support', 'modules', 'conclusion'
+    'hero', 'interface', 'mobile', 'dashboards', 'security', 'support', 'why-choose', 'modules', 'conclusion'
   ];
 
   const toggleSection = (sectionId: string) => {
@@ -612,6 +612,125 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                         </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        )}
+      </Card>
+
+      {/* Why Choose CRM One Section */}
+      <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-indigo-500/30 transition-all duration-500">
+        <div 
+          className="cursor-pointer transition-all duration-300"
+          onClick={() => toggleSection('why-choose')}
+        >
+          <div className="bg-gradient-to-r from-indigo-900 via-blue-900 to-indigo-900 p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
+                  <Award className="w-6 h-6 text-indigo-400" />
+                </div>
+                <h2 className="text-2xl font-bold text-white">Por que Escolher o CRM One?</h2>
+              </div>
+              {expandedSections.has('why-choose') ? 
+                <ChevronUp className="w-6 h-6 text-indigo-400" /> : 
+                <ChevronDown className="w-6 h-6 text-indigo-400" />
+              }
+            </div>
+          </div>
+        </div>
+        
+        {expandedSections.has('why-choose') && (
+          <CardContent className="p-8 animate-in slide-in-from-left duration-500">
+            <div className="space-y-8">
+              <div className="text-center">
+                <h3 className="text-3xl font-bold bg-gradient-to-r from-indigo-300 to-blue-300 bg-clip-text text-transparent mb-4">
+                  A Escolha Inteligente para Seu Negócio
+                </h3>
+                <p className="text-slate-300 text-lg max-w-3xl mx-auto">
+                  Mais de 500 empresas confiam no CRM One para transformar suas operações comerciais.
+                </p>
+              </div>
+
+              <div className="grid lg:grid-cols-3 gap-6">
+                {[
+                  {
+                    icon: Trophy,
+                    title: "ROI Comprovado",
+                    description: "Retorno sobre investimento em até 6 meses com resultados mensuráveis",
+                    stats: "ROI médio de 300%",
+                    color: "yellow"
+                  },
+                  {
+                    icon: Sparkles,
+                    title: "Integração Nativa",
+                    description: "100% integrado ao SAP Business One sem necessidade de middleware",
+                    stats: "Tempo real 24/7",
+                    color: "green"
+                  },
+                  {
+                    icon: Heart,
+                    title: "Satisfação dos Clientes",
+                    description: "NPS de 8.7/10 com suporte especializado e atendimento personalizado",
+                    stats: "98% de satisfação",
+                    color: "red"
+                  }
+                ].map((reason, index) => (
+                  <div key={index} className={`group p-6 bg-gradient-to-br from-${reason.color}-900/20 to-${reason.color}-800/20 rounded-xl border border-${reason.color}-600/30 hover:border-${reason.color}-500/50 transition-all duration-300 hover:scale-105`}>
+                    <div className="text-center space-y-4">
+                      <div className={`w-16 h-16 bg-${reason.color}-500/20 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300`}>
+                        <reason.icon className={`w-8 h-8 text-${reason.color}-400`} />
+                      </div>
+                      <h4 className="text-xl font-bold text-slate-200 group-hover:text-white transition-colors duration-300">
+                        {reason.title}
+                      </h4>
+                      <p className="text-slate-300 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
+                        {reason.description}
+                      </p>
+                      <div className={`inline-block px-3 py-1 bg-${reason.color}-500/20 text-${reason.color}-300 rounded-full text-sm font-semibold border border-${reason.color}-600/30`}>
+                        {reason.stats}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-gradient-to-br from-indigo-600/10 to-blue-600/10 p-8 rounded-2xl border border-indigo-500/30">
+                <div className="grid md:grid-cols-2 gap-8 items-center">
+                  <div className="space-y-4">
+                    <h4 className="text-2xl font-bold text-indigo-300">Números que Impressionam</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      {[
+                        { value: "500+", label: "Empresas ativas" },
+                        { value: "9", label: "Anos de mercado" },
+                        { value: "99.8%", label: "Uptime garantido" },
+                        { value: "< 2h", label: "Tempo de resposta" }
+                      ].map((stat, index) => (
+                        <div key={index} className="text-center p-3 bg-slate-800/50 rounded-lg">
+                          <div className="text-2xl font-bold text-indigo-300">{stat.value}</div>
+                          <div className="text-sm text-slate-400">{stat.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <h4 className="text-xl font-semibold text-indigo-300">Diferenciais Únicos</h4>
+                    <div className="space-y-2">
+                      {[
+                        "Desenvolvido por especialistas SAP",
+                        "Suporte técnico nacional especializado",
+                        "Implementação rápida e eficiente",
+                        "Customizações sob medida",
+                        "Treinamento completo incluído"
+                      ].map((differential, index) => (
+                        <div key={index} className="flex items-center gap-2 text-sm text-slate-300">
+                          <CheckCircle className="w-4 h-4 text-indigo-400" />
+                          {differential}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
