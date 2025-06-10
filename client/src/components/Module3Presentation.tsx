@@ -217,39 +217,103 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                     icon: Globe,
                     title: "SAP Certified",
                     desc: "Certificado pela SAP",
+                    details: "Única solução CRM com certificação oficial SAP",
                     color: "blue",
-                    gradient: "from-blue-600/20 to-cyan-600/20",
+                    gradient: "from-blue-600/20 via-cyan-600/10 to-blue-600/20",
                     border: "border-blue-500/30",
-                    iconBg: "bg-blue-500/20"
+                    iconBg: "bg-blue-500/20",
+                    badge: "OFICIAL",
+                    features: ["Compatibilidade garantida", "Suporte SAP", "Atualizações automáticas"]
                   },
                   {
                     icon: Zap,
                     title: "100% Integrado",
                     desc: "Integração nativa com SAP B1",
+                    details: "Sem APIs externas, dados em tempo real",
                     color: "green",
-                    gradient: "from-green-600/20 to-emerald-600/20",
+                    gradient: "from-green-600/20 via-emerald-600/10 to-green-600/20",
                     border: "border-green-500/30",
-                    iconBg: "bg-green-500/20"
+                    iconBg: "bg-green-500/20",
+                    badge: "NATIVO",
+                    features: ["Zero latência", "Dados sincronizados", "Performance máxima"]
                   },
                   {
                     icon: Award,
                     title: "DWU IT Solutions",
                     desc: "Especialistas em SAP",
+                    details: "15 anos de experiência em SAP Business One",
                     color: "purple",
-                    gradient: "from-purple-600/20 to-pink-600/20",
+                    gradient: "from-purple-600/20 via-pink-600/10 to-purple-600/20",
                     border: "border-purple-500/30",
-                    iconBg: "bg-purple-500/20"
+                    iconBg: "bg-purple-500/20",
+                    badge: "EXPERT",
+                    features: ["500+ implementações", "Suporte 24/7", "Consultoria especializada"]
                   }
                 ].map((item, index) => (
-                  <div key={index} className={`group/card text-center p-8 bg-gradient-to-br ${item.gradient} rounded-2xl border ${item.border} hover:border-opacity-70 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-${item.color}-500/20 cursor-pointer`}>
-                    <div className="relative mb-6">
-                      <div className={`w-20 h-20 ${item.iconBg} rounded-3xl flex items-center justify-center mx-auto group-hover/card:scale-110 group-hover/card:rotate-6 transition-all duration-500 shadow-lg`}>
-                        <item.icon className={`w-10 h-10 text-${item.color}-400 drop-shadow-sm`} />
-                      </div>
-                      <div className={`absolute -inset-2 bg-gradient-to-r from-${item.color}-500/20 to-${item.color}-600/20 rounded-3xl blur-lg opacity-0 group-hover/card:opacity-100 transition-opacity duration-500`}></div>
+                  <div key={index} className={`group/card relative overflow-hidden`}>
+                    {/* Fundo animado */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 to-slate-800/50 rounded-3xl"></div>
+                    <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} rounded-3xl opacity-0 group-hover/card:opacity-100 transition-all duration-700`}></div>
+                    
+                    {/* Borda animada */}
+                    <div className={`absolute inset-0 rounded-3xl border-2 ${item.border} group-hover/card:border-${item.color}-400/70 transition-all duration-500`}></div>
+                    
+                    {/* Glow effect */}
+                    <div className={`absolute inset-0 rounded-3xl blur-xl bg-gradient-to-br from-${item.color}-500/0 to-${item.color}-600/0 group-hover/card:from-${item.color}-500/20 group-hover/card:to-${item.color}-600/20 transition-all duration-700`}></div>
+                    
+                    {/* Badge superior */}
+                    <div className={`absolute top-4 right-4 px-3 py-1 bg-${item.color}-500/20 border border-${item.color}-500/30 rounded-full backdrop-blur-sm`}>
+                      <span className={`text-${item.color}-300 text-xs font-bold tracking-wider`}>{item.badge}</span>
                     </div>
-                    <h4 className={`text-xl font-bold text-${item.color}-300 mb-3 group-hover/card:text-white transition-colors duration-300`}>{item.title}</h4>
-                    <p className="text-slate-400 group-hover/card:text-slate-300 transition-colors duration-300">{item.desc}</p>
+                    
+                    {/* Conteúdo principal */}
+                    <div className="relative p-8 text-center h-full flex flex-col justify-between cursor-pointer transform group-hover/card:scale-105 transition-all duration-500">
+                      {/* Ícone com efeitos */}
+                      <div className="relative mb-6">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-full animate-pulse"></div>
+                        <div className={`relative w-24 h-24 ${item.iconBg} rounded-full flex items-center justify-center mx-auto group-hover/card:scale-110 group-hover/card:rotate-12 transition-all duration-700 shadow-2xl`}>
+                          <item.icon className={`w-12 h-12 text-${item.color}-400 drop-shadow-lg group-hover/card:text-${item.color}-300 transition-colors duration-300`} />
+                          
+                          {/* Círculos decorativos */}
+                          <div className={`absolute -inset-2 border-2 border-${item.color}-500/30 rounded-full opacity-0 group-hover/card:opacity-100 group-hover/card:scale-125 transition-all duration-500`}></div>
+                          <div className={`absolute -inset-4 border border-${item.color}-500/20 rounded-full opacity-0 group-hover/card:opacity-100 group-hover/card:scale-150 transition-all duration-700`}></div>
+                        </div>
+                        
+                        {/* Partículas flutuantes */}
+                        <div className={`absolute top-0 left-1/2 w-2 h-2 bg-${item.color}-400 rounded-full opacity-0 group-hover/card:opacity-100 group-hover/card:-translate-y-4 group-hover/card:translate-x-4 transition-all duration-1000`}></div>
+                        <div className={`absolute top-1/2 right-0 w-1 h-1 bg-${item.color}-400 rounded-full opacity-0 group-hover/card:opacity-100 group-hover/card:translate-x-4 group-hover/card:-translate-y-2 transition-all duration-1000 delay-100`}></div>
+                        <div className={`absolute bottom-0 left-1/4 w-1.5 h-1.5 bg-${item.color}-400 rounded-full opacity-0 group-hover/card:opacity-100 group-hover/card:-translate-x-4 group-hover/card:translate-y-4 transition-all duration-1000 delay-200`}></div>
+                      </div>
+                      
+                      {/* Título e descrição */}
+                      <div className="mb-6">
+                        <h4 className={`text-2xl font-bold text-${item.color}-300 mb-3 group-hover/card:text-white transition-colors duration-300`}>
+                          {item.title}
+                        </h4>
+                        <p className="text-slate-400 group-hover/card:text-slate-200 transition-colors duration-300 mb-2 font-medium">
+                          {item.desc}
+                        </p>
+                        <p className="text-slate-500 group-hover/card:text-slate-300 transition-colors duration-300 text-sm">
+                          {item.details}
+                        </p>
+                      </div>
+                      
+                      {/* Features list */}
+                      <div className="space-y-2">
+                        {item.features.map((feature, fIndex) => (
+                          <div key={fIndex} className="flex items-center justify-center gap-2 opacity-0 group-hover/card:opacity-100 transition-all duration-500" style={{transitionDelay: `${fIndex * 100 + 300}ms`}}>
+                            <div className={`w-1.5 h-1.5 bg-${item.color}-400 rounded-full animate-pulse`}></div>
+                            <span className="text-slate-400 text-xs font-medium">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      {/* Linha decorativa inferior */}
+                      <div className={`absolute bottom-0 left-0 h-1 bg-gradient-to-r from-${item.color}-500 to-${item.color}-600 rounded-full transition-all duration-500 w-0 group-hover/card:w-full`}></div>
+                    </div>
+                    
+                    {/* Shine effect */}
+                    <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/card:translate-x-full transition-transform duration-1000 ease-in-out"></div>
                   </div>
                 ))}
               </div>
