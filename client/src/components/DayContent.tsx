@@ -14,7 +14,7 @@ import SimulationComponent from "./SimulationComponent";
 import { onboardingData } from "@/lib/onboarding-data";
 import { 
   Building, Heart, BarChart, Ticket, 
-  Clock, Headset, Download, Trophy, Users,
+  Headset, Download, Trophy, Users,
   FileText, TriangleAlert, Search, Gamepad, Info, ArrowUp, ArrowRight, UserCircle, Presentation,
   Target, Lightbulb, Zap, Shield, Eye, Rocket, Brain, Handshake, TrendingUp, Settings,
   Server, Code, Network, ArrowDown, Monitor
