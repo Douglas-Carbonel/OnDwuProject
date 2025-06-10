@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Clock, Users, Target, BookOpen, Award, Star, Trophy, Rocket, FileText, Monitor, Database, Zap, BarChart3, TrendingUp, Shield, Settings, DollarSign, Globe, RefreshCw, AlertCircle, PlayCircle, Pause, RotateCcw, Volume2, VolumeX, Maximize, Minimize, ArrowLeft } from "lucide-react";
+import { CheckCircle, Clock, Users, Target, BookOpen, Award, Star, Trophy, Rocket, FileText, Monitor, Database, Zap, BarChart3, TrendingUp, Shield, Settings, DollarSign, Globe, RefreshCw, AlertCircle, PlayCircle, Pause, RotateCcw, Volume2, VolumeX, Maximize, Minimize, ArrowLeft, Building, Heart, BarChart, Ticket, Headset, Download, TriangleAlert, Search, Gamepad, Info, ArrowUp, ArrowRight, UserCircle, Presentation, Lightbulb, Eye, Brain, Handshake, Server, Code, Network, ArrowDown } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import SlidePresentation from "./SlidePresentation";
 import Module3Presentation from "./Module3Presentation";
@@ -12,13 +12,6 @@ import Module4MindMap from "./Module4MindMap";
 import QuizComponent from "./QuizComponent";
 import SimulationComponent from "./SimulationComponent";
 import { onboardingData } from "@/lib/onboarding-data";
-import { 
-  Building, Heart, BarChart, Ticket, 
-  Headset, Download, Users,
-  FileText, TriangleAlert, Search, Gamepad, Info, ArrowUp, ArrowRight, UserCircle, Presentation,
-  Target, Lightbulb, Zap, Shield, Eye, Rocket, Brain, Handshake, TrendingUp, Settings,
-  Server, Code, Network, ArrowDown, Monitor
-} from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface DayContentProps {
@@ -234,7 +227,7 @@ function LocalSlidePresentation({ onComplete }: LocalSlidePresentationProps) {
                       </div>
                       <div>
                         <h5 className="text-white font-bold text-lg mb-2">{axiom.text}</h5>
-                        <p className="text-green-100 text-sm leading-relaxed">{axiom.desc}</p>
+                        <p className="text-green-100 text-sm leading-relaxed">{(axiom as any).desc}</p>
                       </div>
                     </div>
                   </div>
@@ -706,7 +699,8 @@ export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
             doc.text(`Gerado em: ${new Date().toLocaleString('pt-BR')}`, 120, 292);
           }
 
-          // Save the PDF          const fileName = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
+          // Save the PDF
+          const fileName = `${materialName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
           console.log('💾 Salvando arquivo:', fileName);
           doc.save(fileName);
           console.log('✅ Download concluído:', materialName);
