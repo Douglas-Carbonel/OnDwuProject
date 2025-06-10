@@ -348,7 +348,7 @@ export default function OnboardingLayout({ onGoToAdmin, onBack }: OnboardingLayo
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-300 font-medium">Tempo Investido</span>
-                  <span className="text-blue-400 font-semibold">~{completedDays.length * 1.6}h</span>
+                  <span className="text-blue-400 font-semibold">~{Math.round(completedDays.length * 1.6 * 10) / 10}h</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-300 font-medium">Nível de Expertise</span>
