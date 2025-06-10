@@ -87,7 +87,7 @@ export default function Module4MindMap({
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
-  // Definição dos nós do mapa mental baseado na imagem
+  // Definição dos nós do mapa mental com melhor distribuição espacial
   const mindMapNodes: MindMapNode[] = [
     // Centro - CRM One Core
     {
@@ -96,7 +96,7 @@ export default function Module4MindMap({
       subtitle: 'Certificação Especialista',
       description: 'Centro de conhecimento completo do CRM One',
       icon: Trophy,
-      position: { x: 500, y: 300 },
+      position: { x: 600, y: 400 },
       color: 'blue',
       gradient: 'from-blue-600 to-purple-600',
       status: 'available',
@@ -112,7 +112,7 @@ export default function Module4MindMap({
       title: 'Licenças',
       description: 'Tipos de licenças e configurações',
       icon: Shield,
-      position: { x: 200, y: 150 },
+      position: { x: 300, y: 200 },
       color: 'green',
       gradient: 'from-green-600 to-emerald-600',
       status: 'available',
@@ -128,7 +128,7 @@ export default function Module4MindMap({
       subtitle: 'Administração',
       description: 'Interface de administração e layout customizável',
       icon: Layout,
-      position: { x: 100, y: 100 },
+      position: { x: 150, y: 120 },
       color: 'green',
       gradient: 'from-green-500 to-green-700',
       status: 'available',
@@ -143,7 +143,7 @@ export default function Module4MindMap({
       subtitle: 'de Licença',
       description: 'Fundamentos e tipos de licenciamento',
       icon: BookOpen,
-      position: { x: 150, y: 50 },
+      position: { x: 250, y: 80 },
       color: 'green',
       gradient: 'from-emerald-500 to-green-600',
       status: 'available',
@@ -158,7 +158,7 @@ export default function Module4MindMap({
       subtitle: 'Acesso',
       description: 'Configuração de tipos de acesso e permissões',
       icon: Lock,
-      position: { x: 250, y: 80 },
+      position: { x: 400, y: 120 },
       color: 'green',
       gradient: 'from-green-600 to-teal-600',
       status: 'available',
@@ -174,7 +174,7 @@ export default function Module4MindMap({
       subtitle: 'de Vendas',
       description: 'Gestão completa do pipeline de vendas',
       icon: TrendingUp,
-      position: { x: 500, y: 100 },
+      position: { x: 600, y: 150 },
       color: 'purple',
       gradient: 'from-purple-600 to-indigo-600',
       status: 'available',
@@ -190,7 +190,7 @@ export default function Module4MindMap({
       subtitle: 'de Vendas',
       description: 'Gerenciamento de pedidos e processo de vendas',
       icon: BarChart3,
-      position: { x: 550, y: 50 },
+      position: { x: 700, y: 80 },
       color: 'purple',
       gradient: 'from-indigo-500 to-purple-700',
       status: 'available',
@@ -205,7 +205,7 @@ export default function Module4MindMap({
       title: 'Utilidades',
       description: 'Ferramentas e utilitários do sistema',
       icon: Settings,
-      position: { x: 800, y: 150 },
+      position: { x: 950, y: 200 },
       color: 'cyan',
       gradient: 'from-cyan-600 to-blue-600',
       status: 'available',
@@ -220,7 +220,7 @@ export default function Module4MindMap({
       title: 'Configurações',
       description: 'Configurações avançadas do sistema',
       icon: Settings,
-      position: { x: 150, y: 300 },
+      position: { x: 200, y: 400 },
       color: 'orange',
       gradient: 'from-orange-600 to-red-600',
       status: 'available',
@@ -236,7 +236,7 @@ export default function Module4MindMap({
       subtitle: 'de Itens',
       description: 'Organização e categorização de itens',
       icon: Layers,
-      position: { x: 50, y: 350 },
+      position: { x: 80, y: 480 },
       color: 'orange',
       gradient: 'from-red-500 to-orange-600',
       status: 'available',
@@ -248,10 +248,10 @@ export default function Module4MindMap({
     {
       id: 'tipos-atividade',
       title: 'Tipos',
-      subtitle: 'Ativol',
+      subtitle: 'Atividade',
       description: 'Configuração de tipos de atividades',
       icon: Calendar,
-      position: { x: 100, y: 400 },
+      position: { x: 150, y: 550 },
       color: 'orange',
       gradient: 'from-orange-600 to-yellow-600',
       status: 'available',
@@ -266,7 +266,7 @@ export default function Module4MindMap({
       title: 'Lucro',
       description: 'Análise de lucratividade e margens',
       icon: DollarSign,
-      position: { x: 200, y: 450 },
+      position: { x: 300, y: 600 },
       color: 'yellow',
       gradient: 'from-yellow-600 to-orange-600',
       status: 'available',
@@ -281,7 +281,7 @@ export default function Module4MindMap({
       title: 'Relatórios',
       description: 'Sistema completo de relatórios',
       icon: FileText,
-      position: { x: 500, y: 500 },
+      position: { x: 600, y: 650 },
       color: 'indigo',
       gradient: 'from-indigo-600 to-purple-600',
       status: 'available',
@@ -297,7 +297,7 @@ export default function Module4MindMap({
       subtitle: 'Relatórios',
       description: 'Relatórios mais utilizados no CRM One',
       icon: PieChart,
-      position: { x: 550, y: 550 },
+      position: { x: 750, y: 720 },
       color: 'indigo',
       gradient: 'from-purple-500 to-indigo-700',
       status: 'available',
@@ -312,7 +312,7 @@ export default function Module4MindMap({
       title: 'Análise',
       description: 'Ferramentas de análise e Business Intelligence',
       icon: BarChart3,
-      position: { x: 800, y: 300 },
+      position: { x: 1000, y: 400 },
       color: 'pink',
       gradient: 'from-pink-600 to-rose-600',
       status: 'available',
@@ -328,7 +328,7 @@ export default function Module4MindMap({
       subtitle: 'Business Intelligence',
       description: 'Criação e customização de dashboards BI',
       icon: Monitor,
-      position: { x: 900, y: 250 },
+      position: { x: 1150, y: 320 },
       color: 'pink',
       gradient: 'from-rose-500 to-pink-700',
       status: 'available',
@@ -344,7 +344,7 @@ export default function Module4MindMap({
       subtitle: 'Certificação',
       description: 'Prova final para certificação de especialista',
       icon: Award,
-      position: { x: 500, y: 650 },
+      position: { x: 600, y: 800 },
       color: 'emerald',
       gradient: 'from-emerald-600 to-green-600',
       status: 'locked',
@@ -552,7 +552,7 @@ export default function Module4MindMap({
   const progress = calculateProgress();
 
   return (
-    <div className="relative w-full h-[800px] bg-slate-900 rounded-2xl overflow-hidden border border-slate-700">
+    <div className="relative w-full h-[900px] bg-slate-900 rounded-2xl overflow-hidden border border-slate-700">
       {/* Header com progresso */}
       <div className="absolute top-0 left-0 right-0 z-30 bg-gradient-to-r from-slate-900/95 to-slate-800/95 backdrop-blur-sm border-b border-slate-700 p-6">
         <div className="flex items-center justify-between">
