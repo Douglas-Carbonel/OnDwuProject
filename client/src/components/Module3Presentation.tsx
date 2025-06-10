@@ -449,9 +449,6 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Continue com as outras seções seguindo o mesmo padrão... */}
-      {/* Por brevidade, vou mostrar apenas mais uma seção aprimorada */}
-
       {/* Functionalities Section - Aprimorado */}
       <Card className="relative overflow-hidden group hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-700 border-slate-700/50 bg-gradient-to-br from-slate-900/50 to-slate-800/50 backdrop-blur-sm">
         <div 
@@ -535,6 +532,477 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          </CardContent>
+        )}
+      </Card>
+
+      {/* Modules Section - Aprimorado */}
+      <Card className="relative overflow-hidden group hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-700 border-slate-700/50 bg-gradient-to-br from-slate-900/50 to-slate-800/50 backdrop-blur-sm">
+        <div 
+          className="cursor-pointer transition-all duration-500"
+          onClick={() => toggleSection('modules')}
+        >
+          <div className="bg-gradient-to-r from-orange-900/80 via-red-900/80 to-orange-900/80 p-6 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-600/10 to-red-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="relative flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className={`w-14 h-14 bg-orange-500/20 rounded-2xl flex items-center justify-center group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 shadow-lg ${expandedSections.has('modules') ? 'rotate-12 scale-110' : ''}`}>
+                  <Layers className="w-7 h-7 text-orange-400" />
+                </div>
+                <h2 className="text-3xl font-bold text-white group-hover:text-orange-100 transition-colors duration-300">💎 Benefícios Exclusivos da Ferramenta</h2>
+              </div>
+              <div className={`transform transition-all duration-500 ${expandedSections.has('modules') ? 'rotate-180' : ''}`}>
+                <ChevronDown className="w-6 h-6 text-orange-400 group-hover:animate-bounce" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {expandedSections.has('modules') && (
+          <CardContent className="p-8 animate-in slide-in-from-top duration-700">
+            <div className="space-y-8">
+              <div className="text-center">
+                <h3 className="text-3xl font-bold bg-gradient-to-r from-orange-300 to-red-300 bg-clip-text text-transparent mb-4">
+                  🚀 Transforme Seu Negócio Hoje
+                </h3>
+                <p className="text-slate-300 text-lg max-w-3xl mx-auto">
+                  Descubra como cada funcionalidade vai revolucionar sua operação e aumentar seus resultados.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[
+                  {
+                    icon: BarChart3,
+                    title: "Dashboard Comercial",
+                    description: "Visão completa das vendas em tempo real",
+                    color: "blue",
+                    features: ["Gráficos interativos", "Métricas de performance", "Alertas personalizados"]
+                  },
+                  {
+                    icon: Users,
+                    title: "Gestão de Clientes",
+                    description: "Relacionamento completo e histórico unificado",
+                    color: "green",
+                    features: ["Histórico completo", "Segmentação avançada", "Comunicação integrada"]
+                  },
+                  {
+                    icon: TrendingUp,
+                    title: "Análise de Vendas",
+                    description: "Relatórios detalhados e previsões",
+                    color: "purple",
+                    features: ["Forecasting", "Análise de tendências", "ROI detalhado"]
+                  },
+                  {
+                    icon: Settings,
+                    title: "Automação",
+                    description: "Processos automatizados e workflows",
+                    color: "cyan",
+                    features: ["Fluxos personalizados", "Notificações automáticas", "Integração nativa"]
+                  },
+                  {
+                    icon: FileText,
+                    title: "Relatórios Avançados",
+                    description: "Crystal Reports e dashboards customizáveis",
+                    color: "yellow",
+                    features: ["Templates prontos", "Exportação múltipla", "Agendamento automático"]
+                  },
+                  {
+                    icon: Smartphone,
+                    title: "Mobile First",
+                    description: "Acesso completo via aplicativo móvel",
+                    color: "red",
+                    features: ["App nativo", "Sincronização offline", "Notificações push"]
+                  }
+                ].map((module, index) => (
+                  <div key={index} className={`group/module bg-gradient-to-br from-${module.color}-900/20 via-${module.color}-800/10 to-${module.color}-900/20 p-8 rounded-3xl border border-${module.color}-600/30 hover:border-${module.color}-500/50 transition-all duration-500 hover:scale-105 cursor-pointer hover:shadow-xl hover:shadow-${module.color}-500/20 relative overflow-hidden`}>
+                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-red-500/5 opacity-0 group-hover/module:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative">
+                      <div className={`w-16 h-16 bg-${module.color}-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover/module:scale-110 group-hover/module:rotate-6 transition-all duration-500 shadow-lg`}>
+                        <module.icon className={`w-8 h-8 text-${module.color}-400`} />
+                      </div>
+                      <h4 className={`text-xl font-bold text-${module.color}-300 mb-4 text-center group-hover/module:text-white transition-colors duration-300`}>{module.title}</h4>
+                      <p className="text-slate-300 text-center mb-6 group-hover/module:text-slate-200 transition-colors duration-300">{module.description}</p>
+                      <div className="space-y-3">
+                        {module.features.map((feature, fIndex) => (
+                          <div key={fIndex} className="flex items-center gap-3">
+                            <div className={`w-2 h-2 bg-${module.color}-400 rounded-full animate-pulse`}></div>
+                            <span className="text-slate-400 text-sm group-hover/module:text-slate-300 transition-colors duration-300">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        )}
+      </Card>
+
+      {/* Why Choose Section - Aprimorado */}
+      <Card className="relative overflow-hidden group hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-700 border-slate-700/50 bg-gradient-to-br from-slate-900/50 to-slate-800/50 backdrop-blur-sm">
+        <div 
+          className="cursor-pointer transition-all duration-500"
+          onClick={() => toggleSection('why-choose')}
+        >
+          <div className="bg-gradient-to-r from-indigo-900/80 via-blue-900/80 to-indigo-900/80 p-6 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="relative flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className={`w-14 h-14 bg-indigo-500/20 rounded-2xl flex items-center justify-center group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 shadow-lg ${expandedSections.has('why-choose') ? 'rotate-12 scale-110' : ''}`}>
+                  <Star className="w-7 h-7 text-indigo-400" />
+                </div>
+                <h2 className="text-3xl font-bold text-white group-hover:text-indigo-100 transition-colors duration-300">Por que escolher o CRM One?</h2>
+              </div>
+              <div className={`transform transition-all duration-500 ${expandedSections.has('why-choose') ? 'rotate-180' : ''}`}>
+                <ChevronDown className="w-6 h-6 text-indigo-400 group-hover:animate-bounce" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {expandedSections.has('why-choose') && (
+          <CardContent className="p-8 animate-in slide-in-from-right duration-700">
+            <div className="space-y-10">
+              <div className="text-center">
+                <h3 className="text-4xl font-bold bg-gradient-to-r from-indigo-300 via-blue-300 to-cyan-300 bg-clip-text text-transparent mb-8 animate-pulse">
+                  Diferenciais Únicos
+                </h3>
+              </div>
+
+              <div className="grid lg:grid-cols-2 gap-12">
+                <div className="space-y-8">
+                  <h4 className="text-2xl font-bold text-indigo-300 flex items-center gap-3">
+                    <Trophy className="w-6 h-6" />
+                    Vantagens Competitivas
+                  </h4>
+                  <div className="space-y-6">
+                    {[
+                      {
+                        icon: Shield,
+                        title: "Certificação SAP Official",
+                        desc: "Única solução CRM certificada oficialmente pela SAP para Business One",
+                        highlight: "Garantia de compatibilidade total"
+                      },
+                      {
+                        icon: Database,
+                        title: "Dados na Sua Infraestrutura",
+                        desc: "100% dos dados permanecem em sua empresa, sem dependência de nuvens externas",
+                        highlight: "Máxima segurança e controle"
+                      },
+                      {
+                        icon: Zap,
+                        title: "Zero Integrações Externas",
+                        desc: "Funciona nativamente com SAP B1, sem APIs ou conectores intermediários",
+                        highlight: "Performance superior e estabilidade"
+                      },
+                      {
+                        icon: RefreshCw,
+                        title: "Evolução Automática",
+                        desc: "Atualizações automáticas com novas versões do SAP sem quebrar funcionalidades",
+                        highlight: "Investimento protegido no futuro"
+                      }
+                    ].map((advantage, index) => (
+                      <div key={index} className="group/adv bg-gradient-to-r from-indigo-900/20 to-blue-900/20 p-6 rounded-2xl border border-indigo-600/30 hover:border-indigo-500/50 transition-all duration-500 hover:scale-105 cursor-pointer hover:shadow-lg hover:shadow-indigo-500/20">
+                        <div className="flex items-start gap-6">
+                          <div className="w-14 h-14 bg-indigo-500/20 rounded-xl flex items-center justify-center group-hover/adv:scale-110 group-hover/adv:rotate-6 transition-all duration-500 shadow-lg">
+                            <advantage.icon className="w-7 h-7 text-indigo-400" />
+                          </div>
+                          <div className="flex-1">
+                            <h5 className="text-lg font-bold text-indigo-300 mb-2 group-hover/adv:text-white transition-colors duration-300">{advantage.title}</h5>
+                            <p className="text-slate-300 mb-3 group-hover/adv:text-slate-200 transition-colors duration-300">{advantage.desc}</p>
+                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/20 rounded-full border border-indigo-500/30">
+                              <Star className="w-4 h-4 text-indigo-400" />
+                              <span className="text-indigo-300 text-sm font-medium">{advantage.highlight}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-8">
+                  <h4 className="text-2xl font-bold text-indigo-300 flex items-center gap-3">
+                    <Handshake className="w-6 h-6" />
+                    Compromisso DWU IT Solutions
+                  </h4>
+                  <div className="bg-gradient-to-br from-indigo-600/10 to-blue-600/10 p-8 rounded-3xl border border-indigo-500/30 hover:border-indigo-400/50 transition-all duration-500 group/commitment cursor-pointer">
+                    <div className="text-center space-y-6">
+                      <div className="relative">
+                        <div className="w-24 h-24 bg-indigo-500/20 rounded-full flex items-center justify-center mx-auto group-hover/commitment:scale-110 transition-transform duration-500 shadow-2xl">
+                          <Award className="w-12 h-12 text-indigo-400" />
+                        </div>
+                        <div className="absolute -inset-4 bg-gradient-to-r from-indigo-500/20 to-blue-500/20 rounded-full blur-lg opacity-0 group-hover/commitment:opacity-100 transition-opacity duration-500"></div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <h5 className="text-2xl font-bold text-indigo-300 group-hover/commitment:text-white transition-colors duration-300">15 Anos de Expertise</h5>
+                        <p className="text-slate-300 group-hover/commitment:text-slate-200 transition-colors duration-300">
+                          Especializados exclusivamente em SAP Business One desde 2009
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-6 text-center">
+                        <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/30 hover:border-indigo-500/30 transition-colors duration-300">
+                          <div className="text-indigo-300 font-bold text-2xl">500+</div>
+                          <div className="text-slate-400 text-sm">Implementações</div>
+                        </div>
+                        <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/30 hover:border-indigo-500/30 transition-colors duration-300">
+                          <div className="text-indigo-300 font-bold text-2xl">98%</div>
+                          <div className="text-slate-400 text-sm">Satisfação</div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        {[
+                          "Suporte técnico especializado 24/7",
+                          "Treinamento completo incluído",
+                          "Garantia de funcionamento",
+                          "Consultoria estratégica contínua"
+                        ].map((item, index) => (
+                          <div key={index} className="flex items-center justify-center gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-400" />
+                            <span className="text-slate-300 text-sm">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        )}
+      </Card>
+
+      {/* Comparison Section - Aprimorado */}
+      <Card className="relative overflow-hidden group hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-700 border-slate-700/50 bg-gradient-to-br from-slate-900/50 to-slate-800/50 backdrop-blur-sm">
+        <div 
+          className="cursor-pointer transition-all duration-500"
+          onClick={() => toggleSection('comparison')}
+        >
+          <div className="bg-gradient-to-r from-red-900/80 via-pink-900/80 to-red-900/80 p-6 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-red-600/10 to-pink-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="relative flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className={`w-14 h-14 bg-red-500/20 rounded-2xl flex items-center justify-center group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 shadow-lg ${expandedSections.has('comparison') ? 'rotate-12 scale-110' : ''}`}>
+                  <LineChart className="w-7 h-7 text-red-400" />
+                </div>
+                <h2 className="text-3xl font-bold text-white group-hover:text-red-100 transition-colors duration-300">CRM One vs Concorrência</h2>
+              </div>
+              <div className={`transform transition-all duration-500 ${expandedSections.has('comparison') ? 'rotate-180' : ''}`}>
+                <ChevronDown className="w-6 h-6 text-red-400 group-hover:animate-bounce" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {expandedSections.has('comparison') && (
+          <CardContent className="p-8 animate-in slide-in-from-bottom duration-700">
+            <div className="space-y-10">
+              <div className="text-center">
+                <h3 className="text-4xl font-bold bg-gradient-to-r from-red-300 via-pink-300 to-red-300 bg-clip-text text-transparent mb-6 animate-pulse">
+                  Comparação Detalhada
+                </h3>
+                <p className="text-slate-300 text-lg max-w-3xl mx-auto">
+                  Veja por que o CRM One supera qualquer solução CRM do mercado
+                </p>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse border border-slate-700 rounded-2xl overflow-hidden shadow-2xl">
+                  <thead>
+                    <tr className="bg-gradient-to-r from-slate-800 to-slate-700">
+                      <th className="border border-slate-600 p-6 text-left text-white font-bold text-lg">Características</th>
+                      <th className="border border-slate-600 p-6 text-center bg-gradient-to-br from-green-600/20 to-emerald-600/20">
+                        <div className="flex items-center justify-center gap-2">
+                          <Trophy className="w-6 h-6 text-green-400" />
+                          <span className="text-green-300 font-bold">CRM One</span>
+                        </div>
+                      </th>
+                      <th className="border border-slate-600 p-6 text-center text-slate-300">Salesforce</th>
+                      <th className="border border-slate-600 p-6 text-center text-slate-300">HubSpot</th>
+                      <th className="border border-slate-600 p-6 text-center text-slate-300">Pipedrive</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      {
+                        feature: "Integração SAP B1",
+                        crmOne: { icon: CheckCircle, text: "Nativa 100%", color: "green" },
+                        salesforce: { icon: X, text: "Via API", color: "red" },
+                        hubspot: { icon: X, text: "Limitada", color: "red" },
+                        pipedrive: { icon: X, text: "Não possui", color: "red" }
+                      },
+                      {
+                        feature: "Dados em tempo real",
+                        crmOne: { icon: CheckCircle, text: "Sim", color: "green" },
+                        salesforce: { icon: Clock, text: "Sincronização", color: "yellow" },
+                        hubspot: { icon: Clock, text: "Atraso", color: "yellow" },
+                        pipedrive: { icon: X, text: "Não", color: "red" }
+                      },
+                      {
+                        feature: "Certificação SAP",
+                        crmOne: { icon: Award, text: "Oficial", color: "green" },
+                        salesforce: { icon: X, text: "Não possui", color: "red" },
+                        hubspot: { icon: X, text: "Não possui", color: "red" },
+                        pipedrive: { icon: X, text: "Não possui", color: "red" }
+                      },
+                      {
+                        feature: "Custo de implementação",
+                        crmOne: { icon: DollarSign, text: "Baixo", color: "green" },
+                        salesforce: { icon: DollarSign, text: "Alto", color: "red" },
+                        hubspot: { icon: DollarSign, text: "Médio", color: "yellow" },
+                        pipedrive: { icon: DollarSign, text: "Médio", color: "yellow" }
+                      },
+                      {
+                        feature: "Controle de dados",
+                        crmOne: { icon: Shield, text: "Total", color: "green" },
+                        salesforce: { icon: Cloud, text: "Limitado", color: "yellow" },
+                        hubspot: { icon: Cloud, text: "Nuvem", color: "red" },
+                        pipedrive: { icon: Cloud, text: "Nuvem", color: "red" }
+                      }
+                    ].map((row, index) => (
+                      <tr key={index} className="hover:bg-slate-800/50 transition-colors duration-300">
+                        <td className="border border-slate-600 p-6 font-semibold text-slate-200">{row.feature}</td>
+                        <td className="border border-slate-600 p-6 text-center bg-green-500/10">
+                          <div className="flex items-center justify-center gap-2">
+                            <row.crmOne.icon className={`w-5 h-5 text-${row.crmOne.color}-400`} />
+                            <span className={`text-${row.crmOne.color}-300 font-semibold`}>{row.crmOne.text}</span>
+                          </div>
+                        </td>
+                        <td className="border border-slate-600 p-6 text-center">
+                          <div className="flex items-center justify-center gap-2">
+                            <row.salesforce.icon className={`w-5 h-5 text-${row.salesforce.color}-400`} />
+                            <span className={`text-${row.salesforce.color}-300`}>{row.salesforce.text}</span>
+                          </div>
+                        </td>
+                        <td className="border border-slate-600 p-6 text-center">
+                          <div className="flex items-center justify-center gap-2">
+                            <row.hubspot.icon className={`w-5 h-5 text-${row.hubspot.color}-400`} />
+                            <span className={`text-${row.hubspot.color}-300`}>{row.hubspot.text}</span>
+                          </div>
+                        </td>
+                        <td className="border border-slate-600 p-6 text-center">
+                          <div className="flex items-center justify-center gap-2">
+                            <row.pipedrive.icon className={`w-5 h-5 text-${row.pipedrive.color}-400`} />
+                            <span className={`text-${row.pipedrive.color}-300`}>{row.pipedrive.text}</span>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </CardContent>
+        )}
+      </Card>
+
+      {/* Conclusion Section - Aprimorado */}
+      <Card className="relative overflow-hidden group hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-700 border-slate-700/50 bg-gradient-to-br from-slate-900/50 to-slate-800/50 backdrop-blur-sm">
+        <div 
+          className="cursor-pointer transition-all duration-500"
+          onClick={() => toggleSection('conclusion')}
+        >
+          <div className="bg-gradient-to-r from-emerald-900/80 via-green-900/80 to-emerald-900/80 p-6 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/10 to-green-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="relative flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className={`w-14 h-14 bg-emerald-500/20 rounded-2xl flex items-center justify-center group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 shadow-lg ${expandedSections.has('conclusion') ? 'rotate-12 scale-110' : ''}`}>
+                  <Rocket className="w-7 h-7 text-emerald-400" />
+                </div>
+                <h2 className="text-3xl font-bold text-white group-hover:text-emerald-100 transition-colors duration-300">Transforme Sua Gestão Hoje</h2>
+              </div>
+              <div className={`transform transition-all duration-500 ${expandedSections.has('conclusion') ? 'rotate-180' : ''}`}>
+                <ChevronDown className="w-6 h-6 text-emerald-400 group-hover:animate-bounce" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {expandedSections.has('conclusion') && (
+          <CardContent className="p-8 animate-in slide-in-from-left duration-700">
+            <div className="space-y-10">
+              <div className="text-center space-y-8">
+                <h3 className="text-5xl font-bold bg-gradient-to-r from-emerald-300 via-green-300 to-cyan-300 bg-clip-text text-transparent animate-pulse">
+                  Pronto para Revolucionar?
+                </h3>
+                <p className="text-slate-300 text-xl max-w-4xl mx-auto leading-relaxed">
+                  O CRM One não é apenas uma ferramenta, é o futuro da gestão empresarial integrada ao SAP Business One. 
+                  Junte-se às centenas de empresas que já transformaram seus resultados.
+                </p>
+              </div>
+
+              <div className="grid lg:grid-cols-3 gap-8">
+                <div className="text-center space-y-6 p-8 bg-gradient-to-br from-emerald-600/10 to-green-600/10 rounded-3xl border border-emerald-500/30 hover:border-emerald-400/50 transition-all duration-500 hover:scale-105 cursor-pointer group/final">
+                  <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto group-hover/final:scale-110 transition-transform duration-500 shadow-2xl">
+                    <TrendingUp className="w-10 h-10 text-emerald-400" />
+                  </div>
+                  <h4 className="text-2xl font-bold text-emerald-300 group-hover/final:text-white transition-colors duration-300">ROI Imediato</h4>
+                  <p className="text-slate-300 group-hover/final:text-slate-200 transition-colors duration-300">
+                    Veja resultados positivos já nos primeiros 30 dias de uso
+                  </p>
+                </div>
+
+                <div className="text-center space-y-6 p-8 bg-gradient-to-br from-emerald-600/10 to-green-600/10 rounded-3xl border border-emerald-500/30 hover:border-emerald-400/50 transition-all duration-500 hover:scale-105 cursor-pointer group/final">
+                  <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto group-hover/final:scale-110 transition-transform duration-500 shadow-2xl">
+                    <Users className="w-10 h-10 text-emerald-400" />
+                  </div>
+                  <h4 className="text-2xl font-bold text-emerald-300 group-hover/final:text-white transition-colors duration-300">Suporte Completo</h4>
+                  <p className="text-slate-300 group-hover/final:text-slate-200 transition-colors duration-300">
+                    Equipe especializada disponível 24/7 para seu sucesso
+                  </p>
+                </div>
+
+                <div className="text-center space-y-6 p-8 bg-gradient-to-br from-emerald-600/10 to-green-600/10 rounded-3xl border border-emerald-500/30 hover:border-emerald-400/50 transition-all duration-500 hover:scale-105 cursor-pointer group/final">
+                  <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto group-hover/final:scale-110 transition-transform duration-500 shadow-2xl">
+                    <Shield className="w-10 h-10 text-emerald-400" />
+                  </div>
+                  <h4 className="text-2xl font-bold text-emerald-300 group-hover/final:text-white transition-colors duration-300">Investimento Seguro</h4>
+                  <p className="text-slate-300 group-hover/final:text-slate-200 transition-colors duration-300">
+                    Certificação SAP garante evolução contínua e compatibilidade
+                  </p>
+                </div>
+              </div>
+
+              <div className="text-center space-y-8">
+                <div className="bg-gradient-to-r from-emerald-600/20 to-green-600/20 p-10 rounded-3xl border border-emerald-500/30 max-w-4xl mx-auto">
+                  <h4 className="text-3xl font-bold text-emerald-300 mb-6">Próximos Passos</h4>
+                  <div className="grid md:grid-cols-3 gap-6 text-left">
+                    <div className="flex items-start gap-4">
+                      <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-emerald-300 font-bold">1</span>
+                      </div>
+                      <div>
+                        <h5 className="font-bold text-emerald-300 mb-2">Análise Técnica</h5>
+                        <p className="text-slate-300 text-sm">Avaliação da sua infraestrutura SAP atual</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-emerald-300 font-bold">2</span>
+                      </div>
+                      <div>
+                        <h5 className="font-bold text-emerald-300 mb-2">Demonstração Personalizada</h5>
+                        <p className="text-slate-300 text-sm">Apresentação com seus dados reais</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-emerald-300 font-bold">3</span>
+                      </div>
+                      <div>
+                        <h5 className="font-bold text-emerald-300 mb-2">Implementação</h5>
+                        <p className="text-slate-300 text-sm">Go-live em até 30 dias</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </CardContent>
