@@ -50,7 +50,11 @@ import {
   Bell,
   Heart,
   Sparkles,
-  Trophy
+  Trophy,
+  Wifi,
+  WifiOff,
+  List,
+  Layout
 } from "lucide-react";
 
 interface Module3PresentationProps {
@@ -61,10 +65,9 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
   const [viewedSections, setViewedSections] = useState<Set<string>>(new Set());
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [completionProgress, setCompletionProgress] = useState(0);
-  const [animatedCounters, setAnimatedCounters] = useState<{[key: string]: number}>({});
 
   const sections = [
-    'hero', 'interface', 'mobile', 'dashboards', 'security', 'support', 'why-choose', 'modules', 'conclusion'
+    'hero', 'definition', 'benefits', 'functionalities', 'modules', 'why-choose', 'comparison', 'conclusion'
   ];
 
   const toggleSection = (sectionId: string) => {
@@ -76,30 +79,10 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
     } else {
       newExpanded.add(sectionId);
       newViewed.add(sectionId);
-      
-      // Animate counters when section is opened
-      if (sectionId === 'hero') {
-        animateCounter('clients', 500);
-        animateCounter('years', 9);
-        animateCounter('satisfaction', 98);
-      }
     }
     
     setExpandedSections(newExpanded);
     setViewedSections(newViewed);
-  };
-
-  const animateCounter = (key: string, target: number) => {
-    let current = 0;
-    const increment = target / 50;
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= target) {
-        current = target;
-        clearInterval(timer);
-      }
-      setAnimatedCounters(prev => ({ ...prev, [key]: Math.floor(current) }));
-    }, 30);
   };
 
   useEffect(() => {
@@ -120,7 +103,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
           <div className="relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600/30 to-purple-600/30 rounded-full border border-blue-500/50 backdrop-blur-sm">
             <Rocket className="w-8 h-8 text-blue-400 animate-bounce" />
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent">
-              CRM One - Transforme Seus Resultados
+              CRM One - A Solução Definitiva para o SAP Business One
             </span>
           </div>
         </div>
@@ -140,7 +123,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         </div>
       </div>
 
-      {/* Hero Section - Enhanced */}
+      {/* Hero Section */}
       <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-blue-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
@@ -158,8 +141,8 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                 </div>
                 <div>
                   <h2 className="text-4xl font-bold text-white mb-2">CRM One</h2>
-                  <p className="text-blue-200 text-lg">Revolucione Sua Gestão Comercial com Tecnologia de Ponta</p>
-                  <p className="text-slate-400 text-sm mt-1">100% Integrado • Tempo Real • Seguro</p>
+                  <p className="text-blue-200 text-lg">A Solução Definitiva para o SAP Business One</p>
+                  <p className="text-slate-400 text-sm mt-1">Transforme seu relacionamento com seus clientes e potencialize suas vendas</p>
                 </div>
               </div>
               <div className="text-center">
@@ -174,68 +157,34 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         
         {expandedSections.has('hero') && (
           <CardContent className="p-8 space-y-8 animate-in slide-in-from-top duration-500">
-            {/* Statistics */}
-            <div className="grid grid-cols-3 gap-6 mb-8">
-              <div className="text-center p-6 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 rounded-xl border border-blue-500/30">
-                <div className="text-3xl font-bold text-blue-300 mb-2">
-                  {animatedCounters.clients || 0}+
-                </div>
-                <p className="text-slate-400">Clientes Ativos</p>
-              </div>
-              <div className="text-center p-6 bg-gradient-to-br from-green-600/20 to-emerald-600/20 rounded-xl border border-green-500/30">
-                <div className="text-3xl font-bold text-green-300 mb-2">
-                  {animatedCounters.years || 0}
-                </div>
-                <p className="text-slate-400">Anos de Experiência</p>
-              </div>
-              <div className="text-center p-6 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-xl border border-purple-500/30">
-                <div className="text-3xl font-bold text-purple-300 mb-2">
-                  {animatedCounters.satisfaction || 0}%
-                </div>
-                <p className="text-slate-400">Satisfação</p>
-              </div>
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-8 items-center">
-              <div className="space-y-6">
-                <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent">
-                  O que é o CRM One?
-                </h3>
-                <p className="text-slate-300 leading-relaxed text-lg">
-                  O CRM One é uma solução 100% integrada ao SAP Business One, desenvolvida para 
-                  aprimorar a gestão comercial, fortalecer o relacionamento com clientes e 
-                  otimizar processos de vendas e pós-venda com tecnologia de ponta.
-                </p>
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { icon: Globe, text: "100% Integrado", color: "blue" },
-                    { icon: Zap, text: "Tempo Real", color: "green" },
-                    { icon: Shield, text: "Dados Seguros", color: "purple" },
-                    { icon: Cloud, text: "Multi-plataforma", color: "orange" }
-                  ].map((badge, index) => (
-                    <Badge 
-                      key={index}
-                      variant="secondary" 
-                      className={`bg-${badge.color}-600/20 text-${badge.color}-300 border-${badge.color}-600/50 p-3 hover:scale-105 transition-transform duration-300`}
-                    >
-                      <badge.icon className="w-4 h-4 mr-2" />
-                      {badge.text}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-              <div className="relative">
-                <div className="bg-gradient-to-br from-blue-600/10 to-purple-600/10 p-8 rounded-2xl border border-blue-500/30 backdrop-blur-sm">
-                  <div className="text-center space-y-6">
-                    <div className="relative mx-auto w-24 h-24">
-                      <Target className="w-24 h-24 text-blue-400 animate-spin-slow" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Heart className="w-8 h-8 text-red-400 animate-pulse" />
-                      </div>
-                    </div>
-                    <h4 className="text-2xl font-bold text-blue-300">Transforme seu relacionamento</h4>
-                    <p className="text-slate-400">Potencialize suas vendas com dados em tempo real e inteligência artificial</p>
+            <div className="text-center space-y-6">
+              <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent">
+                "Transforme seu Relacionamento com seus clientes e potencialize suas vendas."
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <div className="text-center p-6 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 rounded-xl border border-blue-500/30">
+                  <div className="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Globe className="w-8 h-8 text-blue-400" />
                   </div>
+                  <h4 className="text-lg font-bold text-blue-300 mb-2">SAP Certified</h4>
+                  <p className="text-slate-400 text-sm">Certificado pela SAP</p>
+                </div>
+                
+                <div className="text-center p-6 bg-gradient-to-br from-green-600/20 to-emerald-600/20 rounded-xl border border-green-500/30">
+                  <div className="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Zap className="w-8 h-8 text-green-400" />
+                  </div>
+                  <h4 className="text-lg font-bold text-green-300 mb-2">100% Integrado</h4>
+                  <p className="text-slate-400 text-sm">Integração nativa com SAP B1</p>
+                </div>
+                
+                <div className="text-center p-6 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-xl border border-purple-500/30">
+                  <div className="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Award className="w-8 h-8 text-purple-400" />
+                  </div>
+                  <h4 className="text-lg font-bold text-purple-300 mb-2">DWU IT Solutions</h4>
+                  <p className="text-slate-400 text-sm">Especialistas em SAP</p>
                 </div>
               </div>
             </div>
@@ -243,21 +192,21 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Interface Section */}
+      {/* Definition Section */}
       <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-cyan-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
-          onClick={() => toggleSection('interface')}
+          onClick={() => toggleSection('definition')}
         >
           <div className="bg-gradient-to-r from-cyan-900 via-blue-900 to-cyan-900 p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
-                  <Palette className="w-6 h-6 text-cyan-400" />
+                  <Target className="w-6 h-6 text-cyan-400" />
                 </div>
-                <h2 className="text-2xl font-bold text-white">Interface Intuitiva e Responsiva</h2>
+                <h2 className="text-2xl font-bold text-white">O que é o CRM One?</h2>
               </div>
-              {expandedSections.has('interface') ? 
+              {expandedSections.has('definition') ? 
                 <ChevronUp className="w-6 h-6 text-cyan-400" /> : 
                 <ChevronDown className="w-6 h-6 text-cyan-400" />
               }
@@ -265,47 +214,51 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
           </div>
         </div>
         
-        {expandedSections.has('interface') && (
+        {expandedSections.has('definition') && (
           <CardContent className="p-8 animate-in slide-in-from-left duration-500">
-            <div className="grid lg:grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-cyan-300">Design Moderno e Funcional</h3>
-                <div className="space-y-4">
-                  {[
-                    { icon: Eye, title: "Interface Visual Atrativa", desc: "Design moderno com foco na experiência do usuário" },
-                    { icon: MousePointer, title: "Navegação Intuitiva", desc: "Fluxos otimizados para máxima produtividade" },
-                    { icon: Layers, title: "Organização Inteligente", desc: "Informações estruturadas de forma lógica" },
-                    { icon: Maximize, title: "Totalmente Responsivo", desc: "Funciona perfeitamente em qualquer dispositivo" }
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-start gap-4 p-4 bg-slate-800/50 rounded-lg hover:bg-slate-800/70 transition-all duration-300 group">
-                      <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        <item.icon className="w-5 h-5 text-cyan-400" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-slate-200 mb-1">{item.title}</h4>
-                        <p className="text-sm text-slate-400">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
+            <div className="space-y-8">
+              <div className="text-center">
+                <h3 className="text-3xl font-bold text-cyan-300 mb-6">A Solução Completa para Seu SAP Business One</h3>
+                <div className="bg-gradient-to-br from-cyan-600/10 to-blue-600/10 p-8 rounded-2xl border border-cyan-500/30 max-w-4xl mx-auto">
+                  <p className="text-slate-300 text-lg leading-relaxed">
+                    O CRM One é uma solução <strong className="text-cyan-300">100% integrada ao SAP Business One</strong>, 
+                    desenvolvida para aprimorar a gestão comercial, fortalecer o relacionamento com clientes e 
+                    otimizar processos de vendas e pós-venda. Tudo isso com dados em tempo real, eliminando a 
+                    necessidade de integrações externas e garantindo máxima eficiência para sua operação.
+                  </p>
                 </div>
               </div>
-              <div className="space-y-4">
-                <div className="bg-gradient-to-br from-cyan-600/10 to-blue-600/10 p-6 rounded-xl border border-cyan-500/30">
-                  <h4 className="text-lg font-semibold text-cyan-300 mb-4">Características da Interface</h4>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+
+              <div className="grid md:grid-cols-2 gap-8 mt-8">
+                <div className="space-y-4">
+                  <h4 className="text-xl font-bold text-cyan-300">Principais Características</h4>
+                  <div className="space-y-3">
                     {[
-                      "Dashboard customizável",
-                      "Filtros avançados",
-                      "Busca inteligente",
-                      "Temas personalizáveis",
-                      "Atalhos de teclado",
-                      "Modo escuro/claro",
-                      "Multi-idioma",
-                      "Acessibilidade"
-                    ].map((feature, index) => (
-                      <div key={index} className="flex items-center gap-2 text-slate-300">
-                        <CheckCircle className="w-4 h-4 text-cyan-400" />
-                        {feature}
+                      "Integração nativa com SAP Business One",
+                      "Dados em tempo real sem intermediários",
+                      "Elimina necessidade de integrações externas",
+                      "Máxima eficiência operacional"
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg">
+                        <CheckCircle className="w-5 h-5 text-cyan-400" />
+                        <span className="text-slate-300">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <h4 className="text-xl font-bold text-cyan-300">Benefícios Imediatos</h4>
+                  <div className="space-y-3">
+                    {[
+                      "Aprimoramento da gestão comercial",
+                      "Fortalecimento do relacionamento com clientes",
+                      "Otimização de processos de vendas",
+                      "Melhoria no pós-venda"
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg">
+                        <Star className="w-5 h-5 text-cyan-400" />
+                        <span className="text-slate-300">{item}</span>
                       </div>
                     ))}
                   </div>
@@ -316,21 +269,21 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Mobile Section */}
+      {/* Benefits Section */}
       <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-green-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
-          onClick={() => toggleSection('mobile')}
+          onClick={() => toggleSection('benefits')}
         >
           <div className="bg-gradient-to-r from-green-900 via-emerald-900 to-green-900 p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
-                  <Smartphone className="w-6 h-6 text-green-400" />
+                  <Award className="w-6 h-6 text-green-400" />
                 </div>
-                <h2 className="text-2xl font-bold text-white">Aplicativo Mobile Nativo</h2>
+                <h2 className="text-2xl font-bold text-white">Benefícios</h2>
               </div>
-              {expandedSections.has('mobile') ? 
+              {expandedSections.has('benefits') ? 
                 <ChevronUp className="w-6 h-6 text-green-400" /> : 
                 <ChevronDown className="w-6 h-6 text-green-400" />
               }
@@ -338,45 +291,68 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
           </div>
         </div>
         
-        {expandedSections.has('mobile') && (
+        {expandedSections.has('benefits') && (
           <CardContent className="p-8 animate-in slide-in-from-right duration-500">
-            <div className="grid lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 space-y-6">
-                <h3 className="text-2xl font-bold text-green-300">Trabalhe de Qualquer Lugar</h3>
-                <p className="text-slate-300 text-lg">
-                  Aplicativo mobile completo com funcionalidades offline, sincronização automática e interface otimizada para dispositivos móveis.
-                </p>
-                <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid lg:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-green-300">Principais Benefícios</h3>
+                <div className="space-y-4">
                   {[
-                    { icon: Download, title: "Modo Offline", desc: "Trabalhe sem conexão com sincronização automática" },
-                    { icon: RefreshCw, title: "Sync em Tempo Real", desc: "Dados sempre atualizados em todos os dispositivos" },
-                    { icon: Bell, title: "Notificações Push", desc: "Alertas importantes direto no seu celular" },
-                    { icon: Lock, title: "Segurança Móvel", desc: "Biometria e criptografia de ponta" }
+                    {
+                      icon: Monitor,
+                      title: "Interface WEB e Mobile intuitiva",
+                      desc: "Acesso completo via web e aplicativo mobile com interface moderna e intuitiva"
+                    },
+                    {
+                      icon: Zap,
+                      title: "Evolução contínua com o SAP",
+                      desc: "Sem necessidade de atualizações em integrações internas, reduzindo o custo da ferramenta"
+                    },
+                    {
+                      icon: Database,
+                      title: "Banco de dados instalado na sua infraestrutura",
+                      desc: "Garantia de que os dados da sua empresa não fiquem em poder de terceiros"
+                    },
+                    {
+                      icon: Users,
+                      title: "Centralização do relacionamento com cliente",
+                      desc: "Módulo de atendimento completo para gestão centralizada"
+                    }
                   ].map((item, index) => (
-                    <div key={index} className="p-4 bg-green-900/20 rounded-lg border border-green-600/30 hover:border-green-500/50 transition-all duration-300 group">
-                      <div className="flex items-center gap-3 mb-2">
-                        <item.icon className="w-5 h-5 text-green-400 group-hover:scale-110 transition-transform duration-300" />
-                        <h4 className="font-semibold text-green-300">{item.title}</h4>
+                    <div key={index} className="flex items-start gap-4 p-4 bg-green-900/20 rounded-lg border border-green-600/30 hover:border-green-500/50 transition-all duration-300 group">
+                      <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <item.icon className="w-6 h-6 text-green-400" />
                       </div>
-                      <p className="text-sm text-slate-400">{item.desc}</p>
+                      <div>
+                        <h4 className="font-semibold text-green-300 mb-1">{item.title}</h4>
+                        <p className="text-sm text-slate-400">{item.desc}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="bg-gradient-to-br from-green-600/10 to-emerald-600/10 p-6 rounded-xl border border-green-500/30">
-                <h4 className="text-lg font-semibold text-green-300 mb-4 text-center">Disponível para</h4>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg">
-                    <Smartphone className="w-6 h-6 text-green-400" />
-                    <span className="text-slate-300">iOS - App Store</span>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg">
-                    <Smartphone className="w-6 h-6 text-green-400" />
-                    <span className="text-slate-300">Android - Play Store</span>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg">
-                    <Globe className="w-6 h-6 text-green-400" />
-                    <span className="text-slate-300">Web App</span>
+              
+              <div className="flex items-center justify-center">
+                <div className="bg-gradient-to-br from-green-600/10 to-emerald-600/10 p-8 rounded-xl border border-green-500/30 w-full">
+                  <div className="text-center space-y-6">
+                    <div className="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center mx-auto">
+                      <Monitor className="w-12 h-12 text-green-400" />
+                    </div>
+                    <h4 className="text-2xl font-bold text-green-300">Interface Moderna</h4>
+                    <p className="text-slate-400">
+                      Visualização completa da interface CRM One com dashboards personalizáveis, 
+                      relatórios em tempo real e gestão integrada de clientes
+                    </p>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div className="bg-slate-800/50 p-3 rounded-lg">
+                        <div className="text-green-300 font-semibold">WEB</div>
+                        <div className="text-slate-400">Acesso completo</div>
+                      </div>
+                      <div className="bg-slate-800/50 p-3 rounded-lg">
+                        <div className="text-green-300 font-semibold">MOBILE</div>
+                        <div className="text-slate-400">App nativo</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -385,21 +361,21 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Dashboards Section */}
+      {/* Functionalities Section */}
       <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-purple-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
-          onClick={() => toggleSection('dashboards')}
+          onClick={() => toggleSection('functionalities')}
         >
           <div className="bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-900 p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
-                  <BarChart3 className="w-6 h-6 text-purple-400" />
+                  <Settings className="w-6 h-6 text-purple-400" />
                 </div>
-                <h2 className="text-2xl font-bold text-white">Dashboards Inteligentes</h2>
+                <h2 className="text-2xl font-bold text-white">Funcionalidades</h2>
               </div>
-              {expandedSections.has('dashboards') ? 
+              {expandedSections.has('functionalities') ? 
                 <ChevronUp className="w-6 h-6 text-purple-400" /> : 
                 <ChevronDown className="w-6 h-6 text-purple-400" />
               }
@@ -407,55 +383,71 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
           </div>
         </div>
         
-        {expandedSections.has('dashboards') && (
+        {expandedSections.has('functionalities') && (
           <CardContent className="p-8 animate-in slide-in-from-bottom duration-500">
             <div className="space-y-8">
-              <div className="text-center space-y-4">
-                <h3 className="text-3xl font-bold bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
-                  Visualização de Dados Avançada
+              <div className="text-center">
+                <h3 className="text-3xl font-bold bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent mb-4">
+                  Recursos Avançados
                 </h3>
-                <p className="text-slate-300 text-lg max-w-3xl mx-auto">
-                  Dashboards totalmente customizáveis com gráficos interativos, KPIs em tempo real e relatórios automatizados.
-                </p>
               </div>
 
-              <div className="grid lg:grid-cols-3 gap-6">
+              <div className="grid lg:grid-cols-2 gap-6">
                 {[
                   {
-                    icon: LineChart,
-                    title: "Gráficos Dinâmicos",
-                    description: "Visualizações interativas que se adaptam aos seus dados",
-                    features: ["Drill-down", "Filtros em tempo real", "Múltiplas séries", "Exportação"]
-                  },
-                  {
-                    icon: PieChart,
-                    title: "KPIs Personalizados",
-                    description: "Indicadores de performance sob medida para seu negócio",
-                    features: ["Metas configuráveis", "Alertas automáticos", "Comparativos", "Tendências"]
+                    icon: BarChart3,
+                    title: "Dashboards customizáveis sem a dependência de terceiros",
+                    description: "Total autonomia na personalização dos dashboards"
                   },
                   {
                     icon: FileText,
-                    title: "Relatórios Automáticos",
-                    description: "Geração e envio automatizado de relatórios",
-                    features: ["Agendamento", "Múltiplos formatos", "Distribuição", "Templates"]
+                    title: "Relatórios personalizáveis no APP para uso offline",
+                    description: "Relatórios disponíveis mesmo sem conexão"
+                  },
+                  {
+                    icon: Eye,
+                    title: "Visão 360 graus dos seus clientes",
+                    description: "Visão completa e unificada de cada cliente"
+                  },
+                  {
+                    icon: Mail,
+                    title: "Envio de alertas ou relatórios por e-mail",
+                    description: "Comunicação automatizada e eficiente"
+                  },
+                  {
+                    icon: PieChart,
+                    title: "Relatórios em Crystal Reports, em tabelas simples e em tabelas dinâmicas com filtros customizáveis",
+                    description: "Múltiplos formatos de relatórios para diferentes necessidades"
+                  },
+                  {
+                    icon: Filter,
+                    title: "Filtro de itens com estoque, dados da última compra, preços e agrupamento de itens",
+                    description: "Filtros avançados para gestão de estoque e preços"
+                  },
+                  {
+                    icon: Search,
+                    title: "Possibilidade de personalizar análises em tempo real na tela de cadastros e documentos (itens mais vendidos, últimos pedidos, análise financeira, dados contábeis, produtos em oferta, etc)",
+                    description: "Análises personalizadas e em tempo real"
+                  },
+                  {
+                    icon: Layout,
+                    title: "Personalização de layouts de impressão",
+                    description: "Layouts customizados para documentos"
+                  },
+                  {
+                    icon: WifiOff,
+                    title: "APP funciona offline para cadastro de clientes, cotações, pedidos, atendimentos, oportunidades, pipeline, listas de preços, estoque, relatórios entre outros",
+                    description: "Funcionalidade completa mesmo offline"
                   }
-                ].map((dashboard, index) => (
+                ].map((func, index) => (
                   <div key={index} className="bg-gradient-to-br from-purple-900/20 to-indigo-900/20 p-6 rounded-xl border border-purple-600/30 hover:border-purple-500/50 transition-all duration-300 group">
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <dashboard.icon className="w-6 h-6 text-purple-400" />
-                        </div>
-                        <h4 className="text-xl font-bold text-purple-300">{dashboard.title}</h4>
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <func.icon className="w-6 h-6 text-purple-400" />
                       </div>
-                      <p className="text-slate-300">{dashboard.description}</p>
-                      <div className="space-y-2">
-                        {dashboard.features.map((feature, fIndex) => (
-                          <div key={fIndex} className="flex items-center gap-2 text-sm text-slate-400">
-                            <CheckCircle className="w-4 h-4 text-purple-400" />
-                            {feature}
-                          </div>
-                        ))}
+                      <div>
+                        <h4 className="text-lg font-bold text-purple-300 mb-2">{func.title}</h4>
+                        <p className="text-slate-300 text-sm">{func.description}</p>
                       </div>
                     </div>
                   </div>
@@ -466,73 +458,211 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Security Section */}
-      <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-red-500/30 transition-all duration-500">
+      {/* Modules Section */}
+      <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-orange-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
-          onClick={() => toggleSection('security')}
+          onClick={() => toggleSection('modules')}
         >
-          <div className="bg-gradient-to-r from-red-900 via-pink-900 to-red-900 p-6">
+          <div className="bg-gradient-to-r from-orange-900 via-red-900 to-orange-900 p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
-                  <Shield className="w-6 h-6 text-red-400" />
+                <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
+                  <Layers className="w-6 h-6 text-orange-400" />
                 </div>
-                <h2 className="text-2xl font-bold text-white">Segurança e Conformidade</h2>
+                <h2 className="text-2xl font-bold text-white">Módulos</h2>
               </div>
-              {expandedSections.has('security') ? 
-                <ChevronUp className="w-6 h-6 text-red-400" /> : 
-                <ChevronDown className="w-6 h-6 text-red-400" />
+              {expandedSections.has('modules') ? 
+                <ChevronUp className="w-6 h-6 text-orange-400" /> : 
+                <ChevronDown className="w-6 h-6 text-orange-400" />
               }
             </div>
           </div>
         </div>
         
-        {expandedSections.has('security') && (
-          <CardContent className="p-8 animate-in slide-in-from-top duration-500">
-            <div className="grid lg:grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-red-300">Proteção de Dados Avançada</h3>
-                <p className="text-slate-300">
-                  Implementamos os mais altos padrões de segurança para proteger seus dados e garantir conformidade com regulamentações.
-                </p>
-                <div className="grid gap-4">
-                  {[
-                    { icon: Lock, title: "Criptografia End-to-End", desc: "Dados protegidos em trânsito e em repouso" },
-                    { icon: Server, title: "Infraestrutura Segura", desc: "Servidores em data centers certificados" },
-                    { icon: Eye, title: "Auditoria Completa", desc: "Log detalhado de todas as ações" },
-                    { icon: Users, title: "Controle de Acesso", desc: "Permissões granulares por usuário" }
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-start gap-4 p-4 bg-red-900/20 rounded-lg border border-red-600/30">
-                      <div className="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
-                        <item.icon className="w-5 h-5 text-red-400" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-red-300 mb-1">{item.title}</h4>
-                        <p className="text-sm text-slate-400">{item.desc}</p>
-                      </div>
+        {expandedSections.has('modules') && (
+          <CardContent className="p-8 animate-in slide-in-from-right duration-500">
+            <div className="space-y-8">
+              <div className="grid lg:grid-cols-2 gap-8">
+                {/* Dashboards Personalizáveis */}
+                <div className="bg-gradient-to-br from-blue-900/20 to-blue-800/20 p-8 rounded-xl border border-blue-600/30">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center">
+                      <BarChart3 className="w-8 h-8 text-blue-400" />
                     </div>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div className="bg-gradient-to-br from-red-600/10 to-pink-600/10 p-6 rounded-xl border border-red-500/30">
-                  <h4 className="text-lg font-semibold text-red-300 mb-4">Certificações e Conformidade</h4>
-                  <div className="space-y-3">
-                    {[
-                      "LGPD - Lei Geral de Proteção de Dados",
-                      "ISO 27001 - Gestão de Segurança",
-                      "GDPR - Regulamento Geral de Proteção",
-                      "SOC 2 Type II - Controles de Segurança",
-                      "Backup Automático 24/7",
-                      "Disaster Recovery Plan"
-                    ].map((cert, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm text-slate-300">
-                        <CheckCircle className="w-4 h-4 text-red-400" />
-                        {cert}
-                      </div>
-                    ))}
+                    <h3 className="text-2xl font-bold text-blue-300">Dashboards personalizáveis</h3>
                   </div>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    Tenha total autonomia na personalização dos DASHBOARDS! 
+                    Através de consultas SQL/HANA, você cria os indicadores e 
+                    gráficos baseado em informações em tempo real na base de 
+                    dados do SAP Business One.
+                  </p>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    Além da informação resumida, ao clicar em nos indicadores 
+                    ou gráficos, você pode configurar uma segunda consulta 
+                    detalhada dos dados e também adicionar um link para 
+                    atalhos, como por exemplo acessar o documento em 
+                    questão, acessar o cockpit, adicionar um novo pedido, editar 
+                    o cadastro do cliente, e muito mais!
+                  </p>
+                </div>
+
+                {/* Relacionamento */}
+                <div className="bg-gradient-to-br from-purple-900/20 to-purple-800/20 p-8 rounded-xl border border-purple-600/30">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center">
+                      <Users className="w-8 h-8 text-purple-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-purple-300">Relacionamento</h3>
+                  </div>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    Atendimentos no formato Agenda e Kanban. 
+                    Gerencie suas tarefas e gere um histórico de relacionamento 
+                    com os clientes através do módulo de atendimento.
+                  </p>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    Você pode criar e visualizar suas tarefas e fazer seu follow-up 
+                    no formato de agenda ou no formato Kanban. Além disso, as 
+                    tarefas poderão estar vinculadas aos documentos, 
+                    facilitando o entendimento do que foi tratado com o cliente e 
+                    tornando seu trabalho mais rápido, mais assertivo e menos 
+                    trabalhoso.
+                  </p>
+                </div>
+
+                {/* Vendas */}
+                <div className="bg-gradient-to-br from-green-900/20 to-green-800/20 p-8 rounded-xl border border-green-600/30">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center">
+                      <DollarSign className="w-8 h-8 text-green-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-green-300">Vendas</h3>
+                  </div>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    Faça suas cotações e pedidos com muito mais agilidade! 
+                    O CRM One permite que você consulte e cadastre os preços 
+                    em tempo real com o SAP Business One, garantindo a 
+                    qualidade na informação repassada ao cliente.
+                  </p>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    Você também pode importar pedidos grandes através de 
+                    planilha do Excel. Isso facilitará demais sua rotina diária e te 
+                    dará mais tempo para trabalhar em novas vendas.
+                  </p>
+                  <p className="text-slate-300 leading-relaxed">
+                    No momento da geração de pedidos, você pode também 
+                    criar análises críticas como por exemplo "Produtos que o 
+                    cliente ainda não comprou" e consultá-las em tempo real 
+                    através da aba "Análises".
+                  </p>
+                </div>
+
+                {/* Oportunidades */}
+                <div className="bg-gradient-to-br from-orange-900/20 to-orange-800/20 p-8 rounded-xl border border-orange-600/30">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-orange-500/20 rounded-2xl flex items-center justify-center">
+                      <Handshake className="w-8 h-8 text-orange-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-orange-300">Oportunidades</h3>
+                  </div>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    Crie, edite e gerencie suas oportunidades de vendas online 
+                    de qualquer lugar!
+                  </p>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    Com o pipeline inovador do CRM One, é possível filtrar e 
+                    visualizar suas oportunidades de vendas por etapa em um 
+                    formato visual muito atrativo e prático.
+                  </p>
+                  <p className="text-slate-300 leading-relaxed">
+                    É ideal para uma visão macro e para realização de reuniões 
+                    rápidas de acompanhamento com o time de vendas.
+                  </p>
+                </div>
+
+                {/* Cockpit */}
+                <div className="bg-gradient-to-br from-cyan-900/20 to-cyan-800/20 p-8 rounded-xl border border-cyan-600/30">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-cyan-500/20 rounded-2xl flex items-center justify-center">
+                      <Monitor className="w-8 h-8 text-cyan-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-cyan-300">Cockpit</h3>
+                  </div>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    Obtenha uma visão 360° de um cliente e visualize os fatores 
+                    críticos, comportamento, histórico de vendas com top 10 
+                    produtos, análise financeira com pontualidade dos 
+                    pagamentos e lista de títulos em aberto/vencidos.
+                  </p>
+                  <p className="text-slate-300 leading-relaxed">
+                    Você pode também criar diversas análises personalizadas de 
+                    acordo com a necessidade da sua empresa. 
+                    Extraia o máximo de informações importantes que o sistema 
+                    oferece e potencialize o relacionamento com o seu cliente.
+                  </p>
+                </div>
+
+                {/* Relatórios Customizáveis */}
+                <div className="bg-gradient-to-br from-indigo-900/20 to-indigo-800/20 p-8 rounded-xl border border-indigo-600/30">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-indigo-500/20 rounded-2xl flex items-center justify-center">
+                      <FileText className="w-8 h-8 text-indigo-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-indigo-300">Relatórios Customizáveis</h3>
+                  </div>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    Crie seus próprios relatórios sem a dependência de terceiros. 
+                    Todas as consultas podem conter filtros e são desenvolvidas 
+                    na linguagem do seu banco de dados (HANA ou SQL).
+                  </p>
+                  <p className="text-slate-300 leading-relaxed">
+                    Os relatórios podem exibir informação por usuário ou equipe. 
+                    A visualização pode ser em uma tabela simples com filtros 
+                    em todas as colunas, tabelas dinâmicas ou no formato visual 
+                    para impressão do Crystal Reports.
+                  </p>
+                </div>
+
+                {/* App Offline */}
+                <div className="bg-gradient-to-br from-teal-900/20 to-teal-800/20 p-8 rounded-xl border border-teal-600/30">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-teal-500/20 rounded-2xl flex items-center justify-center">
+                      <WifiOff className="w-8 h-8 text-teal-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-teal-300">App Offline</h3>
+                  </div>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    O aplicativo mobile do CRM One está disponível para 
+                    trabalhar ONLINE e OFFLINE.
+                  </p>
+                  <p className="text-slate-300 leading-relaxed">
+                    Se o seu time precisa fazer uma venda e está sem conexão 
+                    com a internet, ele poderá fazer novos cadastros, pedidos, 
+                    consultar produtos, preços, executar relatórios e muito mais. 
+                    A aplicativo tem uma interface intuitiva e moderna para 
+                    facilitar o uso de todos.
+                  </p>
+                </div>
+
+                {/* Chamados de serviço */}
+                <div className="bg-gradient-to-br from-red-900/20 to-red-800/20 p-8 rounded-xl border border-red-600/30">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-red-500/20 rounded-2xl flex items-center justify-center">
+                      <MessageSquare className="w-8 h-8 text-red-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-red-300">Chamados de serviço</h3>
+                  </div>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    Gerencie seus chamados de serviços de forma 
+                    integrada e eficiente.
+                  </p>
+                  <p className="text-slate-300 leading-relaxed">
+                    Você pode realizar follow ups e registrar todas as 
+                    interações com o cliente. 
+                    Utilize a base de conhecimento para solucionar 
+                    problemas de forma mais rápida e eficiente.
+                  </p>
                 </div>
               </div>
             </div>
@@ -540,87 +670,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Support Section */}
-      <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-yellow-500/30 transition-all duration-500">
-        <div 
-          className="cursor-pointer transition-all duration-300"
-          onClick={() => toggleSection('support')}
-        >
-          <div className="bg-gradient-to-r from-yellow-900 via-orange-900 to-yellow-900 p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
-                  <MessageSquare className="w-6 h-6 text-yellow-400" />
-                </div>
-                <h2 className="text-2xl font-bold text-white">Suporte Especializado</h2>
-              </div>
-              {expandedSections.has('support') ? 
-                <ChevronUp className="w-6 h-6 text-yellow-400" /> : 
-                <ChevronDown className="w-6 h-6 text-yellow-400" />
-              }
-            </div>
-          </div>
-        </div>
-        
-        {expandedSections.has('support') && (
-          <CardContent className="p-8 animate-in slide-in-from-left duration-500">
-            <div className="grid lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 space-y-6">
-                <h3 className="text-2xl font-bold text-yellow-300">Atendimento que Faz a Diferença</h3>
-                <p className="text-slate-300 text-lg">
-                  Nossa equipe de especialistas está sempre pronta para ajudar você a aproveitar ao máximo o CRM One.
-                </p>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {[
-                    { icon: Clock, title: "Suporte 24/7", desc: "Atendimento disponível todos os dias", time: "24h" },
-                    { icon: Phone, title: "Múltiplos Canais", desc: "Telefone, chat, email e WhatsApp", time: "4 canais" },
-                    { icon: Users, title: "Especialistas SAP", desc: "Equipe certificada e experiente", time: "9 anos" },
-                    { icon: Rocket, title: "Resposta Rápida", desc: "SLA garantido para todos os tickets", time: "< 2h" }
-                  ].map((item, index) => (
-                    <div key={index} className="p-4 bg-yellow-900/20 rounded-lg border border-yellow-600/30 hover:border-yellow-500/50 transition-all duration-300 group">
-                      <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 bg-yellow-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <item.icon className="w-5 h-5 text-yellow-400" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-1">
-                            <h4 className="font-semibold text-yellow-300">{item.title}</h4>
-                            <span className="text-xs text-yellow-400 bg-yellow-900/30 px-2 py-1 rounded">{item.time}</span>
-                          </div>
-                          <p className="text-sm text-slate-400">{item.desc}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div className="bg-gradient-to-br from-yellow-600/10 to-orange-600/10 p-6 rounded-xl border border-yellow-500/30">
-                  <h4 className="text-lg font-semibold text-yellow-300 mb-4">Canais de Atendimento</h4>
-                  <div className="space-y-3">
-                    {[
-                      { icon: Phone, text: "(51) 3023-8393", desc: "Telefone" },
-                      { icon: Mail, text: "suporte@dwu.com.br", desc: "Email" },
-                      { icon: MessageSquare, text: "Chat Online", desc: "Website" },
-                      { icon: Globe, text: "Portal do Cliente", desc: "Self-service" }
-                    ].map((contact, index) => (
-                      <div key={index} className="flex items-center gap-3 p-2 bg-slate-800/30 rounded-lg">
-                        <contact.icon className="w-4 h-4 text-yellow-400" />
-                        <div>
-                          <div className="text-sm font-medium text-slate-300">{contact.text}</div>
-                          <div className="text-xs text-slate-500">{contact.desc}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        )}
-      </Card>
-
-      {/* Why Choose CRM One Section */}
+      {/* Why Choose Section */}
       <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-indigo-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
@@ -630,7 +680,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
-                  <Award className="w-6 h-6 text-indigo-400" />
+                  <Trophy className="w-6 h-6 text-indigo-400" />
                 </div>
                 <h2 className="text-2xl font-bold text-white">Por que Escolher o CRM One?</h2>
               </div>
@@ -645,91 +695,114 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         {expandedSections.has('why-choose') && (
           <CardContent className="p-8 animate-in slide-in-from-left duration-500">
             <div className="space-y-8">
-              <div className="text-center">
-                <h3 className="text-3xl font-bold bg-gradient-to-r from-indigo-300 to-blue-300 bg-clip-text text-transparent mb-4">
-                  A Escolha Inteligente para Seu Negócio
-                </h3>
-                <p className="text-slate-300 text-lg max-w-3xl mx-auto">
-                  Mais de 500 empresas confiam no CRM One para transformar suas operações comerciais.
-                </p>
-              </div>
-
-              <div className="grid lg:grid-cols-3 gap-6">
-                {[
-                  {
-                    icon: Trophy,
-                    title: "ROI Comprovado",
-                    description: "Retorno sobre investimento em até 6 meses com resultados mensuráveis",
-                    stats: "ROI médio de 300%",
-                    color: "yellow"
-                  },
-                  {
-                    icon: Sparkles,
-                    title: "Integração Nativa",
-                    description: "100% integrado ao SAP Business One sem necessidade de middleware",
-                    stats: "Tempo real 24/7",
-                    color: "green"
-                  },
-                  {
-                    icon: Heart,
-                    title: "Satisfação dos Clientes",
-                    description: "NPS de 8.7/10 com suporte especializado e atendimento personalizado",
-                    stats: "98% de satisfação",
-                    color: "red"
-                  }
-                ].map((reason, index) => (
-                  <div key={index} className={`group p-6 bg-gradient-to-br from-${reason.color}-900/20 to-${reason.color}-800/20 rounded-xl border border-${reason.color}-600/30 hover:border-${reason.color}-500/50 transition-all duration-300 hover:scale-105`}>
-                    <div className="text-center space-y-4">
-                      <div className={`w-16 h-16 bg-${reason.color}-500/20 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300`}>
-                        <reason.icon className={`w-8 h-8 text-${reason.color}-400`} />
+              <div className="grid lg:grid-cols-2 gap-8">
+                {/* Padrões do SAP Business One */}
+                <div className="bg-gradient-to-br from-blue-900/20 to-blue-800/20 p-8 rounded-xl border border-blue-600/30">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center">
+                      <Award className="w-8 h-8 text-blue-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-blue-300">Padrões do SAP Business One</h3>
+                  </div>
+                  <div className="space-y-3">
+                    {[
+                      "Segue as regras de negócio, transações, procedimentos de autorização padrões do SAP Business One.",
+                      "Exibição de impostos em tempo real e de acordo com todas as parametrizações já existentes no SAP Business One.",
+                      "Centralização de todo o relacionamento com o cliente no módulo de atendimento.",
+                      "Ferramenta desenvolvida e exclusiva para o SAP Business One.",
+                      "Utiliza banco de dados e tabelas padrões do ERP SAP B1.",
+                      "Todos os dados em tempo real com o SAP.",
+                      "Preparado para base de dados HANA e SQL"
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-start gap-3">
+                        <CheckCircle className="w-5 h-5 text-blue-400 mt-0.5" />
+                        <span className="text-slate-300 text-sm">{item}</span>
                       </div>
-                      <h4 className="text-xl font-bold text-slate-200 group-hover:text-white transition-colors duration-300">
-                        {reason.title}
-                      </h4>
-                      <p className="text-slate-300 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
-                        {reason.description}
+                    ))}
+                  </div>
+                </div>
+
+                {/* Redução de Custos */}
+                <div className="bg-gradient-to-br from-green-900/20 to-green-800/20 p-8 rounded-xl border border-green-600/30">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center">
+                      <DollarSign className="w-8 h-8 text-green-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-green-300">Redução de Custos</h3>
+                  </div>
+                  <div className="space-y-3">
+                    {[
+                      "Dispensa licenciamento profissional e não impõe limites do CRM One.",
+                      "Tudo funciona de forma nativa, sem depender de integrações externas."
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-start gap-3">
+                        <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
+                        <span className="text-slate-300 text-sm">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Certificado e 100% Integrado */}
+                <div className="bg-gradient-to-br from-purple-900/20 to-purple-800/20 p-8 rounded-xl border border-purple-600/30">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center">
+                      <Shield className="w-8 h-8 text-purple-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-purple-300">Certificado e 100% Integrado com SAP Business One</h3>
+                  </div>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    O CRM One é certificado pela SAP e foi desenvolvido 
+                    especialmente para o SAP Business One. 
+                    Isso garante qualidade e segurança para a sua empresa.
+                  </p>
+                  <p className="text-slate-300 leading-relaxed mb-4">
+                    Ele segue as regras de negócio já definidas no seu SAP 
+                    Business One, como por exemplo:
+                  </p>
+                  <div className="space-y-2">
+                    {[
+                      "Transações",
+                      "Procedimentos de autorização",
+                      "Validações padrões SAP",
+                      "Permissões de acesso",
+                      "Entre outras."
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-center gap-3">
+                        <CheckCircle className="w-4 h-4 text-purple-400" />
+                        <span className="text-slate-300 text-sm">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Informações em Tempo Real */}
+                <div className="bg-gradient-to-br from-cyan-900/20 to-cyan-800/20 p-8 rounded-xl border border-cyan-600/30">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-cyan-500/20 rounded-2xl flex items-center justify-center">
+                      <Clock className="w-8 h-8 text-cyan-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-cyan-300">Informações em Tempo Real</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-lg font-semibold text-cyan-300 mb-2">Consulta de Estoque</h4>
+                      <p className="text-slate-300 text-sm">
+                        A aplicação é totalmente instalada no seu ambiente, seja 
+                        local ou na nuvem.
                       </p>
-                      <div className={`inline-block px-3 py-1 bg-${reason.color}-500/20 text-${reason.color}-300 rounded-full text-sm font-semibold border border-${reason.color}-600/30`}>
-                        {reason.stats}
-                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="bg-gradient-to-br from-indigo-600/10 to-blue-600/10 p-8 rounded-2xl border border-indigo-500/30">
-                <div className="grid md:grid-cols-2 gap-8 items-center">
-                  <div className="space-y-4">
-                    <h4 className="text-2xl font-bold text-indigo-300">Números que Impressionam</h4>
-                    <div className="grid grid-cols-2 gap-4">
-                      {[
-                        { value: "500+", label: "Empresas ativas" },
-                        { value: "9", label: "Anos de mercado" },
-                        { value: "99.8%", label: "Uptime garantido" },
-                        { value: "< 2h", label: "Tempo de resposta" }
-                      ].map((stat, index) => (
-                        <div key={index} className="text-center p-3 bg-slate-800/50 rounded-lg">
-                          <div className="text-2xl font-bold text-indigo-300">{stat.value}</div>
-                          <div className="text-sm text-slate-400">{stat.label}</div>
-                        </div>
-                      ))}
+                    <div>
+                      <p className="text-slate-300 text-sm">
+                        O acesso às informações é direto, sem bases de dados 
+                        intermediárias.
+                      </p>
                     </div>
-                  </div>
-                  <div className="space-y-4">
-                    <h4 className="text-xl font-semibold text-indigo-300">Diferenciais Únicos</h4>
-                    <div className="space-y-2">
-                      {[
-                        "Desenvolvido por especialistas SAP",
-                        "Suporte técnico nacional especializado",
-                        "Implementação rápida e eficiente",
-                        "Customizações sob medida",
-                        "Treinamento completo incluído"
-                      ].map((differential, index) => (
-                        <div key={index} className="flex items-center gap-2 text-sm text-slate-300">
-                          <CheckCircle className="w-4 h-4 text-indigo-400" />
-                          {differential}
-                        </div>
-                      ))}
+                    <div>
+                      <p className="text-slate-300 text-sm">
+                        Isso garante à sua equipe uma informação real e de 
+                        qualidade.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -739,104 +812,152 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Enhanced Modules Section */}
-      <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-orange-500/30 transition-all duration-500">
+      {/* Comparison Section */}
+      <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-yellow-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
-          onClick={() => toggleSection('modules')}
+          onClick={() => toggleSection('comparison')}
         >
-          <div className="bg-gradient-to-r from-orange-900 via-red-900 to-orange-900 p-6">
+          <div className="bg-gradient-to-r from-yellow-900 via-orange-900 to-yellow-900 p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
-                  <Layers className="w-6 h-6 text-orange-400" />
+                <div className="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
+                  <BarChart3 className="w-6 h-6 text-yellow-400" />
                 </div>
-                <h2 className="text-2xl font-bold text-white">💎 Benefícios Exclusivos da Ferramenta</h2>
+                <h2 className="text-2xl font-bold text-white">Tabela Comparativa - CRM One X Concorrentes</h2>
               </div>
-              {expandedSections.has('modules') ? 
-                <ChevronUp className="w-6 h-6 text-orange-400" /> : 
-                <ChevronDown className="w-6 h-6 text-orange-400" />
+              {expandedSections.has('comparison') ? 
+                <ChevronUp className="w-6 h-6 text-yellow-400" /> : 
+                <ChevronDown className="w-6 h-6 text-yellow-400" />
               }
             </div>
           </div>
         </div>
         
-        {expandedSections.has('modules') && (
-          <CardContent className="p-8 animate-in slide-in-from-right duration-500">
+        {expandedSections.has('comparison') && (
+          <CardContent className="p-8 animate-in slide-in-from-bottom duration-500">
             <div className="space-y-8">
-              <div className="text-center">
-                <h3 className="text-3xl font-bold bg-gradient-to-r from-orange-300 to-red-300 bg-clip-text text-transparent mb-4">
-                  🚀 Transforme Seu Negócio Hoje
-                </h3>
-                <p className="text-slate-300 text-lg max-w-3xl mx-auto">
-                  Descubra como cada funcionalidade vai revolucionar sua operação e aumentar seus resultados.
-                </p>
+              <div className="text-center mb-8">
+                <h3 className="text-3xl font-bold text-yellow-300 mb-4">Veja como o CRM One se destaca</h3>
+                <p className="text-slate-300 text-lg">Comparação detalhada com principais concorrentes do mercado</p>
               </div>
 
-              <div className="grid lg:grid-cols-2 gap-8">
-                {[
-                  {
-                    icon: BarChart3,
-                    title: "Dashboards Personalizáveis",
-                    description: "Total autonomia na personalização dos dashboards! Através de consultas SQL/HANA, crie indicadores e gráficos baseados em informações em tempo real na base de dados do SAP Business One.",
-                    features: ["Consultas SQL/HANA", "Gráficos em tempo real", "Indicadores customizados", "Widgets arrastar e soltar"],
-                    color: "blue"
-                  },
-                  {
-                    icon: DollarSign,
-                    title: "Vendas",
-                    description: "Geração de cotações e pedidos com agilidade em tempo real com o SAP Business One, garantindo qualidade na informação repassada ao cliente.",
-                    features: ["Cotações rápidas", "Pedidos automáticos", "Histórico completo", "Integração nativa SAP"],
-                    color: "green"
-                  },
-                  {
-                    icon: Users,
-                    title: "Relacionamento",
-                    description: "Atendimentos em formato Agenda e Kanban. Gerencie tarefas e crie histórico de relacionamento com clientes através do módulo de atendimento.",
-                    features: ["Agenda integrada", "Kanban visual", "Histórico completo", "Gestão de tarefas"],
-                    color: "purple"
-                  },
-                  {
-                    icon: Handshake,
-                    title: "Oportunidades",
-                    description: "Crie, edite e gerencie oportunidades de vendas online de qualquer lugar! Pipeline inovador para filtrar e visualizar oportunidades por etapa.",
-                    features: ["Pipeline visual", "Gestão de etapas", "Filtros avançados", "Previsão de vendas"],
-                    color: "orange"
-                  }
-                ].map((module, index) => (
-                  <div key={index} className={`group p-6 bg-gradient-to-br from-${module.color}-900/20 to-${module.color}-800/20 rounded-xl border border-${module.color}-600/30 hover:border-${module.color}-500/50 transition-all duration-300 hover:scale-105`}>
-                    <div className="space-y-6">
-                      <div className="flex items-center gap-4">
-                        <div className={`w-16 h-16 bg-${module.color}-500/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                          <module.icon className={`w-8 h-8 text-${module.color}-400`} />
-                        </div>
-                        <h4 className="text-2xl font-bold text-slate-200 group-hover:text-white transition-colors duration-300">
-                          {module.title}
-                        </h4>
-                      </div>
-                      <p className="text-slate-300 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
-                        {module.description}
-                      </p>
-                      <div className="grid grid-cols-2 gap-2">
-                        {module.features.map((feature, fIndex) => (
-                          <div key={fIndex} className="flex items-center gap-2 text-sm">
-                            <CheckCircle className={`w-4 h-4 text-${module.color}-400`} />
-                            <span className="text-slate-400">{feature}</span>
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse bg-slate-800/50 rounded-lg overflow-hidden">
+                  <thead>
+                    <tr className="bg-slate-700/50">
+                      <th className="text-left p-4 text-slate-300 font-semibold">Critério / Plataforma</th>
+                      <th className="text-center p-4 text-blue-300 font-bold">CRM ONE</th>
+                      <th className="text-center p-4 text-slate-400">Concorrentes</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-600/30">
+                    {[
+                      {
+                        criteria: "Integração Nativa com SAP B1",
+                        crmOne: "Integração certificada e em tempo real com SAP Business One",
+                        competitors: "Integração por conectores externos ou APIs",
+                        crmOneStatus: true
+                      },
+                      {
+                        criteria: "App Mobile Offline",
+                        crmOne: "Sim, funciona com ou sem internet (Android)",
+                        competitors: "App mobile disponível, mas nem sempre com suporte offline completo",
+                        crmOneStatus: true
+                      },
+                      {
+                        criteria: "Infraestrutura de Dados",
+                        crmOne: "Cloud ou local — cliente escolhe",
+                        competitors: "Cloud obrigatória (dados sob terceiros)",
+                        crmOneStatus: true
+                      },
+                      {
+                        criteria: "Atualizações e Manutenção",
+                        crmOne: "Evolui junto ao SAP sem retrabalho",
+                        competitors: "Demandam ajustes com atualizações e versões",
+                        crmOneStatus: true
+                      },
+                      {
+                        criteria: "Suporte Direto com Especialista",
+                        crmOne: "Atendimento direto com analista que entende o processo do cliente",
+                        competitors: "Suporte via chatbot, chamadas genéricas ou equipes sem especialização",
+                        crmOneStatus: true
+                      },
+                      {
+                        criteria: "Dashboards Customizáveis",
+                        crmOne: "SQL/HANA, Crystal Reports e tabelas dinâmicas sem dev",
+                        competitors: "Requer plano premium ou suporte externo",
+                        crmOneStatus: true
+                      },
+                      {
+                        criteria: "Cobrança e SAC Integrados",
+                        crmOne: "Gestão completa dentro do CRM",
+                        competitors: "Necessita ferramentas externas ou integrações",
+                        crmOneStatus: true
+                      },
+                      {
+                        criteria: "Visão 360° desde o primeiro dia",
+                        crmOne: "Cockpit unificado com todas as áreas",
+                        competitors: "Requer configuração e tempo de setup",
+                        crmOneStatus: true
+                      },
+                      {
+                        criteria: "Custo-benefício",
+                        crmOne: "Preço acessível e sem módulos separados",
+                        competitors: "Alto custo por usuário/módulo + upgrades pagos",
+                        crmOneStatus: true
+                      },
+                      {
+                        criteria: "Reputação e suporte Humanizado",
+                        crmOne: "Sem reclamações no Reclame Aqui, atendimento próximo, humanizado e sem automações robóticas",
+                        competitors: "Alta incidência de reclamações públicas e atendimento automatizado ou burocrático",
+                        crmOneStatus: true
+                      }
+                    ].map((row, index) => (
+                      <tr key={index} className="hover:bg-slate-700/30 transition-colors duration-200">
+                        <td className="p-4 text-slate-300 font-medium">{row.criteria}</td>
+                        <td className="p-4 text-center">
+                          <div className="flex items-center justify-center gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-400" />
+                            <span className="text-slate-300 text-sm">{row.crmOne}</span>
                           </div>
-                        ))}
-                      </div>
+                        </td>
+                        <td className="p-4 text-center">
+                          <div className="flex items-center justify-center gap-3">
+                            <X className="w-5 h-5 text-red-400" />
+                            <span className="text-slate-400 text-sm">{row.competitors}</span>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="bg-gradient-to-r from-yellow-900/20 to-orange-900/20 p-6 rounded-xl border border-yellow-600/30">
+                <h4 className="text-xl font-bold text-yellow-300 mb-3">Diferenciais Únicos do CRM One</h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {[
+                    "Certificação SAP oficial",
+                    "Suporte técnico especializado nacional",
+                    "Sem dependência de integrações externas",
+                    "Dados sempre na sua infraestrutura",
+                    "Custo-benefício imbatível",
+                    "Atendimento humanizado sem automações"
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <Star className="w-4 h-4 text-yellow-400" />
+                      <span className="text-slate-300 text-sm">{item}</span>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </CardContent>
         )}
       </Card>
 
-      
-
-      {/* Enhanced Conclusion Section */}
+      {/* Conclusion Section */}
       <Card className="glass-effect border-slate-700/50 overflow-hidden group hover:border-green-500/30 transition-all duration-500">
         <div 
           className="cursor-pointer transition-all duration-300"
@@ -848,7 +969,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
                 <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
                   <Rocket className="w-6 h-6 text-green-400" />
                 </div>
-                <h2 className="text-2xl font-bold text-white">Comece Sua Transformação Agora!</h2>
+                <h2 className="text-2xl font-bold text-white">Comece Agora!</h2>
               </div>
               {expandedSections.has('conclusion') ? 
                 <ChevronUp className="w-6 h-6 text-green-400" /> : 
@@ -863,10 +984,10 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
             <div className="text-center space-y-8">
               <div className="space-y-4">
                 <h3 className="text-4xl font-bold bg-gradient-to-r from-green-300 to-emerald-300 bg-clip-text text-transparent">
-                  Pronto para Revolucionar seu CRM?
+                  Comece Agora!
                 </h3>
                 <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-                  Otimize sua operação comercial e alcance novos patamares de performance com a solução mais completa do mercado!
+                  Otimize sua operação comercial e alcance novos patamares de performance!
                 </p>
               </div>
 
@@ -888,16 +1009,41 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
               </div>
 
               <div className="bg-gradient-to-r from-green-900/20 to-emerald-900/20 p-8 rounded-2xl border border-green-600/30">
-                <h4 className="text-2xl font-bold text-green-300 mb-4">🚀 Acelere Seus Resultados Hoje Mesmo!</h4>
-                <p className="text-slate-400 mb-6">Veja como o CRM One pode transformar seus resultados em apenas 30 minutos</p>
+                <div className="flex justify-center items-center gap-8 mb-6">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-blue-500/20 rounded-xl flex items-center justify-center mx-auto mb-2">
+                      <Monitor className="w-8 h-8 text-blue-400" />
+                    </div>
+                    <span className="text-slate-300 font-semibold">DWU IT Solutions</span>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-blue-600/20 rounded-xl flex items-center justify-center mx-auto mb-2">
+                      <Database className="w-8 h-8 text-blue-400" />
+                    </div>
+                    <span className="text-slate-300 font-semibold">SAP Business One</span>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-green-500/20 rounded-xl flex items-center justify-center mx-auto mb-2">
+                      <Award className="w-8 h-8 text-green-400" />
+                    </div>
+                    <span className="text-slate-300 font-semibold">SAP Certified</span>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-blue-700/20 rounded-xl flex items-center justify-center mx-auto mb-2">
+                      <Database className="w-8 h-8 text-blue-400" />
+                    </div>
+                    <span className="text-slate-300 font-semibold">SAP Integration</span>
+                  </div>
+                </div>
+                
                 <div className="flex flex-wrap justify-center gap-4">
                   <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-3 text-lg font-semibold transform hover:scale-105 transition-all duration-300">
                     <Calendar className="w-5 h-5 mr-2" />
-                    Agendar Demo
+                    Agendar Demonstração
                   </Button>
                   <Button variant="outline" className="border-green-600 text-green-400 hover:bg-green-600/10 px-8 py-3 text-lg font-semibold transform hover:scale-105 transition-all duration-300">
                     <Download className="w-5 h-5 mr-2" />
-                    Download Brochure
+                    Solicitar Orçamento
                   </Button>
                 </div>
               </div>
@@ -906,7 +1052,7 @@ export default function Module3Presentation({ onComplete }: Module3PresentationP
         )}
       </Card>
 
-      {/* Enhanced Action Button */}
+      {/* Action Button */}
       <div className="text-center space-y-6">
         {completionProgress === 100 ? (
           <div className="space-y-4">
