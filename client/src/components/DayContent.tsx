@@ -227,7 +227,7 @@ function LocalSlidePresentation({ onComplete }: LocalSlidePresentationProps) {
                       </div>
                       <div>
                         <h5 className="text-white font-bold text-lg mb-2">{axiom.text}</h5>
-                        <p className="text-green-100 text-sm leading-relaxed">{(axiom as any).desc}</p>
+                        <p className="text-green-100 text-sm leading-relaxed">{'desc' in axiom ? axiom.desc : ''}</p>
                       </div>
                     </div>
                   </div>
@@ -2196,7 +2196,7 @@ DIFERENCIAIS COMPETITIVOS:
             <Module4MindMap 
               onSectionSelect={handleModule4SectionSelect}
               completedSections={module4State.completedSections}
-              currentSection={module4State.currentSection}
+              currentSection={module4State.currentSection ?? undefined}
             />
           ) : (
             <Card className="glass-effect border-slate-700/50">
