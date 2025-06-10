@@ -1,8 +1,14 @@
 import { useState, useEffect, useRef } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { CheckCircle, Clock, Users, Target, BookOpen, Award, Star, Trophy, Rocket, FileText, Monitor, Database, Zap, BarChart3, TrendingUp, Shield, Settings, DollarSign, Globe, RefreshCw, AlertCircle, PlayCircle, Pause, RotateCcw, Volume2, VolumeX, Maximize, Minimize, ArrowLeft } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import SlidePresentation from "./SlidePresentation";
+import Module3Presentation from "./Module3Presentation";
+import Module4MindMap from "./Module4MindMap";
 import QuizComponent from "./QuizComponent";
 import SimulationComponent from "./SimulationComponent";
 import { onboardingData } from "@/lib/onboarding-data";
@@ -13,9 +19,6 @@ import {
   Target, Lightbulb, Zap, Shield, Eye, Rocket, Brain, Handshake, TrendingUp, Settings,
   Server, Code, Network, ArrowDown, Monitor
 } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import SlidePresentation from "./SlidePresentation";
-import Module3Presentation from "./Module3Presentation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface DayContentProps {
@@ -25,6 +28,12 @@ interface DayContentProps {
 
 interface LocalSlidePresentationProps {
   onComplete: () => void;
+}
+
+interface Module4State {
+  currentSection: string | null;
+  completedSections: string[];
+  sectionProgress: { [sectionId: string]: number };
 }
 
 function LocalSlidePresentation({ onComplete }: LocalSlidePresentationProps) {
@@ -533,6 +542,14 @@ function getModuleIcon(day: number) {
 }
 
 export default function DayContent({ day, onProgressUpdate }: DayContentProps) {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [module3Completed, setModule3Completed] = useState(false);
+  const [slideCompleted, setSlideCompleted] = useState(false);
+  const [module4State, setModule4State] = useState<Module4State>({
+    currentSection: null,
+    completedSections: [],
+    sectionProgress: {}
+  });
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const dayData = onboardingData.find(d => d.day === day);
   const lastProgressRef = useRef<number>(-1);
@@ -996,6 +1013,38 @@ DIFERENCIAIS COMPETITIVOS:
     setAllCompleted(completed === total && (day !== 1 || presentationCompleted));
     onProgressUpdate(progress);
   }, [completedItems, dayData.checklist.length, onProgressUpdate, day, presentationCompleted]);
+
+  const handleSlideComplete = () => {
+    setSlideCompleted(true);
+    if (onProgressUpdate) {
+      onProgressUpdate(100);
+    }
+  };
+
+  const handleModule4SectionSelect = (sectionId: string) => {
+    setModule4State(prev => ({
+      ...prev,
+      currentSection: sectionId
+    }));
+  };
+
+  const handleModule4SectionComplete = (sectionId: string) => {
+    setModule4State(prev => {
+      const newCompletedSections = [...prev.completedSections];
+      if (!newCompletedSections.includes(sectionId)) {
+        newCompletedSections.push(sectionId);
+      }
+
+      const progress = (newCompletedSections.length / 12) * 100; // 12 seções principais
+      onProgressUpdate(progress);
+
+      return {
+        ...prev,
+        completedSections: newCompletedSections,
+        currentSection: null
+      };
+    });
+  };
 
   // Special handling for Module 1 with slide presentation
   if (day === 1) {
@@ -2139,185 +2188,64 @@ DIFERENCIAIS COMPETITIVOS:
 
       {/* Day 4 Content */}
       {day === 4 && (
-        <>
-          <Card className="mb-8 glass-effect tech-border slide-in-left">
-            <CardContent className="p-8">
-              <h4 className="text-2xl font-bold mb-6 gradient-text text-center">Funcionalidades Detalhadas</h4>
-
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <Card className="bg-gradient-to-br from-blue-900/30 to-blue-800/30 tech-border">
-                  <CardContent className="p-6">
-                    <h5 className="text-xl font-bold mb-3 text-blue-300 flex items-center">
-                      <FileText className="mr-3" size={24} />
-                      Biblioteca de Manuais
-                    </h5>
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-semibold">Manual do Usuário</p>
-                          <p className="text-sm text-slate-400">Guia completo de utilização</p>
-                        </div>
-                        <Button 
-                          size="sm" 
-                          onClick={() => downloadMaterial('Manual-Usuario')}
-                          className="cursor-pointer hover:bg-blue-700 transition-colors"
-                        >
-                          <Download className="mr-2" size={14} />
-                          Download
-                        </Button>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-semibold">Manual Técnico</p>
-                          <p className="text-sm text-slate-400">Configurações avançadas</p>
-                        </div>
-                        <Button 
-                          size="sm" 
-                          onClick={() => downloadMaterial('Manual-Tecnico')}
-                          className="cursor-pointer hover:bg-blue-700 transition-colors"
-                        >
-                          <Download className="mr-2" size={14} />
-                          Download
-                        </Button>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-semibold">Manual de Integração</p>
-                          <p className="text-sm text-slate-400">APIs e conexões SAP</p>
-                        </div>
-                        <Button 
-                          size="sm" 
-                          onClick={() => downloadMaterial('Manual-Integracao')}
-                          className="cursor-pointer hover:bg-blue-700 transition-colors"
-                        >
-                          <Download className="mr-2" size={14} />
-                          Download
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-gradient-to-br from-green-900/30 to-green-800/30 tech-border">
-                  <CardContent className="p-6">
-                    <h5 className="text-xl font-bold mb-3 text-green-300 flex items-center">
-                      <Globe className="mr-3" size={24} />
-                      Links de Referência
-                    </h5>
-                    <div className="space-y-3">
-                      <div>
-                        <p className="font-semibold">Portal de Documentação</p>
-                        <p className="text-sm text-slate-400">docs.crm-one.com.br</p>
-                      </div>
-                      <div>
-                        <p className="font-semibold">Base de Conhecimento</p>
-                        <p className="text-sm text-slate-400">kb.crm-one.com.br</p>
-                      </div>
-                      <div>
-                        <p className="font-semibold">API Reference</p>
-                        <p className="text-sm text-slate-400">api.crm-one.com.br</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-gradient-to-br from-purple-900/30 to-purple-800/30 tech-border">
-                  <CardContent className="p-6">
-                    <h5 className="text-xl font-bold mb-3 text-purple-300 flex items-center">
-                      <BarChart className="mr-3" size={24} />
-                      Vídeos Tutoriais
-                    </h5>
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-semibold">Módulo Vendas</p>
-                          <p className="text-sm text-slate-400">Gestão completa do ciclo de vendas</p>
-                        </div>
-                        <Button size="sm" variant="outline">
-                          ▶ Assistir
-                        </Button>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-semibold">Módulo Financeiro</p>
-                          <p className="text-sm text-slate-400">Controle financeiro e relatórios</p>
-                        </div>
-                        <Button size="sm" variant="outline">
-                          ▶ Assistir
-                        </Button>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-semibold">Integração SAP</p>
-                          <p className="text-sm text-slate-400">Setup e configuração de APIs</p>
-                        </div>
-                        <Button size="sm" variant="outline">
-                          ▶ Assistir
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-gradient-to-br from-orange-900/30 to-orange-800/30 tech-border">
-                  <CardContent className="p-6">
-                    <h5 className="text-xl font-bold mb-3 text-orange-300 flex items-center">
-                      <Gamepad className="mr-3" size={24} />
-                      Exercícios Práticos
-                    </h5>
-                    <p className="text-slate-300 mb-4">
-                      Complete todos os exercícios para obter a certificação DWU CRM One Expert.
-                    </p>
-                    <div className="space-y-2">
-                      <Button className="w-full bg-orange-600 hover:bg-orange-700">
-                        Iniciar Simulação do Sistema
-                      </Button>
-                      <Button className="w-full" variant="outline">
-                        Exercícios de API
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Card className="bg-gradient-to-r from-slate-900/50 to-slate-800/50 tech-border">
-                <CardContent className="p-6">
-                  <h5 className="text-xl font-bold mb-4 text-center gradient-text">Conteúdo Avançado</h5>
-                  <div className="grid md:grid-cols-4 gap-4">
-                    <div className="text-center">
-                      <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mx-auto mb-3">
-                        <Database className="text-white" size={20} />
-                      </div>
-                      <h6 className="font-bold text-blue-300 mb-1">Customizações</h6>
-                      <p className="text-xs text-slate-400">Scripts e personalizações</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mx-auto mb-3">
-                        <BarChart className="text-white" size={20} />
-                      </div>
-                      <h6 className="font-bold text-green-300 mb-1">Relatórios</h6>
-                      <p className="text-xs text-slate-400">Crystal Reports e BI</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mx-auto mb-3">
-                        <Globe className="text-white" size={20} />
-                      </div>
-                      <h6 className="font-bold text-purple-300 mb-1">Workflows</h6>
-                      <p className="text-xs text-slate-400">Automação de processos</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center mx-auto mb-3">
-                        <Trophy className="text-white" size={20} />
-                      </div>
-                      <h6 className="font-bold text-orange-300 mb-1">Certificação</h6>
-                      <p className="text-xs text-slate-400">Avaliação final</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </CardContent>
+        <div className="space-y-6">
+          <Card className="glass-effect border-slate-700/50">
+            <CardHeader>
+              <CardTitle className="gradient-text text-3xl">Módulo 4: Certificação Especialista CRM One</CardTitle>
+              <CardDescription className="text-slate-400 text-lg">
+                Navegue pelo mapa mental interativo e domine todos os aspectos do CRM One
+              </CardDescription>
+            </CardHeader>
           </Card>
-        </>
+
+          {!module4State.currentSection ? (
+            <Module4MindMap 
+              onSectionSelect={handleModule4SectionSelect}
+              completedSections={module4State.completedSections}
+              currentSection={module4State.currentSection}
+            />
+          ) : (
+            <Card className="glass-effect border-slate-700/50">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="gradient-text text-2xl">
+                      Seção: {module4State.currentSection}
+                    </CardTitle>
+                    <CardDescription className="text-slate-400">
+                      Conteúdo específico da seção selecionada
+                    </CardDescription>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setModule4State(prev => ({ ...prev, currentSection: null }))}
+                  >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Voltar ao Mapa
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center p-8 bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-xl border border-blue-500/30">
+                  <BookOpen className="w-16 h-16 text-blue-400 mx-auto mb-4" />
+                  <h3 className="text-2xl font-bold text-blue-300 mb-4">
+                    Conteúdo: {module4State.currentSection}
+                  </h3>
+                  <p className="text-slate-300 mb-6">
+                    Aqui será carregado o conteúdo específico da seção (PDF, vídeo, apresentação, etc.)
+                  </p>
+                  <Button 
+                    onClick={() => handleModule4SectionComplete(module4State.currentSection!)}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+                  >
+                    <CheckCircle className="w-5 h-5 mr-2" />
+                    Marcar como Concluído
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       )}
 
       {day === 3 && (
@@ -2332,7 +2260,7 @@ DIFERENCIAIS COMPETITIVOS:
              Lista de Verificação
            </TabsTrigger>
          </TabsList>
- 
+
          <TabsContent value="presentation" className="space-y-6">
            <Module3Presentation onComplete={handlePresentationComplete} />
            {presentationCompleted && (
@@ -2344,8 +2272,8 @@ DIFERENCIAIS COMPETITIVOS:
              </div>
            )}
          </TabsContent>
- 
-         
+
+
          <TabsContent value="checklist" className="space-y-6">
              <Card className="glass-effect border-slate-700/50">
                <CardContent className="p-8">
@@ -2359,7 +2287,7 @@ DIFERENCIAIS COMPETITIVOS:
                        {completedItems.filter(Boolean).length}/{dayData.checklist.length}
                      </Badge>
                    </div>
- 
+
                    <div className="space-y-4">
                      {dayData.checklist.map((item, index) => (
                        <div
@@ -2388,7 +2316,7 @@ DIFERENCIAIS COMPETITIVOS:
              </Card>
            </TabsContent>
        </Tabs>
-       
+
        )}
 
       {/* Checklist */}
